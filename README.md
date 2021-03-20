@@ -11,7 +11,7 @@ Original App Design Project - README Template
 
 ## Overview
 ### Description
-[Description of your app]
+An app that allows Starcraft 2 players to follow the e-sports players and events and create their own tournaments.
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
