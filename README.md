@@ -67,7 +67,6 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     * User can create new account
 * Steam
     * Matches feed
-        - User can 
         - User can rate and leave comments
         - User can sort tournaments base on user rating
     * Home feed
