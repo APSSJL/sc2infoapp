@@ -16,11 +16,11 @@ Original App Design Project - README Template
 ### App Evaluation
 [Evaluation of your app across the following attributes]
 - **Category: Esports/Gaming/Social**
-- **Mobile:**
-- **Story:**
-- **Market:**
-- **Habit:**
-- **Scope:**
+- **Mobile: Uses location**
+- **Story: Allows users to watch the tournaments and communicate with people, who also like the game**
+- **Market: About a few hundred thousands of people, who likes starcraft and want to discuss the matches.**
+- **Habit: A few times a day, when there is a tournament update, or more often, if user want to see user posts. Users can create posts and tournaments.**
+- **Scope: Reasonably challenging. It's acceptable to strip down some stories.**
 
 ## Product Spec
 
@@ -30,10 +30,10 @@ Original App Design Project - README Template
 
 * Create account / Login 
 * Tabs of different feeds
-    - Match feed showing fixtures of games
+    - Matches feed showing fixtures of games
     - Home feed, showing users/players/tournaments activity when followed.
 * Filtering
-    - Match feed: based off of tournament ratings and teams
+    - Matches feed: based off of tournament ratings and teams
 * Allow user to change account preferences
     - User can add profile image
     - User can edit preffered SC2 race(zerg/terran/protoss/random)
@@ -62,29 +62,62 @@ Original App Design Project - README Template
 
 ### 2. Screen Archetypes
 
-* [list first screen here]
-   * [list associated required story here]
-   * ...
-* [list second screen here]
-   * [list associated required story here]
-   * ...
+* Login/Registration screen
+    * User can login
+    * User can create new account
+* Steam
+    * Matches feed
+        - User can 
+        - User can rate and leave comments
+        - User can sort tournaments base on user rating
+    * Home feed
+    * User can filter feeds
+    * (optional) user can get list of current streams
+* Creation
+    * User can create new post
+    * (optional) User can create new tournament
+* Detail
+    * User can view player/team info
+        - User can follow player/team and get info about recent activity
+        - User can rate/comment player/team
+    * User can see tournament info 
+        - User can rate/comment tournament
+    * User can see match info
+    * (optional) User can get predictions about match
+    * (optional) user can get players update from twitter
+    * (optional) user can see game preview 
+* Profile
+    * User can view their profile and change the preferences (as descibed in part 1)
+* Search
+    * User can search a player by name
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* Home feed
+* Match feed
+* Profile
 
 **Flow Navigation** (Screen to Screen)
 
-* [list first screen here]
-   * [list screen navigation here]
-   * ...
-* [list second screen here]
-   * [list screen navigation here]
-   * ...
+* Login/Registration
+    * Home
+* Home
+    * Creation - new post
+    * Detail - player info
+    * Search
+* Match
+    * Match info
+    * Tournament info
+* Tournament
+    * Creation - new tournament
+    * Detail - player info
+    * Detail - tournament info
+* Detail
+    * Home
+* Search
+    * None
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
