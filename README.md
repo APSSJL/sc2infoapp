@@ -125,7 +125,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 ### [BONUS] Digital Wireframes & Mockups
 
 ### [BONUS] Interactive Prototype
-
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/prototypegif_2.gif' />
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
