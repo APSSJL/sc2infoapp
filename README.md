@@ -119,13 +119,21 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     * None
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+We decided to use a digital platform to create the low-fidelity wireframe needed for this task.
 
 ### [BONUS] Digital Wireframes & Mockups
 
+#### Overall wireframe
+![](https://github.com/APSSJL/sc2infoapp/blob/wireframes_interactiveprototype/Wireframe/Overall_Wireframe.PNG) 
+
 ### [BONUS] Interactive Prototype
-<img src='https://github.com/APSSJL/sc2infoapp/blob/main/prototypegif_2.gif' />
+#### Part 1
+
+<img src='https://github.com/APSSJL/sc2infoapp/blob/wireframes_interactiveprototype/Gifs/InteractivePrototype_2p1.gif' />
+
+#### Part 2
+
+<img src='https://github.com/APSSJL/sc2infoapp/blob/wireframes_interactiveprototype/Gifs/InteractivePrototype_2p2.gif' />
 
 ## Schema 
 [This section will be completed in Unit 9]
