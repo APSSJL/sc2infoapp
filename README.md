@@ -124,16 +124,17 @@ We decided to use a digital platform to create the low-fidelity wireframe needed
 ### [BONUS] Digital Wireframes & Mockups
 
 #### Overall wireframe
-![](https://github.com/APSSJL/sc2infoapp/blob/wireframes_interactiveprototype/Wireframe/Overall_Wireframe.PNG) 
+
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/Wireframe/Overall_Wireframe.PNG' /> 
 
 ### [BONUS] Interactive Prototype
 #### Part 1
 
-<img src='https://github.com/APSSJL/sc2infoapp/blob/wireframes_interactiveprototype/Gifs/InteractivePrototype_2p1.gif' />
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/Gifs/InteractivePrototype_2p1.gif' width='200' />
 
 #### Part 2
 
-<img src='https://github.com/APSSJL/sc2infoapp/blob/wireframes_interactiveprototype/Gifs/InteractivePrototype_2p2.gif' />
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/Gifs/InteractivePrototype_2p2.gif' width='200'  />
 
 ## Schema 
 [This section will be completed in Unit 9]
