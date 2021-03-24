@@ -139,7 +139,99 @@ We decided to use a digital platform to create the low-fidelity wireframe needed
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+Model: Post
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the user post (default field) |
+| createdAt     | DateTime | date when post is created (default field) |
+| updatedAt     | DateTime | date when post is last updated (default field) |
+| author        | Pointer to User | creator of the post |
+| content       | String | content of the post |
+| title         | String | Post title |
+| catergory     | String | Post category |
+| tags          | Array| post Tags |
+
+Model: User
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the user (default field) |
+| createdAt     | DateTime | date when user is created (default field) |
+| username      | String   | displayed name |
+| password      | String   | password |
+| in-game race  | String[need validation] | preffered race[zerg, protoss, terran, random, null] |
+| profile picture | File | user's avatar |
+| MMR           | Number | player level based on Starcraft internal ELO-like system. |
+| userInfo      | String | bio information |
+| follows       | Array | players/tournaments/users followed by user |
+| player        | Pointer to Player | if user is a progamer, she/he can link the account |
+
+Model: Tournament
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the Tournament post (default field) |
+| createdAt     | DateTime | date when Tournament is created (default field) |
+| updatedAt     | DateTime | date when Tournament is last updated (default field) |
+| rating        | Number   | average tournament rating |
+| userCreated   | Pointer to UserTournament, [null, if tournament received from external API. If this is a user tournament, provides additional information.] |
+
+Model: UserTournament
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the UserTournament post (default field) |
+| createdAt     | DateTime | date when UserTournament is created (default field) | 
+| updatedAt     | DateTime | date when UserTournament is last updated (default field) |
+| organizer     | Pointer to User | tourmanter creator |
+| matches       | Array    | matches in the tournament |
+| logo          | file     | Tournament logo |
+| description   | String   | tournament rules and description |
+
+Model: Comment
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the comment (default field) |
+| createdAt     | DateTime | date when comment is created (default field) |
+| updatedAt     | DateTime | date when comment is last updated (default field) |
+| author        | Pointer to user | comment creator |
+| content       | String   | comment content |
+| commentTo     | String   | id of object to which the comment refers[we have comments to players, posts and tournaments, and they all have the same properties, so I suggest to use objectId instead of pointer] |
+
+Model: Player
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the player (default field) |
+| createdAt     | DateTime | date when player is created (default field) |
+| updatedAt     | DateTime | date when player is last updated (default field) |
+| rating        | Number   | Player rating |
+| name          | String   | players name |
+|Picture        |File      | Player's photo|
+
+Model: PlayerMatch [this entity for internal/user tournaments only, for other tournaments data should be fetched from the API] 
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the comment (default field)
+| createdAt     | DateTime | date when comment is created (default field)
+| updatedAt     | DateTime | date when comment is last updated (default field)
+| Player1       | Pointer to User | id of first player
+| Player2       | Pointer to User | id of second player
+| details       | String   | match rules and desciption
+| time          | DateTime | planned match time
+| winner        | Pointer to user | who won this match
+
+Model: TeamMatch [this entity for internal/user tournaments only, for other tournaments data should be fetched from the API] 
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the comment (default field) |
+| createdAt     | DateTime | date when comment is created (default field) |
+| updatedAt     | DateTime | date when comment is last updated (default field) |
+| Team1         | String   | name of the first team |
+| Team2         | String   | name of the second team |
+| Lineup1       | Array    | Users playing for the first team |
+| Lineup2       | Array    | Users playing for the second team |
+| details       | String   | match rules and desciption |
+| time          | DateTime | planned match time |
+| winner        | String | who won this match
+
+
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
