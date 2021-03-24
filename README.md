@@ -249,7 +249,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
         - (Read/GET) Query a limited number of Posts base on user selected filter  
     * Search screen
         - (Read/GET) Query a limited number of Tournaments base on user's search keywords
-        - (Read/GET) Query a limited number of Tournaments base on user's search keywords
+        - (Read/GET) Query a limited number of Player base on user's search keywords
         - (Read/GET) Query a limited number of Users base on user's search keywords
 * Match
     * Matches feed screen
