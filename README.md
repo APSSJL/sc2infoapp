@@ -299,3 +299,10 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
+- Liquipedia API:
+  Base url: https://liquipedia.net/starcraft2/api.php
+  
+ | HTTP verb      | Description     | Endpoint |
+ | ------------- | -------- | ------------|
+ | ```GET```     | get content of specific page. Used to get players/tournaments info. | ?action=parse&page=name&formatversion=2&contentmodel=wikitext |
+ | ```GET```     | get list of all matches | ?action=parse&page=Liquipedia:Upcoming_and_ongoing_matches&formatversion=2&contentmodel=wikitext |
