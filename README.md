@@ -233,6 +233,69 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 
 
 ### Networking
-- [Add list of network requests by screen ]
+**Outline of Parse Network Requests**
+* Login/Registration
+    *   Login 
+        - (Login/LOGIN) Login an user if Id/Password matches
+    *   Registration
+        - (Create/POST) Create a new User object
+        - (Login/LOGIN) Login an user
+* Home
+    * Home feed screen
+        - (Read/GET) Query a limited number of Tournaments
+        - (Read/GET) Query a limited number of Posts
+    * Home filter screen 
+        - (Read/GET) Query a limited number of Tournaments base on user selected filter
+        - (Read/GET) Query a limited number of Posts base on user selected filter  
+    * Search screen
+        - (Read/GET) Query a limited number of Tournaments base on user's search keywords
+        - (Read/GET) Query a limited number of Player base on user's search keywords
+        - (Read/GET) Query a limited number of Users base on user's search keywords
+* Match
+    * Matches feed screen
+        - (Read/GET) Query a limited number of matches
+    * Match filter screen
+        - (Read/GET) Query a limited number of matches base on user selected filter                                  
+    * Match detail screen
+        - (Read/GET) Query an informations of a selected match
+        - (Read/GET) Query a previous meetings
+        - (Create/POST) Create a new follow on a selected match
+        - (Create/POST) Create a new rate on a selected match
+        - (Create/POST) Create a new prediction on a selected match
+    * Match comments screen
+        - (Read/GET) Query a limited number of comments of a selected match
+        - (Create/POST) Create a new Comment object
+* Post
+    * Post detail screen
+        - (Read/GET) Query an informations of a selected post
+    * Post comments screen
+        - (Read/GET) Query a limited number of comments of a selected post
+        - (Create/POST) Create a new Comment object
+    * Post compose screen
+        - (Create/POST) Create a new Post object
+* Player 
+    * Player info screen
+        - (Read/GET) Query an informations of a selected player
+        - (Read/GET) Query matches that the player participated
+        - (Create/POST) Create a new follow on a selected player
+        - (Create/POST) Create a new rate on a selected player
+        - (Create/POST) Create a new prediction on a selected player's match
+    * Player comments screen
+        - (Read/GET) Query a limited number of comments of a selected player
+        - (Create/POST) Create a new Comment object
+* Team
+    * Team screen
+        - (Read/GET) Query an informations of a selected team
+* Tournament
+    * Tournament info screen
+        - (Read/GET) Query an informations of a selected tournament
+    * Tournament comments screen
+        - (Read/GET) Query a limited number of comments of a selected tournament
+        - (Create/POST) Create a new Comment object
+* User
+    * User profile screen
+        - (Read/GET) Query a logged in user object
+        - (Update/PUT) Update user information
+
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
