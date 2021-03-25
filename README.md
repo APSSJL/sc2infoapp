@@ -306,4 +306,6 @@ Aligulac API
 
 | HTTP Verb      | Endpoint     | Description |
 | ------------- | -------- | ------------|
-| GET      | /player   | get all players |
+| GET      | /player   | gets player object |
+| GET      | /match   | gets match object |
+| GET      | /event   | gets event object |
