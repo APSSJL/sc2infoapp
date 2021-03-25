@@ -297,5 +297,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
         - (Read/GET) Query a logged in user object
         - (Update/PUT) Update user information
 
-- [Create basic snippets for each Parse network request]
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
+[Create basic snippets for each Parse network request]
+[OPTIONAL: List endpoints if using existing API such as Yelp]
+Aligulac API
+- base url: http://aligulac.com/about/api/ 
