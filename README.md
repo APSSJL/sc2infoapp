@@ -231,6 +231,17 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 | time          | DateTime | planned match time |
 | winner        | String | who won this match
 
+Model: Team
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the comment (default field) |
+| teamName      |  String  | Name of team |
+| lineup        |   Array  | List of players within the team |
+| details       | String   | Information regarding the team, like wikipage info  |
+| rating        | Number   | Team rating |
+| updatedAt     | DateTime | date when team was last updated |
+| createdAt     | DateTime | date when team was created |
+
 
 ### Networking
 **Outline of Parse Network Requests**
@@ -379,7 +390,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
                     throwException();
                     return;
                 }
-                for (Post post: postts){
+                else{
                     printf("success");
                     ...
                 }
@@ -392,7 +403,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
         ```java
         ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
         query.whereEqualTo("commentTo", equalTo: post.getObjectId());
-        query.findInBackground(new GetCallBack<Post>(){
+        query.findInBackground(new FindCallBack<Comment>(){
         public void done(List<Comment> comments, ParseException e){
                 if(e!=null){
                     throwException();
@@ -441,6 +452,19 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
         - (Read/GET) Query an informations of a selected team
         ```java
         ParseQuery<Team> query = ParseQuery.getQuery(Team.class)
+        query.whereEqualTo("objectId", equalTo: team.getObjectId());
+        query.getFirstInBackground(new GetCallBack<Team>(){
+        public void done(List<Team> team, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                else{
+                    printf("success");
+                }
+            }
+        }
+        );
         ```
 * Tournament
     * Tournament info screen
