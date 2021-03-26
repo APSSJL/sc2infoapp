@@ -172,6 +172,7 @@ Model: Tournament
 | createdAt     | DateTime | date when Tournament is created (default field) |
 | updatedAt     | DateTime | date when Tournament is last updated (default field) |
 | rating        | Number   | average tournament rating |
+| name          | String   | tournament name |
 | userCreated   | Pointer to UserTournament, [null, if tournament received from external API. If this is a user tournament, provides additional information.] |
 
 Model: UserTournament
@@ -231,6 +232,17 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 | time          | DateTime | planned match time |
 | winner        | String | who won this match
 
+Model: Team
+| Property      | Type     | Description |
+| ------------- | -------- | ------------|
+| objectId      | String   | unique id for the comment (default field) |
+| teamName      |  String  | Name of team |
+| lineup        |   Array  | List of players within the team |
+| details       | String   | Information regarding the team, like wikipage info  |
+| rating        | Number   | Team rating |
+| updatedAt     | DateTime | date when team was last updated |
+| createdAt     | DateTime | date when team was created |
+
 
 ### Networking
 **Outline of Parse Network Requests**
@@ -243,14 +255,153 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 * Home
     * Home feed screen
         - (Read/GET) Query a limited number of Tournaments
+         ```java
+         public ParseQuery<Tournament> getTournQuery(){
+             ParseQuery<Tournament> tournQuery = ParseQuery.getQuery(Tournament.class);
+             tournQuery.setLimit(10);
+             tournQuery.orderBy("updatedAt");
+             return tournQuery;
+         }
+         query = getTournQuery();
+         query.findInBackground(new FindCallback<Tournament>(){
+            public void done(List<Tournament> tournaments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Tournament tournament: tournaments){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+        ```
         - (Read/GET) Query a limited number of Posts
+         ```java
+         public ParseQuery<Post> getPostQuery(){
+             ParseQuery<Post> postQuery = ParseQuery.getQuery(Post.class);
+             postQuery.include("author");
+             postQuery.setLimit(10);
+             postQuery.orderBy("updatedAt");
+             return postQuery;
+         }
+         query = getPostQuery();
+         query.findInBackground(new FindCallback<Post>(){
+            public void done(List<Post> posts, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Tournament tournament: tournaments){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         ); 
+        ```
     * Home filter screen 
         - (Read/GET) Query a limited number of Tournaments base on user selected filter
-        - (Read/GET) Query a limited number of Posts base on user selected filter  
+         ```java
+         tournQuery = getTournQuery();
+         tournQuery.WhereKey("objectId", equalTo: userInput_tournName);
+         tournQuery.greaterThanOrEqualTo("rating", userInput_rating);
+         tournQuery.findInBackground(new FindCallback<Tournament>(){
+            public void done(List<Tournament> tournaments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Tournament tournament: tournaments){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+         ```
+        - (Read/GET) Query a limited number of Posts base on user selected filter 
+        ```java
+         postQuery = getPostQuery();
+         postQuery.WhereKey("author", equalTo: UserInput_author);
+         postQuery.WhereKey("category", equalTo: UserInput_author);
+         postQuery.WhereKey("tags", equalTo: UserInput_author);
+         postQuery.lessThanOrEqualTo("updatedAt", userInput_time);
+         postQuery.findInBackground(new FindCallback<Post>(){
+            public void done(List<Post> posts, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Post post: posts){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+         
+         ``` 
     * Search screen
         - (Read/GET) Query a limited number of Tournaments base on user's search keywords
+        ```java
+        tournQuery = getTournQuery();
+        tournQuery.setLimit(10);
+        tournQuery.contains("name", equalTo: userInput);
+        tournQuery.findInBackground(new FindCallback<Tournament>(){
+            public void done(List<Tournament> tournaments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Tournament tournament: tournaments){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+        ```
         - (Read/GET) Query a limited number of Player base on user's search keywords
+        ```java
+        ParseQuery<Player> query = ParseQuery.getQuery(Player.class);
+        query = getPlayerQuery();
+        query.setLimit(10);
+        query.contains("name", equalTo: userInput);
+        query.findInBackground(new FindCallback<Player>(){
+            public void done(List<Player> players, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Player player: players){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+        ```
         - (Read/GET) Query a limited number of Users base on user's search keywords
+        ```java
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+        query.setLimit(10);
+        query.contains("username", equalTo: userInput);
+        query.findInBackground(new FindCallback<User>(){
+            public void done(List<User> users, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (User user: users){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+        ```
 * Match
     * Matches feed screen
         - (Read/GET) Query a limited number of matches
@@ -268,11 +419,62 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 * Post
     * Post detail screen
         - (Read/GET) Query an informations of a selected post
+        ```java
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.whereEqualTo("objectId", equalTo: post.getObjectId());
+        query.getFirstInBackground(new GetCallBack<Post>(){
+        public void done(List<Post> posts, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                else{
+                    printf("success");
+                    ...
+                }
+            }
+        }
+        );
+        ```
     * Post comments screen
         - (Read/GET) Query a limited number of comments of a selected post
+        ```java
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+        query.whereEqualTo("commentTo", equalTo: post.getObjectId());
+        query.findInBackground(new FindCallBack<Comment>(){
+        public void done(List<Comment> comments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Comment comment: comments){
+                    printf("success");
+                    ...
+                }
+            }
+        }
+        );
+        ```
         - (Create/POST) Create a new Comment object
+         ```java
+         Comment postComment = new Comment();
+         postComment.setAuthor(ParseUser.getCurrentUser());
+         postComment.setcommentTo(Post.getObjectId());
+         postComment.setContent(UserInput_comment);
+         postComment.setCreatedAt(LocalDateTime.now());
+         postComment.saveInBackground();
+        ```
     * Post compose screen
         - (Create/POST) Create a new Post object
+         ```java
+         Post post = new Post();
+         post.setAuthor(Parse.User.getCurrentUser());
+         post.setContent(UserInput_content);
+         post.setTitle(UserInput_PostTitle);
+         post.setCategory(UserInput_category);
+         post.setTags(UserInput_tags);
+         post.saveInBackground();
+        ```
 * Player 
     * Player info screen
         - (Read/GET) Query an informations of a selected player
@@ -286,6 +488,22 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 * Team
     * Team screen
         - (Read/GET) Query an informations of a selected team
+        ```java
+        ParseQuery<Team> query = ParseQuery.getQuery(Team.class)
+        query.whereEqualTo("objectId", equalTo: team.getObjectId());
+        query.getFirstInBackground(new GetCallBack<Team>(){
+        public void done(List<Team> team, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                else{
+                    printf("success");
+                }
+            }
+        }
+        );
+        ```
 * Tournament
     * Tournament info screen
         - (Read/GET) Query an informations of a selected tournament
