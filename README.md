@@ -297,6 +297,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
         - (Read/GET) Query a logged in user object
         - (Update/PUT) Update user information
 
+
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
 - Liquipedia API:
@@ -306,3 +307,12 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
  | ------------- | -------- | ------------|
  | ```GET```     | get content of specific page. Used to get players/tournaments info. | ?action=parse&page=name&formatversion=2&contentmodel=wikitext |
  | ```GET```     | get list of all matches | ?action=parse&page=Liquipedia:Upcoming_and_ongoing_matches&formatversion=2&contentmodel=wikitext |
+
+Aligulac API
+- base url: http://aligulac.com/api/v1/ 
+
+| HTTP Verb      | Endpoint     | Description |
+| ------------- | -------- | ------------|
+| ```GET```      | /player   | gets player object |
+| ```GET```      | /match   | gets match object |
+
