@@ -271,7 +271,6 @@ Model: Team
             }
     *   Registration
         - (Create/POST) Create a new User object
-        - (Login/LOGIN) Login an user
         ```java
             ParseUser user = new ParseUser();
             user.setUSername(username);
@@ -288,6 +287,8 @@ Model: Team
                     });
                         
         ```
+        - (Login/LOGIN) Login an user
+            - Same as login
 * Home
     * Home feed screen
         - (Read/GET) Query a limited number of Tournaments
