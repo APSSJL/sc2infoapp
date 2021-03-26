@@ -591,13 +591,92 @@ Model: Team
 * Player 
     * Player info screen
         - (Read/GET) Query an informations of a selected player
+        ```java
+        ParseQuery<Player> query = ParseQuery.getQuery(Player.class);
+    
+        query = getPlayerQuery();
+        query.contains("objectId", equalTo: //value from intent);
+        
+        query.findInBackground(new FindCallback<Player>(){
+            public void done(Player player, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                //Implement player adapter
+            }
+         });
+        ```
         - (Read/GET) Query matches that the player participated
+        ```java
+        ParseQuery<PlayerMatch> query = ParseQuery.getQuery(Player.class);
+    
+        query.include("Player1");
+        query.include("Player2");
+        query.contains("Player1", equalTo: //value from intent);
+        query.contains("Player2", equalTo: //value from intent);
+        query.addDescendingOrder("created_at");
+        
+        query.findInBackground(new FindCallback<Post>(){
+            public void done(List<Post> posts, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                //Implement player adapter
+            }
+         });
+        ```
         - (Create/POST) Create a new follow on a selected player
+        ```java
+        ParseUser user = getCurrentUser();
+        user.add("follows", player);
+        user.saveInBackground();
+        ```
         - (Create/POST) Create a new rate on a selected player
+        ```java
+        player.increment("ratingSum", rate);
+        player.increment("ratingVotes", 1);
+        player.put("rating", player.getRatingSum() / player.getRatingVotes());
+        player.saveInBackground();
+        ```
         - (Create/POST) Create a new prediction on a selected player's match
+        ```java
+        if(vote == 1){
+            match.increment("p1PredictionVotes");
+        }
+        else{
+            match.increment("p2PredictionVotes");
+        }
+        match.saveInBackground();
+        ```
     * Player comments screen
         - (Read/GET) Query a limited number of comments of a selected player
+        ```java
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+    
+        query.whereEqualTo("commentTo", player.getObjectId());
+        query.addDescendingOrder("created_at");
+        query.setLimit(5);
+        
+        query.findInBackground(new FindCallback<Comment>(){
+            public void done(List<Comment> comments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                //Implement comments adapter
+            }
+         });
+        ```
         - (Create/POST) Create a new Comment object
+        ```java
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setCommentTo(player.getObjectId());
+        comment.setAuthor(ParseUser.getCurrentUser());
+        comment.saveInBackground();
+        ```
 * Team
     * Team screen
         - (Read/GET) Query an informations of a selected team
@@ -620,16 +699,137 @@ Model: Team
 * Tournament
     * Tournament info screen
         - (Read/GET) Query an informations of a selected tournament
+        ```java
+        ParseQuery<Tournament> query = ParseQuery.getQuery(Tournament.class);
+    
+        query = getTournamentrQuery();
+        query.contains("objectId", equalTo: //value from intent);
+        query.findInBackground(new FindCallback<Tournament>(){
+            public void done(Tournament tournament, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                //Implement tournament adapter
+            }
+         });
+        ```
     * Tournament comments screen
         - (Read/GET) Query a limited number of comments of a selected tournament
+        ```java
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+    
+        query.whereEqualTo("commentTo", tournament.getObjectId());
+        query.addDescendingOrder("created_at");
+        query.setLimit(5);
+        
+        query.findInBackground(new FindCallback<Comment>(){
+            public void done(List<Comment> comments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                //Implement comments adapter
+            }
+         });
+        ```
         - (Create/POST) Create a new Comment object
+        ```java
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setCommentTo(tournament.getObjectId());
+        comment.setAuthor(ParseUser.getCurrentUser());
+        comment.saveInBackground();
+        ```
 * User
     * User profile screen
         - (Read/GET) Query a logged in user object
-        - (Update/PUT) Update user information
-
-
-- [Create basic snippets for each Parse network request]
+        ```java
+        ParseUser user = getCurrentUser();
+        ParseQuery<User> query = ParseQuery.getQuery(User.class)
+        
+        query.whereEqualsTo("objectId", user.getObjectId());
+        
+        query.findInBackground(new FindCallback<User>(){
+            public void done(User user, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                //Implement user adapter
+            }
+         });
+        ```
+        - (Update/PUT) Update user information (username)
+        ```java
+        ParseUser user = getCurrentUser();
+        ParseQuery<User> query = ParseQuery.getQuery(User.class)
+        
+        query.whereEqualsTo("objectId", user.getObjectId());
+        
+        query.findInBackground(new FindCallback<User>(){
+            public void done(User user, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                user.update("username",userInput)
+            }
+         });
+        
+        
+        ``` 
+        - (Update/PUT) Update user information (password)
+        ```java
+        ParseUser user = getCurrentUser();
+        ParseQuery<User> query = ParseQuery.getQuery(User.class)
+        
+        query.whereEqualsTo("objectId", user.getObjectId());
+        
+        query.findInBackground(new FindCallback<User>(){
+            public void done(User user, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                user.update("password",userInput)
+            }
+         });
+        ``` 
+        - (Update/PUT) Update user information (profile picture)
+        ```java
+        ParseUser user = getCurrentUser();
+        ParseQuery<User> query = ParseQuery.getQuery(User.class)
+        
+        query.whereEqualsTo("objectId", user.getObjectId());
+        
+        query.findInBackground(new FindCallback<User>(){
+            public void done(User user, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                user.update("profile picture",userInput)
+            }
+         });
+        ``` 
+        - (Update/PUT) Update user information (userInfo)
+        ```java
+        ParseUser user = getCurrentUser();
+        ParseQuery<User> query = ParseQuery.getQuery(User.class)
+        
+        query.whereEqualsTo("objectId", user.getObjectId());
+        
+        query.findInBackground(new FindCallback<User>(){
+            public void done(User user, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                user.update("userInfo",userInput)
+            }
+         });
+        ``` 
 
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
 - Liquipedia API:
