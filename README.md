@@ -309,10 +309,10 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
  | ```GET```     | get list of all matches | ?action=parse&page=Liquipedia:Upcoming_and_ongoing_matches&formatversion=2&contentmodel=wikitext |
 
 Aligulac API
-- base url: http://aligulac.com/about/api/v1/ 
+- base url: http://aligulac.com/api/v1/ 
 
 | HTTP Verb      | Endpoint     | Description |
 | ------------- | -------- | ------------|
-| GET      | /player   | gets player object |
-| GET      | /match   | gets match object |
+| ```GET```      | /player   | gets player object |
+| ```GET```      | /match   | gets match object |
 
