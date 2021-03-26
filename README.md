@@ -294,7 +294,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
          ```java
          tournQuery = getTournQuery();
          tournQuery.WhereKey("objectId", equalTo: userInput_tournName);
-         tournQuery.greaterThanOrEqualTo("rating", equalTo: userInput_rating);
+         tournQuery.greaterThanOrEqualTo("rating", userInput_rating);
          query.findInBackground(new FindCallback<Tournament>(){
             public void done(List<Tournament> tournaments, ParseException e){
                 if(e!=null){
@@ -315,7 +315,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
          postQuery.WhereKey("author", equalTo: UserInput_author);
          postQuery.WhereKey("category", equalTo: UserInput_author);
          postQuery.WhereKey("tags", equalTo: UserInput_author);
-         tournQuery.greaterThanOrEqualTo("updatedAt", userInput_time);
+         tournQuery.lessThanOrEqualTo("updatedAt", userInput_time);
          query.findInBackground(new FindCallback<Post>(){
             public void done(List<Post> posts, ParseException e){
                 if(e!=null){
@@ -405,11 +405,14 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
             }
         }
         );
+        ```
         - (Create/POST) Create a new Comment object
          ```java
          Comment postComment = new Comment();
          postComment.setAuthor(ParseUser.getCurrentUser());
-         postComment.content(UserInput);
+         postComment.setcommentTo(Post.getObjectId());
+         postComment.setContent(UserInput_comment);
+         postComment.setCreatedAt(LocalDateTime.now());
          postComment.saveInBackground();
         ```
     * Post compose screen
@@ -417,10 +420,10 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
          ```java
          Post post = new Post();
          post.setAuthor(Parse.User.getCurrentUser());
-         post.setContent(UserPost);
-         post.setContent(PostTitle);
-         post.setCategory();
-         post.setTags();
+         post.setContent(UserInput_content);
+         post.setTitle(UserInput_PostTitle);
+         post.setCategory(UserInput_category);
+         post.setTags(UserInput_tags);
          post.saveInBackground();
         ```
 * Player 
