@@ -260,9 +260,34 @@ Model: Team
 * Login/Registration
     *   Login 
         - (Login/LOGIN) Login an user if Id/Password matches
+        ```java
+            if(ParseUser.getCurrentUser() != null)
+            {
+                // to main activity
+            }
+            ParseUser.logInInBackground(username, password, new LogIncallback() 
+            {
+                // to main activity
+            }
     *   Registration
         - (Create/POST) Create a new User object
         - (Login/LOGIN) Login an user
+        ```java
+            ParseUser user = new ParseUser();
+            user.setUSername(username);
+            user.setPassword(password);
+            user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e != null) {
+                            //exception handling 
+                            }
+                        // to login activity
+                        finish();
+                        }
+                    });
+                        
+        ```
 * Home
     * Home feed screen
         - (Read/GET) Query a limited number of Tournaments
@@ -416,17 +441,93 @@ Model: Team
 * Match
     * Matches feed screen
         - (Read/GET) Query a limited number of matches
+        ```java
+        // Code for team match is similar
+        public ParseQuery<PlayerMatch> getPlayerMatchQuery()
+        {
+            ParseQuery<PlayerMatch> query = ParseQuery.getQuery(PlayerMatch.class);
+            query.include("Player1");
+            query.include("Player2");
+            query.setLimit(5);
+            query.addDescendingOrder("created_at");
+        }
+        query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> p, ParseException e)             {
+                    // do something
+                }}
+                );
+       ```
     * Match filter screen
-        - (Read/GET) Query a limited number of matches base on user selected filter                                  
+        - (Read/GET) Query a limited number of matches base on user selected filter
+        ```java
+        query = getPlayerMatchQuery();
+        query.whereLessThan("time", LocalDateTime.now());
+        query.whereGreaterThan("rating", 6);
+        query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> p, ParseException e)             {
+                    // do something
+                }}
+                );
+        
+       ```                                  
     * Match detail screen
-        - (Read/GET) Query an informations of a selected match
+        - (Read/GET) Query an informations of a selected match - passed as an extra from previous screen
         - (Read/GET) Query a previous meetings
+        ```java
+            // we should either add mirror conditions, or set an order for storing matches
+            query = getPlayerMatchQuery();
+            query.whereEqualTo("Player1", match.getPlayer1());
+            query.whereEqualTo("Player2", match.getPlayer2());
+            query.whereLessThan("time", LocalDateTime.now());
+            query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> p, ParseException e)             {
+                    // do something
+                }}
+                );
+        ```
         - (Create/POST) Create a new follow on a selected match
+        ```java
+            ParseUser user = getCurrentUser();
+            user.add("follows", match);
+            user.saveInBackground();
+        ```
         - (Create/POST) Create a new rate on a selected match
+        ```java
+            match.increment("ratingSum", rate);
+            match.increment("ratingVotes", 1);
+            match.put("rating", match.getRatingSum() / match.getRatingVotes());
+            match.saveInBackground();
+        ```
         - (Create/POST) Create a new prediction on a selected match
+        ```java
+            if(vote == 1)
+            {
+                match.increment("p1PredictionVotes");
+            }
+            else
+            {
+                match.increment("p2PredictionVotes");
+            }
+            match.saveInBackground();
+        ```
     * Match comments screen
         - (Read/GET) Query a limited number of comments of a selected match
         - (Create/POST) Create a new Comment object
+        ```java
+            ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+            query.whereEqualTo("commentTo", match.getObjectId());
+            query.addDescendingOrder("created_at");
+            query.setLimit(5);
+        ```
+        ```java
+            Comment comment = new Comment();
+            comment.setContent(content);
+            comment.setAuthor(ParseUser.getCurrentUser());
+            comment.saveInBackground();
+        ```
 * Post
     * Post detail screen
         - (Read/GET) Query an informations of a selected post
@@ -528,123 +629,7 @@ Model: Team
 
 
 - [Create basic snippets for each Parse network request]
-- Login/Registration
-    - Login
-        ```java
-            if(ParseUser.getCurrentUser() != null)
-            {
-                // to main activity
-            }
-            ParseUser.logInInBackground(username, password, new LogIncallback() 
-            {
-                // to main activity
-            }
 
-                 ```
-    - Registration
-        ```java
-            ParseUser user = new ParseUser();
-            user.setUSername(username);
-            user.setPassword(password);
-            user.signUpInBackground(new SignUpCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e != null) {
-                            //exception handling 
-                            }
-                        // to login activity
-                        finish();
-                        }
-                    });
-                        
-        ```
-- Match
-    - Matches feed screen
-    ```java
-        // Code for team match is similar
-        public ParseQuery<PlayerMatch> getPlayerMatchQuery()
-        {
-            ParseQuery<PlayerMatch> query = ParseQuery.getQuery(PlayerMatch.class);
-            query.include("Player1");
-            query.include("Player2");
-            query.setLimit(5);
-            query.addDescendingOrder("created_at");
-        }
-        query.findInBackground(new FindCallback<Post>() {
-                @Override
-                public void done(List<Post> p, ParseException e)             {
-                    // do something
-                }}
-                );
-    ```
-    - Match filter screen
-    ```java
-        query = getPlayerMatchQuery();
-        query.whereLessThan("time", LocalDateTime.now());
-        query.whereGreaterThan("rating", 6);
-        query.findInBackground(new FindCallback<Post>() {
-                @Override
-                public void done(List<Post> p, ParseException e)             {
-                    // do something
-                }}
-                );
-        
-    ```
-    - Match details screen
-        - (Read/GET) Query an informations of a selected match - passed as an extra from previous screen
-        - Query a previous meetings
-        ```java
-            // we should either add mirror conditions, or set an order for storing matches
-            query = getPlayerMatchQuery();
-            query.whereEqualTo("Player1", match.getPlayer1());
-            query.whereEqualTo("Player2", match.getPlayer2());
-            query.whereLessThan("time", LocalDateTime.now());
-            query.findInBackground(new FindCallback<Post>() {
-                @Override
-                public void done(List<Post> p, ParseException e)             {
-                    // do something
-                }}
-                );
-        ```
-        - (Create/POST) Create a new follow on a selected match
-        ```java
-            ParseUser user = getCurrentUser();
-            user.add("follows", match);
-            user.saveInBackground();
-        ```
-        - (Create/POST) Create a new rate on a selected match
-        ```java
-            match.increment("ratingSum", rate);
-            match.increment("ratingVotes", 1);
-            match.put("rating", match.getRatingSum() / match.getRatingVotes());
-            match.saveInBackground();
-        ```
-        - (Create/POST) Create a new prediction on a selected match
-        ```java
-            if(vote == 1)
-            {
-                match.increment("p1PredictionVotes");
-            }
-            else
-            {
-                match.increment("p2PredictionVotes");
-            }
-            match.saveInBackground();
-        ```
-        - Match comments screen
-        ```java
-            ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
-            query.whereEqualTo("commentTo", match.getObjectId());
-            query.addDescendingOrder("created_at");
-            query.setLimit(5);
-        ```
-        - Create a new Comment object
-        ```java
-            Comment comment = new Comment();
-            comment.setContent(content);
-            comment.setAuthor(ParseUser.getCurrentUser());
-            comment.saveInBackground();
-        ```
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
 - Liquipedia API:
   Base url: https://liquipedia.net/starcraft2/api.php
