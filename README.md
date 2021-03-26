@@ -243,12 +243,94 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 * Home
     * Home feed screen
         - (Read/GET) Query a limited number of Tournaments
+         ```java
+         public ParseQuery<Tournament> getTournQuery(){
+             ParseQuery<Tournament> tournQuery = ParseQuery.getQuery(Tournament.class);
+             tournQuery.include(Tournament.objectId);
+             tournQuery.setLimit(10);
+             tournQuery.orderBy("updatedAt");
+         }
+         query.findInBackground(new FindCallback<Tournament>(){
+            public void done(List<Tournament> tournaments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Tournament tournament: tournaments){
+                    printf("success");
+                    ...
+                }
+            }
+         }}
+         );
+        ```
         - (Read/GET) Query a limited number of Posts
+         ```java
+         public ParseQuery<Post> getPostQuery(){
+             ParseQuery<Post> postQuery = ParseQuery.getQuery(Post.class);
+             postQuery.include(Post.author);
+             postQuery.include(Post.content);
+             postQuery.setLimit(10);
+             postQuery.orderBy("updatedAt");
+         }
+         query.findInBackground(new FindCallback<Post>(){
+            public void done(List<Post> posts, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Tournament tournament: tournaments){
+                    printf("success");
+                    ...
+                }
+            }
+         }}
+         ); 
+        ```
     * Home filter screen 
         - (Read/GET) Query a limited number of Tournaments base on user selected filter
-        - (Read/GET) Query a limited number of Posts base on user selected filter  
+         ```java
+         tournQuery = getTournQuery();
+         tournQuery.WhereKey("objectId", UserInput);
+         tournQuery.greaterThanOrEqualTo("rating",userInput);
+         query.findInBackground(new FindCallback<Tournament>(){
+            public void done(List<Tournament> tournaments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Tournament tournament: tournaments){
+                    printf("success");
+                    ...
+                }
+            }
+         }}
+         );
+         
+         ```
+        - (Read/GET) Query a limited number of Posts base on user selected filter 
+        ```java
+         postQuery = getPostQuery();
+         postQuery.WhereKey("objectId", UserInput);
+         tournQuery.greaterThanOrEqualTo("rating",userInput);
+         query.findInBackground(new FindCallback<Post>(){
+            public void done(List<Post> posts, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Post post: posts){
+                    printf("success");
+                    ...
+                }
+            }
+         }}
+         );
+         
+         ``` 
     * Search screen
         - (Read/GET) Query a limited number of Tournaments base on user's search keywords
+        
         - (Read/GET) Query a limited number of Player base on user's search keywords
         - (Read/GET) Query a limited number of Users base on user's search keywords
 * Match
@@ -268,11 +350,29 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 * Post
     * Post detail screen
         - (Read/GET) Query an informations of a selected post
+        ```java
+            
+        ```
     * Post comments screen
         - (Read/GET) Query a limited number of comments of a selected post
         - (Create/POST) Create a new Comment object
+         ```java
+         Comment postComment = new Comment();
+         postComment.setAuthor(ParseUser.getCurrentUser());
+         postComment.content(UserInput);
+         postComment.saveInBackground();
+        ```
     * Post compose screen
         - (Create/POST) Create a new Post object
+         ```java
+         Post post = new Post();
+         post.setAuthor(Parse.User.getCurrentUser());
+         post.setContent(UserPost);
+         post.setContent(PostTitle);
+         post.setCategory();
+         post.setTags();
+         post.saveInBackground();
+        ```
 * Player 
     * Player info screen
         - (Read/GET) Query an informations of a selected player
