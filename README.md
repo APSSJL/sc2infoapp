@@ -261,7 +261,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
                     ...
                 }
             }
-         }}
+         }
          );
         ```
         - (Read/GET) Query a limited number of Posts
@@ -270,6 +270,8 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
              ParseQuery<Post> postQuery = ParseQuery.getQuery(Post.class);
              postQuery.include(Post.author);
              postQuery.include(Post.content);
+             postQuery.include(Post.category);
+             postQuery.include(Post.tags);
              postQuery.setLimit(10);
              postQuery.orderBy("updatedAt");
          }
@@ -284,15 +286,15 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
                     ...
                 }
             }
-         }}
+         }
          ); 
         ```
     * Home filter screen 
         - (Read/GET) Query a limited number of Tournaments base on user selected filter
          ```java
          tournQuery = getTournQuery();
-         tournQuery.WhereKey("objectId", UserInput);
-         tournQuery.greaterThanOrEqualTo("rating",userInput);
+         tournQuery.WhereKey("objectId", equalTo: userInput_tournName);
+         tournQuery.greaterThanOrEqualTo("rating", equalTo: userInput_rating);
          query.findInBackground(new FindCallback<Tournament>(){
             public void done(List<Tournament> tournaments, ParseException e){
                 if(e!=null){
@@ -304,15 +306,16 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
                     ...
                 }
             }
-         }}
+         }
          );
-         
          ```
         - (Read/GET) Query a limited number of Posts base on user selected filter 
         ```java
          postQuery = getPostQuery();
-         postQuery.WhereKey("objectId", UserInput);
-         tournQuery.greaterThanOrEqualTo("rating",userInput);
+         postQuery.WhereKey("author", equalTo: UserInput_author);
+         postQuery.WhereKey("category", equalTo: UserInput_author);
+         postQuery.WhereKey("tags", equalTo: UserInput_author);
+         tournQuery.greaterThanOrEqualTo("updatedAt", userInput_time);
          query.findInBackground(new FindCallback<Post>(){
             public void done(List<Post> posts, ParseException e){
                 if(e!=null){
@@ -324,13 +327,30 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
                     ...
                 }
             }
-         }}
+         }
          );
          
          ``` 
     * Search screen
         - (Read/GET) Query a limited number of Tournaments base on user's search keywords
-        
+        ```java
+        tournQuery = getTournQuery();
+        tournQuery.WhereKey("objectId", equalTo: userInput_tournName);
+        tournQuery.greaterThanOrEqualTo("rating", equalTo: userInput_rating);
+        query.findInBackground(new FindCallback<Tournament>(){
+            public void done(List<Tournament> tournaments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Tournament tournament: tournaments){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+        ```
         - (Read/GET) Query a limited number of Player base on user's search keywords
         - (Read/GET) Query a limited number of Users base on user's search keywords
 * Match
@@ -351,10 +371,40 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
     * Post detail screen
         - (Read/GET) Query an informations of a selected post
         ```java
-            
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.whereEqualTo("objectId", equalTo: post.getObjectId());
+        query.getFirstInBackground(new GetCallBack<Post>(){
+        public void done(List<Post> posts, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Post post: postts){
+                    printf("success");
+                    ...
+                }
+            }
+        }
+        );
         ```
     * Post comments screen
         - (Read/GET) Query a limited number of comments of a selected post
+        ```java
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+        query.whereEqualTo("commentTo", equalTo: post.getObjectId());
+        query.findInBackground(new GetCallBack<Post>(){
+        public void done(List<Comment> comments, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Comment comment: comments){
+                    printf("success");
+                    ...
+                }
+            }
+        }
+        );
         - (Create/POST) Create a new Comment object
          ```java
          Comment postComment = new Comment();
@@ -386,6 +436,9 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 * Team
     * Team screen
         - (Read/GET) Query an informations of a selected team
+        ```java
+        ParseQuery<Team> query = ParseQuery.getQuery(Team.class)
+        ```
 * Tournament
     * Tournament info screen
         - (Read/GET) Query an informations of a selected tournament
