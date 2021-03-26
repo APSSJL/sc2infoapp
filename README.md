@@ -515,13 +515,13 @@ Model: Team
         ```
     * Match comments screen
         - (Read/GET) Query a limited number of comments of a selected match
-        - (Create/POST) Create a new Comment object
         ```java
             ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
             query.whereEqualTo("commentTo", match.getObjectId());
             query.addDescendingOrder("created_at");
             query.setLimit(5);
         ```
+        - (Create/POST) Create a new Comment object
         ```java
             Comment comment = new Comment();
             comment.setContent(content);
