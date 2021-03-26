@@ -258,7 +258,6 @@ Model: Team
          ```java
          public ParseQuery<Tournament> getTournQuery(){
              ParseQuery<Tournament> tournQuery = ParseQuery.getQuery(Tournament.class);
-             tournQuery.include(Tournament.objectId);
              tournQuery.setLimit(10);
              tournQuery.orderBy("updatedAt");
              return tournQuery;
@@ -282,10 +281,7 @@ Model: Team
          ```java
          public ParseQuery<Post> getPostQuery(){
              ParseQuery<Post> postQuery = ParseQuery.getQuery(Post.class);
-             postQuery.include(Post.author);
-             postQuery.include(Post.content);
-             postQuery.include(Post.category);
-             postQuery.include(Post.tags);
+             postQuery.include("author");
              postQuery.setLimit(10);
              postQuery.orderBy("updatedAt");
              return postQuery;
