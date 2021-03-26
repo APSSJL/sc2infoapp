@@ -171,7 +171,9 @@ Model: Tournament
 | objectId      | String   | unique id for the Tournament post (default field) |
 | createdAt     | DateTime | date when Tournament is created (default field) |
 | updatedAt     | DateTime | date when Tournament is last updated (default field) |
-| rating        | Number   | average tournament rating |
+| ratingSum     | Number   | average tournament rating |
+| ratingVotes   | Number   | votes for rating |
+| rating        | Number   | rating[need for queries] |
 | name          | String   | tournament name |
 | userCreated   | Pointer to UserTournament, [null, if tournament received from external API. If this is a user tournament, provides additional information.] |
 
@@ -202,8 +204,10 @@ Model: Player
 | objectId      | String   | unique id for the player (default field) |
 | createdAt     | DateTime | date when player is created (default field) |
 | updatedAt     | DateTime | date when player is last updated (default field) |
-| rating        | Number   | Player rating |
+| ratingSum     | Number   | average player rating |
+| ratingVotes   | Number   | votes for rating |
 | name          | String   | players name |
+| rating        | Number   | rating[need for queries] |
 |Picture        |File      | Player's photo|
 
 Model: PlayerMatch [this entity for internal/user tournaments only, for other tournaments data should be fetched from the API] 
@@ -217,6 +221,11 @@ Model: PlayerMatch [this entity for internal/user tournaments only, for other to
 | details       | String   | match rules and desciption
 | time          | DateTime | planned match time
 | winner        | Pointer to user | who won this match
+| ratingSum     | Number   | average match rating |
+| ratingVotes   | Number   | votes for rating |
+| rating        | Number   | rating[need for queries] |
+| p1PredictionVotes | Number | predictions for the player 1 |
+| p2PredictionVotes | Number | predictions for the player 2 |
 
 Model: TeamMatch [this entity for internal/user tournaments only, for other tournaments data should be fetched from the API] 
 | Property      | Type     | Description |
@@ -230,7 +239,9 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 | Lineup2       | Array    | Users playing for the second team |
 | details       | String   | match rules and desciption |
 | time          | DateTime | planned match time |
-| winner        | String | who won this match
+| winner        | String | who won this match |
+| t1PredictionVotes | Number | predictions for the team 1 |
+| t2PredictionVotes | Number | predictions for the team 2 |
 
 Model: Team
 | Property      | Type     | Description |
@@ -517,6 +528,123 @@ Model: Team
 
 
 - [Create basic snippets for each Parse network request]
+- Login/Registration
+    - Login
+        ```java
+            if(ParseUser.getCurrentUser() != null)
+            {
+                // to main activity
+            }
+            ParseUser.logInInBackground(username, password, new LogIncallback() 
+            {
+                // to main activity
+            }
+
+                 ```
+    - Registration
+        ```java
+            ParseUser user = new ParseUser();
+            user.setUSername(username);
+            user.setPassword(password);
+            user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e != null) {
+                            //exception handling 
+                            }
+                        // to login activity
+                        finish();
+                        }
+                    });
+                        
+        ```
+- Match
+    - Matches feed screen
+    ```java
+        // Code for team match is similar
+        public ParseQuery<PlayerMatch> getPlayerMatchQuery()
+        {
+            ParseQuery<PlayerMatch> query = ParseQuery.getQuery(PlayerMatch.class);
+            query.include("Player1");
+            query.include("Player2");
+            query.setLimit(5);
+            query.addDescendingOrder("created_at");
+        }
+        query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> p, ParseException e)             {
+                    // do something
+                }}
+                );
+    ```
+    - Match filter screen
+    ```java
+        query = getPlayerMatchQuery();
+        query.whereLessThan("time", LocalDateTime.now());
+        query.whereGreaterThan("rating", 6);
+        query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> p, ParseException e)             {
+                    // do something
+                }}
+                );
+        
+    ```
+    - Match details screen
+        - (Read/GET) Query an informations of a selected match - passed as an extra from previous screen
+        - Query a previous meetings
+        ```java
+            // we should either add mirror conditions, or set an order for storing matches
+            query = getPlayerMatchQuery();
+            query.whereEqualTo("Player1", match.getPlayer1());
+            query.whereEqualTo("Player2", match.getPlayer2());
+            query.whereLessThan("time", LocalDateTime.now());
+            query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> p, ParseException e)             {
+                    // do something
+                }}
+                );
+        ```
+        - (Create/POST) Create a new follow on a selected match
+        ```java
+            ParseUser user = getCurrentUser();
+            user.add("follows", match);
+            user.saveInBackground();
+        ```
+        - (Create/POST) Create a new rate on a selected match
+        ```java
+            match.increment("ratingSum", rate);
+            match.increment("ratingVotes", 1);
+            match.put("rating", match.getRatingSum() / match.getRatingVotes());
+            match.saveInBackground();
+        ```
+        - (Create/POST) Create a new prediction on a selected match
+        ```java
+            if(vote == 1)
+            {
+                match.increment("p1PredictionVotes");
+            }
+            else
+            {
+                match.increment("p2PredictionVotes");
+            }
+            match.saveInBackground();
+        ```
+        - Match comments screen
+        ```java
+            ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+            query.whereEqualTo("commentTo", match.getObjectId());
+            query.addDescendingOrder("created_at");
+            query.setLimit(5);
+        ```
+        - Create a new Comment object
+        ```java
+            Comment comment = new Comment();
+            comment.setContent(content);
+            comment.setAuthor(ParseUser.getCurrentUser());
+            comment.saveInBackground();
+        ```
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
 - Liquipedia API:
   Base url: https://liquipedia.net/starcraft2/api.php
