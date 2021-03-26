@@ -311,7 +311,7 @@ Model: Team
          tournQuery = getTournQuery();
          tournQuery.WhereKey("objectId", equalTo: userInput_tournName);
          tournQuery.greaterThanOrEqualTo("rating", userInput_rating);
-         query.findInBackground(new FindCallback<Tournament>(){
+         tournQuery.findInBackground(new FindCallback<Tournament>(){
             public void done(List<Tournament> tournaments, ParseException e){
                 if(e!=null){
                     throwException();
@@ -331,8 +331,8 @@ Model: Team
          postQuery.WhereKey("author", equalTo: UserInput_author);
          postQuery.WhereKey("category", equalTo: UserInput_author);
          postQuery.WhereKey("tags", equalTo: UserInput_author);
-         tournQuery.lessThanOrEqualTo("updatedAt", userInput_time);
-         query.findInBackground(new FindCallback<Post>(){
+         postQuery.lessThanOrEqualTo("updatedAt", userInput_time);
+         postQuery.findInBackground(new FindCallback<Post>(){
             public void done(List<Post> posts, ParseException e){
                 if(e!=null){
                     throwException();
@@ -353,7 +353,7 @@ Model: Team
         tournQuery = getTournQuery();
         tournQuery.setLimit(10);
         tournQuery.contains("name", equalTo: userInput);
-        query.findInBackground(new FindCallback<Tournament>(){
+        tournQuery.findInBackground(new FindCallback<Tournament>(){
             public void done(List<Tournament> tournaments, ParseException e){
                 if(e!=null){
                     throwException();
@@ -371,8 +371,8 @@ Model: Team
         ```java
         ParseQuery<Player> query = ParseQuery.getQuery(Player.class);
         query = getPlayerQuery();
-        tournQuery.setLimit(10);
-        tournQuery.contains("name", equalTo: userInput);
+        query.setLimit(10);
+        query.contains("name", equalTo: userInput);
         query.findInBackground(new FindCallback<Player>(){
             public void done(List<Player> players, ParseException e){
                 if(e!=null){
@@ -390,8 +390,8 @@ Model: Team
         - (Read/GET) Query a limited number of Users base on user's search keywords
         ```java
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
-        tournQuery.setLimit(10);
-        tournQue.contains("username", equalTo: userInput);
+        query.setLimit(10);
+        query.contains("username", equalTo: userInput);
         query.findInBackground(new FindCallback<User>(){
             public void done(List<User> users, ParseException e){
                 if(e!=null){
