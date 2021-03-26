@@ -172,6 +172,7 @@ Model: Tournament
 | createdAt     | DateTime | date when Tournament is created (default field) |
 | updatedAt     | DateTime | date when Tournament is last updated (default field) |
 | rating        | Number   | average tournament rating |
+| name          | String   | tournament name |
 | userCreated   | Pointer to UserTournament, [null, if tournament received from external API. If this is a user tournament, provides additional information.] |
 
 Model: UserTournament
@@ -260,7 +261,9 @@ Model: Team
              tournQuery.include(Tournament.objectId);
              tournQuery.setLimit(10);
              tournQuery.orderBy("updatedAt");
+             return tournQuery;
          }
+         query = getTournQuery();
          query.findInBackground(new FindCallback<Tournament>(){
             public void done(List<Tournament> tournaments, ParseException e){
                 if(e!=null){
@@ -285,7 +288,9 @@ Model: Team
              postQuery.include(Post.tags);
              postQuery.setLimit(10);
              postQuery.orderBy("updatedAt");
+             return postQuery;
          }
+         query = getPostQuery();
          query.findInBackground(new FindCallback<Post>(){
             public void done(List<Post> posts, ParseException e){
                 if(e!=null){
@@ -346,8 +351,8 @@ Model: Team
         - (Read/GET) Query a limited number of Tournaments base on user's search keywords
         ```java
         tournQuery = getTournQuery();
-        tournQuery.WhereKey("objectId", equalTo: userInput_tournName);
-        tournQuery.greaterThanOrEqualTo("rating", equalTo: userInput_rating);
+        tournQuery.setLimit(10);
+        tournQuery.contains("name", equalTo: userInput);
         query.findInBackground(new FindCallback<Tournament>(){
             public void done(List<Tournament> tournaments, ParseException e){
                 if(e!=null){
@@ -363,7 +368,44 @@ Model: Team
          );
         ```
         - (Read/GET) Query a limited number of Player base on user's search keywords
+        ```java
+        ParseQuery<Player> query = ParseQuery.getQuery(Player.class);
+        query = getPlayerQuery();
+        tournQuery.setLimit(10);
+        tournQuery.contains("name", equalTo: userInput);
+        query.findInBackground(new FindCallback<Player>(){
+            public void done(List<Player> players, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (Player player: players){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+        ```
         - (Read/GET) Query a limited number of Users base on user's search keywords
+        ```java
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+        tournQuery.setLimit(10);
+        tournQue.contains("username", equalTo: userInput);
+        query.findInBackground(new FindCallback<User>(){
+            public void done(List<User> users, ParseException e){
+                if(e!=null){
+                    throwException();
+                    return;
+                }
+                for (User user: users){
+                    printf("success");
+                    ...
+                }
+            }
+         }
+         );
+        ```
 * Match
     * Matches feed screen
         - (Read/GET) Query a limited number of matches
