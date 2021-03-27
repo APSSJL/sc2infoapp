@@ -31,8 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(ParseUser.getCurrentUser() != null)
         {
-            ParseUser.logOut();
-            //goToMainActivity();
+            goToMainActivity();
         }
 
         etUsername = findViewById(R.id.etUsername);
