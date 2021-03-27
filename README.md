@@ -253,6 +253,9 @@ Model: Team
 | rating        | Number   | Team rating |
 | updatedAt     | DateTime | date when team was last updated |
 | createdAt     | DateTime | date when team was created |
+| owner         | Pointer to user | user that manages team |
+| lineup        | array    | users in team |
+| ishiring      | boolean  | shows if team looking for new members | 
 
 
 ### Networking
