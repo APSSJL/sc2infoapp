@@ -24,7 +24,7 @@
         android:layout_below="@+id/ivLogo"
         />
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:layout_below="@id/password"
+        android:layout_below="@id/etPassword"
         android:text="Login"
         />
     <Button
