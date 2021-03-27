@@ -609,15 +609,20 @@ Model: Team
         ```
         - (Read/GET) Query matches that the player participated
         ```java
-        ParseQuery<PlayerMatch> query = ParseQuery.getQuery(Player.class);
+        ParseQuery<PlayerMatch> query1 = ParseQuery.getQuery(Player.class);
+        ParseQuery<PlayerMatch> query2 = ParseQuery.getQuery(Player.class);
     
-        query.include("Player1");
-        query.include("Player2");
-        query.contains("Player1", equalTo: //value from intent);
-        query.contains("Player2", equalTo: //value from intent);
-        query.addDescendingOrder("created_at");
+        query1.include("Player1");
+        query1.contains("Player1", equalTo: //value from intent);
+        query1.addDescendingOrder("created_at");
         
-        query.findInBackground(new FindCallback<Post>(){
+        query2.include("Player2");
+        query2.contains("Player2", equalTo: //value from intent);
+        query2.addDescendingOrder("created_at");
+        
+        ParseQuery<PlayerMatch> mainQuery = Parse.Query.or(query1, query2)
+        
+        mainQuery.findInBackground(new FindCallback<Post>(){
             public void done(List<Post> posts, ParseException e){
                 if(e!=null){
                     throwException();
