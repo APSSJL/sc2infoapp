@@ -5,12 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SingupActivity" >
+    tools:context=".SignupActivity" >
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:id="@+id/ivLogo"
         android:layout_alignParentTop="true"
+        android:src="@drawable/appiconmin"
         />
     <EditText
         android:id="@+id/etUsername"
@@ -35,7 +36,7 @@
         android:layout_below="@+id/etUsername"
         />
     <Button
-        android:id="@+id/btnSingup"
+        android:id="@+id/btnCreate"
         android:layout_below="@id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

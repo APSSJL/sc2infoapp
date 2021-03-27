@@ -11,6 +11,7 @@
         android:layout_height="200dp"
         android:id="@+id/ivLogo"
         android:layout_alignParentTop="true"
+        android:src="@drawable/appiconmin"
         />
     <EditText
         android:id="@+id/etUsername"
@@ -39,13 +40,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/etPassword"
         android:text="Login"
         />
     <Button
-        android:id="@+id/btnSingup"
+        android:id="@+id/btnSignup"
         android:layout_below="@id/btnLogin"
         android:layout_width="match_parent"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:text="Create an account."
         android:textAllCaps="false"
