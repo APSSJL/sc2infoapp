@@ -1,5 +1,7 @@
 package fragments;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.sc2infoapp.R;
+import com.example.sc2infoapp.Team;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -41,6 +44,7 @@ public class UserProfileFragment extends Fragment {
     Button btnTeam;
     Button btnCreateTeam;
     ParseUser user;
+    Team team;
 
     public UserProfileFragment() {
     }
@@ -61,14 +65,20 @@ public class UserProfileFragment extends Fragment {
         btnTeam = view.findViewById(R.id.btnTeam);
         btnCreateTeam = view.findViewById(R.id.btnCreateTeam);
         user = ParseUser.getCurrentUser();
+        try {
+            user.fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         tvName.setText(user.getUsername());
         tvRace.setText(user.getString("inGameRace"));
         tvMmr.setText(user.get("MMR").toString());
         tvBio.setText(user.getString("userInfo"));
 
+
         try {
             ParseFile p = ((ParseFile) user.get("pic"));
-            if(p != null || p == null)
+            if(p != null && p == null)
             {
                 Log.i(TAG, "loaded");
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivPicture);
@@ -85,6 +95,58 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO : navigate to editProfile screen
+            }
+        });
+        team = (Team) user.get("team");
+
+        if(team == null)
+        {
+            tvTeam.setText("No team");
+            setBtnJoin();
+        }
+        else
+        {
+            try {
+                team.fetchIfNeeded();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            btnCreateTeam.setVisibility(View.GONE);
+            tvTeam.setText(team.getTeamName());
+            tvTeam.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: navigate to team info page
+                }
+            });
+            btnTeam.setText("Leave team");
+            btnTeam.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    user.remove("team");
+                    user.saveInBackground();
+                    setBtnJoin();
+                }
+            });
+        }
+
+    }
+
+    private void setBtnJoin() {
+        btnTeam.setText("Join team");
+        btnCreateTeam.setVisibility(View.VISIBLE);
+        btnCreateTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO : REDIRECT TO TEAM CREATION PAGE
+                Log.i(TAG, "team create");
+            }
+        });
+        btnTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "team join");
+                // TODO : redirect to team search page
             }
         });
     }
