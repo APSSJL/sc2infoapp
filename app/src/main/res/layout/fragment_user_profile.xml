@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvEditProfile"
-            android:textColor=""
+            android:textColor="@color/blue"
             android:text="Edit profile"
             android:layout_alignParentEnd="true"
             android:layout_margin="15dp"
@@ -61,16 +61,40 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvLocation"
             android:layout_marginStart="15dp"
-            android:text="user information"/>
+            android:text="user information\n.\n.\n.\nMore info"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id=""
+            android:id="@+id/tvTeam"
+            android:layout_below="@+id/tvBio"
+            android:layout_margin="15dp"
+            android:text="Team Liquid"
             />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/tvTeam"
+            android:text="Join team"
+            android:layout_below="@+id/tvBio"
+            android:id="@+id/btnTeam"
+            android:textAllCaps="false"
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/btnTeam"
+            android:text="Create team"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/tvBio"
+            android:id="@+id/btnCreateTeam"
+            android:textAllCaps="false"
+            />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvBio"/>
+            android:layout_below="@+id/tvTeam"/>
     </RelativeLayout>
 </FrameLayout>
