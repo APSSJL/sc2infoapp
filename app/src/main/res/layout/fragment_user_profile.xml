@@ -22,10 +22,12 @@
             android:text="in-game race"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvEditProfile"
+            android:background="@color/transparent"
+            android:textAllCaps="false"
+            android:id="@+id/btnEditProfile"
             android:textColor="@color/blue"
             android:text="Edit profile"
             android:layout_alignParentEnd="true"
@@ -94,6 +96,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_marginStart="15dp"
+            android:id="@+id/rvItems"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvTeam"/>
     </RelativeLayout>
