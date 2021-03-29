@@ -22,8 +22,11 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.PostVi
     Context context;
 
     public  UserFeedAdapter(Context context, List<IPublished> published)
-    {}
-    
+    {
+        this.context = context;
+        this.published = published;
+    }
+
 
     @NonNull
     @Override

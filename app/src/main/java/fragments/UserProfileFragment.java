@@ -20,15 +20,22 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.sc2infoapp.IPublished;
+import com.example.sc2infoapp.Post;
 import com.example.sc2infoapp.R;
 import com.example.sc2infoapp.Team;
 import com.example.sc2infoapp.UserFeedAdapter;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class UserProfileFragment extends Fragment {
@@ -47,6 +54,7 @@ public class UserProfileFragment extends Fragment {
     Button btnCreateTeam;
     ParseUser user;
     UserFeedAdapter adapter;
+    List<IPublished> published;
     Team team;
 
     public UserProfileFragment() {
@@ -56,6 +64,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        published = new ArrayList<>();
         tvName = view.findViewById(R.id.tvName);
         tvRace = view.findViewById(R.id.tvRace);
         ivPicture = view.findViewById(R.id.ivPicture);
@@ -67,7 +76,7 @@ public class UserProfileFragment extends Fragment {
         tvTeam = view.findViewById(R.id.tvTeam);
         btnTeam = view.findViewById(R.id.btnTeam);
         btnCreateTeam = view.findViewById(R.id.btnCreateTeam);
-        adapter = new UserFeedAdapter();
+        adapter = new UserFeedAdapter(getContext(), published);
         user = ParseUser.getCurrentUser();
         try {
             user.fetchIfNeeded();
@@ -142,7 +151,24 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void populateUserFeed() {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.include(Post.KEY_AUTHOR);
+        query.setLimit(5);
+        query.whereEqualTo(Post.KEY_AUTHOR, ParseUser.getCurrentUser());
+        query.addDescendingOrder("created_at");
 
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                if(e != null)
+                {
+                    Log.e(TAG, "Something went wrong", e);
+                    return;
+                }
+                published.addAll(objects);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void setBtnJoin() {
