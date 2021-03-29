@@ -1,6 +1,12 @@
 package fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +14,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +47,7 @@ import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +55,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -59,6 +68,7 @@ public class UserProfileFragment extends Fragment {
     TextView tvLocation;
     TextView tvMmr;
     TextView tvBio;
+    private LocationManager locationManager;
     RecyclerView rvItems;
     Button btnEditProfile;
     TextView tvTeam;
@@ -104,12 +114,10 @@ public class UserProfileFragment extends Fragment {
 
         try {
             ParseFile p = ((ParseFile) user.get("pic"));
-            if(p != null)
-            {
+            if (p != null) {
                 Log.i(TAG, "loaded");
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivPicture);
-            }
-            else {
+            } else {
                 Log.i(TAG, "null");
                 Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivPicture);
             }
@@ -125,13 +133,10 @@ public class UserProfileFragment extends Fragment {
         });
         team = (Team) user.get("team");
 
-        if(team == null)
-        {
+        if (team == null) {
             tvTeam.setText("No team");
             setBtnJoin();
-        }
-        else
-        {
+        } else {
             try {
                 team.fetchIfNeeded();
             } catch (ParseException e) {
@@ -149,8 +154,7 @@ public class UserProfileFragment extends Fragment {
             btnTeam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(team.getOwner() == ParseUser.getCurrentUser())
-                    {
+                    if (team.getOwner() == ParseUser.getCurrentUser()) {
                         Toast.makeText(getContext(), "Owner cannot leave team", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -166,7 +170,44 @@ public class UserProfileFragment extends Fragment {
         rvItems.setAdapter(adapter);
 
         populateUserFeed();
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            //ActivityCompat.requestPermissions();
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            Log.i(TAG, "fail");
+            return;
+        }
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, mLocationListener);
     }
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void populateUserFeed() {
@@ -214,6 +255,7 @@ public class UserProfileFragment extends Fragment {
                 Log.i(TAG, "team create");
             }
         });
+
         btnTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,6 +263,44 @@ public class UserProfileFragment extends Fragment {
                 // TODO : redirect to team search page
             }
         });
+    }
+
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            tvLocation.setText(getAddress(getContext(),location.getLatitude(), location.getLongitude()));
+        }
+    };
+
+    public static String getAddress(Context context, double LATITUDE, double LONGITUDE) {
+
+//Set Address
+        try {
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null && addresses.size() > 0) {
+
+
+
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalCode = addresses.get(0).getPostalCode();
+                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+
+                Log.d(TAG, "getAddress:  address" + address);
+                Log.d(TAG, "getAddress:  city" + city);
+                Log.d(TAG, "getAddress:  state" + state);
+                Log.d(TAG, "getAddress:  postalCode" + postalCode);
+                Log.d(TAG, "getAddress:  knownName" + knownName);
+                return city + ", " + country;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     @Override
