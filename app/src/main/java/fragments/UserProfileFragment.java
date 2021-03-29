@@ -197,7 +197,7 @@ public class UserProfileFragment extends Fragment {
             @Override
             public int compare(IPublished lhs, IPublished rhs) {
                 // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-                return lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
+                return rhs.getCreatedAt().compareTo(lhs.getCreatedAt());
             }
         });
         adapter.notifyDataSetChanged();
