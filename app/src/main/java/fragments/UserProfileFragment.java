@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.sc2infoapp.R;
 import com.example.sc2infoapp.Team;
+import com.example.sc2infoapp.UserFeedAdapter;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -44,6 +46,7 @@ public class UserProfileFragment extends Fragment {
     Button btnTeam;
     Button btnCreateTeam;
     ParseUser user;
+    UserFeedAdapter adapter;
     Team team;
 
     public UserProfileFragment() {
@@ -64,6 +67,7 @@ public class UserProfileFragment extends Fragment {
         tvTeam = view.findViewById(R.id.tvTeam);
         btnTeam = view.findViewById(R.id.btnTeam);
         btnCreateTeam = view.findViewById(R.id.btnCreateTeam);
+        adapter = new UserFeedAdapter();
         user = ParseUser.getCurrentUser();
         try {
             user.fetchIfNeeded();
@@ -129,6 +133,15 @@ public class UserProfileFragment extends Fragment {
                 }
             });
         }
+
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        rvItems.setLayoutManager(manager);
+        rvItems.setAdapter(adapter);
+
+        populateUserFeed();
+    }
+
+    private void populateUserFeed() {
 
     }
 
