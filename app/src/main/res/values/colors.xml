@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#FF34b7eb</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="primary_text">#FF212121</color>
+    <color name="secondary_text">#FF757575</color>
+    <color name="primary_color">#FF9E9E9E</color>
+    <color name="light_primary_color">#FFF5F5f5</color>
+    <color name="accent_color">#FF607D8B</color>
+    <color name="primary_dark">#616161</color>
+    <color name="divider_color">#FFDBDBDB</color>
 </resources>
