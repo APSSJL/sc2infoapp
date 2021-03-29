@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -136,6 +137,11 @@ public class UserProfileFragment extends Fragment {
             btnTeam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(team.getOwner() == ParseUser.getCurrentUser())
+                    {
+                        Toast.makeText(getContext(), "Owner cannot leave team", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     user.remove("team");
                     user.saveInBackground();
                     setBtnJoin();

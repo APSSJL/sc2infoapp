@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!-- TODO: replace with cup image -->
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/ivLogo"
+        android:src="@drawable/ic_launcher_background"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivLogo"
+        android:id="@+id/tvTitle"
+        android:layout_margin="15dp"
+        android:text="Title"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="by author"
+        android:id="@+id/tvAuthor"
+        android:layout_margin="15dp"
+        android:layout_toEndOf="@id/tvTitle"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvDescription"
+        android:layout_marginStart="15dp"
+        android:layout_below="@+id/tvAuthor"
+        android:text="description"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvRating"
+        android:layout_marginStart="15dp"
+        android:text="Rating: 5/10"
+        android:layout_below="@+id/tvDescription"
+        />
+</RelativeLayout>
