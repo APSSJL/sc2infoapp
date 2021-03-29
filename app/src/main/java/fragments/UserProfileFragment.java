@@ -2,10 +2,12 @@ package fragments;
 
 import android.content.Context;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,22 +22,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.ImageHeaderParserUtils;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.sc2infoapp.IPublished;
 import com.example.sc2infoapp.Post;
 import com.example.sc2infoapp.R;
 import com.example.sc2infoapp.Team;
+import com.example.sc2infoapp.Tournament;
 import com.example.sc2infoapp.UserFeedAdapter;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -62,6 +72,7 @@ public class UserProfileFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -92,7 +103,7 @@ public class UserProfileFragment extends Fragment {
 
         try {
             ParseFile p = ((ParseFile) user.get("pic"));
-            if(p != null && p == null)
+            if(p != null)
             {
                 Log.i(TAG, "loaded");
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivPicture);
@@ -156,25 +167,40 @@ public class UserProfileFragment extends Fragment {
         populateUserFeed();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void populateUserFeed() {
+        ParseQuery<Tournament> query1 =  ParseQuery.getQuery(Tournament.class);
+        query1.include("userCreated");
+        query1.include("userCreated.organizer");
+        query1.setLimit(5);
+
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.setLimit(5);
         query.whereEqualTo(Post.KEY_AUTHOR, ParseUser.getCurrentUser());
         query.addDescendingOrder("created_at");
 
-        query.findInBackground(new FindCallback<Post>() {
+        try {
+            published.addAll(query.find());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            List<Tournament> x = query1.find();
+            x.stream().filter(y -> y.getUserCreated().getOrganizer() == ParseUser.getCurrentUser());
+            Log.i(TAG, String.valueOf(query1.count()));
+            published.addAll(x);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Collections.sort(published, new Comparator<IPublished>() {
             @Override
-            public void done(List<Post> objects, ParseException e) {
-                if(e != null)
-                {
-                    Log.e(TAG, "Something went wrong", e);
-                    return;
-                }
-                published.addAll(objects);
-                adapter.notifyDataSetChanged();
+            public int compare(IPublished lhs, IPublished rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                return lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
             }
         });
+        adapter.notifyDataSetChanged();
     }
 
     private void setBtnJoin() {

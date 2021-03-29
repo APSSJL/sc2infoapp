@@ -5,6 +5,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @ParseClassName("Post")
 public class Post extends ParseObject implements IPublished {
