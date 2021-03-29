@@ -68,7 +68,7 @@ public class UserProfileFragment extends Fragment {
     TextView tvLocation;
     TextView tvMmr;
     TextView tvBio;
-    private LocationManager locationManager;
+    LocationManager locationManager;
     RecyclerView rvItems;
     Button btnEditProfile;
     TextView tvTeam;
@@ -108,12 +108,12 @@ public class UserProfileFragment extends Fragment {
         }
         tvName.setText(user.getUsername());
         tvRace.setText(user.getString("inGameRace"));
-        tvMmr.setText(user.get("MMR").toString());
+        tvMmr.setText(String.valueOf(user.getInt("MMR")));
         tvBio.setText(user.getString("userInfo"));
 
 
         try {
-            ParseFile p = ((ParseFile) user.get("pic"));
+            ParseFile p = (user.getParseFile("pic"));
             if (p != null) {
                 Log.i(TAG, "loaded");
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivPicture);
@@ -131,6 +131,27 @@ public class UserProfileFragment extends Fragment {
                 // TODO : navigate to editProfile screen
             }
         });
+
+        teamButtonSetup();
+
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        rvItems.setLayoutManager(manager);
+        rvItems.setAdapter(adapter);
+
+        populateUserFeed();
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            Log.i(TAG, "fail");
+            return;
+        }
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, mLocationListener);
+    }
+
+    private void teamButtonSetup()
+    {
         team = (Team) user.get("team");
 
         if (team == null) {
@@ -164,50 +185,7 @@ public class UserProfileFragment extends Fragment {
                 }
             });
         }
-
-        LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        rvItems.setLayoutManager(manager);
-        rvItems.setAdapter(adapter);
-
-        populateUserFeed();
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            //ActivityCompat.requestPermissions();
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            Log.i(TAG, "fail");
-            return;
-        }
-        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, mLocationListener);
     }
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-
-                }
-                return;
-            }
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void populateUserFeed() {

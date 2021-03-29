@@ -38,11 +38,11 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == 0){
+        if(viewType == IPublished.POST){
             View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
             return new PostViewHolder(view);
         }
-        if(viewType == 1)
+        if(viewType == IPublished.TOURNAMENT)
         {
             View view = LayoutInflater.from(context).inflate(R.layout.item_tournament, parent, false);
             return new TournamentViewHolder(view);

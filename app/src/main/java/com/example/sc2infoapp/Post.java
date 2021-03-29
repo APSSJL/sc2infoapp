@@ -23,6 +23,6 @@ public class Post extends ParseObject implements IPublished {
 
     @Override
     public int getPublishedType() {
-        return 0;
+        return POST;
     }
 }

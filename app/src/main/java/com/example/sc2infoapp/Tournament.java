@@ -17,6 +17,6 @@ public class Tournament extends ParseObject implements IPublished {
 
     @Override
     public int getPublishedType() {
-        return 1;
+        return TOURNAMENT;
     }
 }
