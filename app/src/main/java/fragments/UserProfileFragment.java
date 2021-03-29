@@ -47,6 +47,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class UserProfileFragment extends Fragment {
@@ -187,8 +188,8 @@ public class UserProfileFragment extends Fragment {
         }
         try {
             List<Tournament> x = query1.find();
-            x.stream().filter(y -> y.getUserCreated().getOrganizer() == ParseUser.getCurrentUser());
-            Log.i(TAG, String.valueOf(query1.count()));
+            x.removeIf(t -> !(t.getUserCreated().getOrganizer().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())));
+            Log.i(TAG, String.valueOf(x.size()));
             published.addAll(x);
         } catch (ParseException e) {
             e.printStackTrace();
