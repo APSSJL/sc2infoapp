@@ -59,6 +59,7 @@ public class PostComposeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String title = etTitle.getText().toString();
                 String content = etContent.getText().toString();
+                String tags = etTags.getText().toString();
 
                 if (title.isEmpty()) {
                     Toast.makeText(PostComposeActivity.this, "Title cannot be empty!", Toast.LENGTH_SHORT);
@@ -67,9 +68,15 @@ public class PostComposeActivity extends AppCompatActivity {
                     Toast.makeText(PostComposeActivity.this, "Content cannot be empty!", Toast.LENGTH_SHORT);
                 }
 
-               /*
-               //Shouldn't we have to add set methods at Post Class?
+                //Create new post, use set methods to save
+                Post post = new Post();
+                post.setAuthor(user);
+                post.setTitle(title);
+                post.setContent(content);
+                post.setCategory(spCategories.getSelectedItem().toString());
+                post.setTags(tags);
 
+                //saveInBackground
                 post.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -81,8 +88,6 @@ public class PostComposeActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-
-                */
 
             }
         });

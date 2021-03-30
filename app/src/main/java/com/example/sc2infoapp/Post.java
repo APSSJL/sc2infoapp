@@ -20,6 +20,12 @@ public class Post extends ParseObject implements IPublished {
     public String getCategory() {return getString(KEY_CATEGORY);}
     public ArrayList<String> getTags(){return (ArrayList<String>) get(KEY_TAGS);}
 
+    public void setAuthor(ParseUser author) { put(KEY_AUTHOR, author);}
+    public void setTitle(String title) { put(KEY_TITLE, title);}
+    public void setContent(String content) { put(KEY_CONTENT, content);}
+    public void setCategory(String category) { put(KEY_CATEGORY, category);}
+    public void setTags(String tags) { put(KEY_TAGS, tags);}
+
     @Override
     public int getPublishedType() {
         return 0;
