@@ -27,8 +27,7 @@
         android:id="@+id/etUserInfo"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_below="@+id/btnUploadImage"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/tvUserInfo"
         android:ems="10"
         android:gravity="start|top"
         android:hint="About you..."
@@ -39,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etUserInfo"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="update" />
 
     <Button
@@ -71,4 +70,34 @@
         android:layout_marginBottom="0dp"
         android:entries="@array/races"
         android:layout_toEndOf="@+id/etUserName" />
+
+    <EditText
+        android:id="@+id/etMMR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvMMR"
+        android:layout_marginTop="0dp"
+        android:ems="10"
+        android:hint="Your MMR in game..."
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/tvMMR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnUploadImage"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:text="MMR"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvUserInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etMMR"
+        android:layout_marginTop="10dp"
+        android:text="About you"
+        android:textColor="@color/black" />
+
 </RelativeLayout>

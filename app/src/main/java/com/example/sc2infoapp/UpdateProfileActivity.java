@@ -26,29 +26,28 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 
 import java.io.File;
+import java.io.InputStream;
 
 import static com.parse.ParseUser.getCurrentUser;
 
 public class UpdateProfileActivity extends AppCompatActivity {
 
     public static final String TAG = "UpdateProfileActivity";
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
+    public static final int CHOOSE_IMAGE_FROM_GALLERY_REQUEST_CODE = 42;
 
     Button btnUploadImage;
     Button btnProfileUpdate;
     Button btnProfileCancel;
+    EditText etMMR;
     EditText etUserName;
-    EditText etLocation;
     EditText etUserInfo;
     ImageView ivProfileImage;
     Spinner spRaces;
 
     ParseUser user;
 
-    private ArrayAdapter<String> inGameRace;
     private String selectedRace;
-    private File photoFile;
-    private String photoFileName = "photo.jpg";
+    private Bitmap photoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +61,23 @@ public class UpdateProfileActivity extends AppCompatActivity {
         btnUploadImage = findViewById(R.id.btnUploadImage);
         btnProfileUpdate = findViewById(R.id.btnProfileUpdate);
         btnProfileCancel = findViewById(R.id.btnProfileCancel);
+        etMMR = findViewById(R.id.etMMR);
         etUserName = findViewById(R.id.etUserName);
         etUserInfo = findViewById(R.id.etUserInfo);
         ivProfileImage = findViewById(R.id.ivProfileImage);
         spRaces = findViewById(R.id.spRaces);
 
         //Retrieve previous info
-
+        etMMR.setText(user.get("MMR").toString());
         etUserName.setText(user.getUsername());
         etUserInfo.setText(user.get("userinfo").toString());
         ivProfileImage.setImageBitmap((Bitmap) user.get("pic"));
         selectedRace = user.get("inGameRace").toString();
 
-        if (selectedRace == "Terran") {spRaces.setSelection(0);}
-        if (selectedRace == "Protoss") {spRaces.setSelection(1);}
-        if (selectedRace == "Zerg") {spRaces.setSelection(2);}
-        if (selectedRace == "Random") {spRaces.setSelection(3);}
+        if (selectedRace.equals("Terran")) {spRaces.setSelection(0);}
+        if (selectedRace.equals("Protoss")) {spRaces.setSelection(1);}
+        if (selectedRace.equals("Zerg")) {spRaces.setSelection(2);}
+        if (selectedRace.equals("Random")) {spRaces.setSelection(3);}
 
 
         //set onClickListener: btnUploadImage
@@ -86,7 +86,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Same codes that we used in Parstagram
                 //Still figuring out how to attrive local file not creating new file
-                launchCamera();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, CHOOSE_IMAGE_FROM_GALLERY_REQUEST_CODE);
             }
         });
 
@@ -95,8 +98,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //retrieve all information inserted
+                int userMMR = Integer.parseInt(etMMR.getText().toString());
                 String userName = etUserName.getText().toString();
-                String location = etLocation.getText().toString();
                 String userInfo = etUserInfo.getText().toString();
 
                 //return updating if username is empty
@@ -106,6 +109,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 }
 
                 //put request for changed info
+                if (userMMR != Integer.parseInt(user.get("MMR").toString())) {
+                    user.put("MMR", userMMR);
+                }
                 if (userName != user.getUsername()) {
                     user.put("username", userName);
                 }
@@ -164,40 +170,23 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
     }
 
-
-    private void launchCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        photoFile = getPhotoFileUri(photoFileName);
-
-        Uri fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
-        if (intent.resolveActivity(this.getPackageManager()) != null) {
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-        }
-    }
-
-
-    public File getPhotoFileUri(String fileName) {
-        File mediaStorageDir = new File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(TAG, "failed to create directory");
-        }
-
-        return new File(mediaStorageDir.getPath() + File.separator + fileName);
-    }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                ivProfileImage.setImageBitmap(takenImage);
-            } else { // Result was a failure
-                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+
+        if(requestCode == CHOOSE_IMAGE_FROM_GALLERY_REQUEST_CODE) {
+            if(resultCode == RESULT_OK) {
+                try{
+                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    photoFile  = BitmapFactory.decodeStream(in);
+                    in.close();
+                    ivProfileImage.setImageBitmap(photoFile);
+                }catch(Exception e) {
+                    Toast.makeText(this, "Error while retrieving picture, try again", Toast.LENGTH_SHORT);
+                }
+            }
+            else if(resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Cancelled choosing profile picture", Toast.LENGTH_SHORT).show();
             }
         }
     }
