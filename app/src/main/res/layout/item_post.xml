@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTitle"
+        android:textColor="@color/black"
+        android:layout_margin="15dp"
+        android:text="title"
+        />
+    <TextView
+        android:layout_toEndOf="@+id/tvTitle"
+        android:id="@+id/tvAuthor"
+        android:layout_margin="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="by author"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="category"
+        android:layout_marginStart="15dp"
+        android:layout_below="@+id/tvTitle"
+        android:id="@+id/tvCategory"
+        />
+    <TextView
+        android:layout_marginStart="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvCategory"
+        android:id="@+id/tvContent"
+        android:text="content\ncontent\ncontent"
+        />
+    <TextView
+        android:layout_marginStart="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvContent"
+        android:id="@+id/tvTags"
+        android:text="testing, destroing, aaa"
+        />
+
+</RelativeLayout>
