@@ -2,6 +2,7 @@ package fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -36,6 +37,7 @@ import com.example.sc2infoapp.Post;
 import com.example.sc2infoapp.R;
 import com.example.sc2infoapp.Team;
 import com.example.sc2infoapp.Tournament;
+import com.example.sc2infoapp.UpdateProfileActivity;
 import com.example.sc2infoapp.UserFeedAdapter;
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -100,6 +102,20 @@ public class UserProfileFragment extends Fragment {
         btnTeam = view.findViewById(R.id.btnTeam);
         btnCreateTeam = view.findViewById(R.id.btnCreateTeam);
         adapter = new UserFeedAdapter(getContext(), published);
+
+        setupUserInfo();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUserInfo();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setupUserInfo()
+    {
         user = ParseUser.getCurrentUser();
         try {
             user.fetchIfNeeded();
@@ -128,7 +144,8 @@ public class UserProfileFragment extends Fragment {
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : navigate to editProfile screen
+                Intent i = new Intent(getContext(), UpdateProfileActivity.class);
+                startActivity(i);
             }
         });
 
@@ -254,10 +271,11 @@ public class UserProfileFragment extends Fragment {
 
 //Set Address
         try {
-            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            if(context != null)
+            {
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
             if (addresses != null && addresses.size() > 0) {
-
 
 
                 String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
@@ -273,6 +291,7 @@ public class UserProfileFragment extends Fragment {
                 Log.d(TAG, "getAddress:  postalCode" + postalCode);
                 Log.d(TAG, "getAddress:  knownName" + knownName);
                 return city + ", " + country;
+            }
 
             }
         } catch (IOException e) {
