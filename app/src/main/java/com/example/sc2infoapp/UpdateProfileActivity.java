@@ -28,8 +28,12 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import static com.parse.ParseUser.getCurrentUser;
@@ -203,6 +207,50 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     photoFile  = BitmapFactory.decodeStream(in);
                     in.close();
                     ivProfileImage.setImageBitmap(photoFile);
+
+                    Uri selectedImageUri = data.getData();
+
+                    File f=new File(this.getCacheDir(),"file name");
+                    try {
+                        f.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //Convert bitmap to byte array
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                    byte[] bitmapdata = bos.toByteArray();
+
+                    //write the bytes in file
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(f);
+                        fos.write(bitmapdata);
+                        fos.flush();
+                        fos.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                    ParseUser user = ParseUser.getCurrentUser();
+                    user.put("pic", new ParseFile(f));
+
+
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Log.i(TAG, "Image saved!");
+                        }
+                    });
                 }catch(Exception e) {
                     Toast.makeText(this, "Error while retrieving picture, try again", Toast.LENGTH_SHORT);
                 }
@@ -212,5 +260,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }
