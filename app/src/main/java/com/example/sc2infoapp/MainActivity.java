@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import fragments.HomeFeedFragment;
 import fragments.UserProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        fragment = new UserProfileFragment();
+                        fragment = new HomeFeedFragment();
                         Toast.makeText(MainActivity.this,"Home!",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_matches:
@@ -49,5 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 }

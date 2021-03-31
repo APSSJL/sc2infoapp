@@ -119,13 +119,6 @@ public class PostComposeActivity extends AppCompatActivity {
         });
 
         //set setOnItemClickListener: spCategories
-        spCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedCategory = parent.getItemAtPosition(position).toString();
-                spCategories.setSelection(position);
-            }
-        });
 
     }
 }

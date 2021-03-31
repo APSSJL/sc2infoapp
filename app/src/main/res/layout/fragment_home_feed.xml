@@ -58,7 +58,7 @@
             android:layout_below="@id/rlTop"
             android:layout_alignParentStart="true"
             android:layout_marginTop="0dp"
-            android:text="TextView"
+            android:text="Search..."
             tools:text="Search..." />
 
         <RelativeLayout
@@ -70,6 +70,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFeed"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>
