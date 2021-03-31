@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeFeedFragment"
+    tools:context="fragments.HomeFeedFragment"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlTop"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/btnCreatePost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Post" />
+
+            <Button
+                android:id="@+id/btnHomeFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:text="Filter" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="50dp"
+                android:layout_toStartOf="@+id/btnHomeFilter"
+                android:layout_toEndOf="@+id/btnCreatePost"
+                app:srcCompat="@drawable/appiconmin" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rlTop"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="0dp"
+            android:text="Search..."
+            tools:text="Search..." />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/etSearch"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFeed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

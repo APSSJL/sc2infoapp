@@ -29,10 +29,10 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 **Required Must-have Stories**
 
 - [x] User can create an account and login
-- [ ] User can use bottom navigation view to switch between fragments
-    - [ ] Home feed fragment
+- [x] User can use bottom navigation view to switch between fragments
+    - [x] Home feed fragment
         - [ ] Homefeed showing recent activity based on user follows
-    - [ ] Profile fragment
+    - [x] Profile fragment
     - [ ] Match feed fragment
         - [ ] Shows all recent tournaments and matches  
 - [x] User can change account preferences
@@ -834,3 +834,4 @@ Aligulac API
 | ```GET```      | /player   | gets player object |
 | ```GET```      | /match   | gets match object |
 
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gif_1.gif' width='200'  />
