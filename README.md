@@ -44,9 +44,9 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [ ] User can join and leave team
     - [ ] User can create team
 - [x] User can view profile
-    - [ ] User can view account info
-    - [x] If user is in team, he/she can tap on team name to go to the team page
-    - [ ] User can see recent posts and tournaments
+    - [x] User can view account info
+    - [ ] If user is in team, he/she can tap on team name to go to the team page
+    - [x] User can see recent posts and tournaments
 - [x] User can create post
     - [ ] By tapping on the post, user can go to the detailed post view
     - [ ] User can rate post in detailed view
