@@ -23,6 +23,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.io.File;
@@ -68,11 +72,22 @@ public class UpdateProfileActivity extends AppCompatActivity {
         spRaces = findViewById(R.id.spRaces);
 
         //Retrieve previous info
-        etMMR.setText(user.get("MMR").toString());
+        etMMR.setText(String.valueOf(user.getInt("MMR")));
         etUserName.setText(user.getUsername());
-        etUserInfo.setText(user.get("userinfo").toString());
-        ivProfileImage.setImageBitmap((Bitmap) user.get("pic"));
-        selectedRace = user.get("inGameRace").toString();
+        etUserInfo.setText(user.getString("userinfo"));
+        try {
+            ParseFile p = (user.getParseFile("pic"));
+            if (p != null) {
+                Log.i(TAG, "loaded");
+                Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivProfileImage);
+            } else {
+                Log.i(TAG, "null");
+                Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivProfileImage);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        selectedRace = user.getString("inGameRace");
 
         if (selectedRace.equals("Terran")) {spRaces.setSelection(0);}
         if (selectedRace.equals("Protoss")) {spRaces.setSelection(1);}
@@ -109,21 +124,21 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 }
 
                 //put request for changed info
-                if (userMMR != Integer.parseInt(user.get("MMR").toString())) {
+                if (userMMR != Integer.parseInt(String.valueOf(user.getInt("MMR")))) {
                     user.put("MMR", userMMR);
                 }
-                if (userName != user.getUsername()) {
+                if (!userName.equals(user.getUsername())) {
                     user.put("username", userName);
                 }
-                if (userInfo != user.get("userinfo").toString()) {
+                if (!userInfo.equals(user.getString("userInfo"))) {
                     user.put("userInfo", userInfo);
                 }
-                if (selectedRace != user.get("inGameRace").toString()) {
+                if (!selectedRace.equals(user.getString("inGameRace"))) {
                     user.put("inGameRace", selectedRace);
                 }
 
                 //Update info
-                getCurrentUser().saveInBackground(e -> {
+                user.saveInBackground(e -> {
                     if (e != null) {
                         Log.e(TAG, "Error while updating user", e);
                     }
@@ -161,13 +176,13 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
 
         //set setOnItemClickListener: spRaces
-        spRaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedRace = parent.getItemAtPosition(position).toString();
-                spRaces.setSelection(position);
-            }
-        });
+        //spRaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //    @Override
+        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //        selectedRace = parent.getItemAtPosition(position).toString();
+        //        spRaces.setSelection(position);
+        //    }
+        //});
     }
 
     @Override
