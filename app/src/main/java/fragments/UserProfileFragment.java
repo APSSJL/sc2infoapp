@@ -1,6 +1,7 @@
 package fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import com.example.sc2infoapp.IPublished;
 import com.example.sc2infoapp.Post;
 import com.example.sc2infoapp.R;
 import com.example.sc2infoapp.Team;
+import com.example.sc2infoapp.UpdateProfileActivity;
 import com.example.sc2infoapp.UserFeedAdapter;
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -88,7 +90,6 @@ public class UserProfileFragment extends Fragment {
         tvMmr.setText(user.get("MMR").toString());
         tvBio.setText(user.getString("userInfo"));
 
-
         try {
             ParseFile p = ((ParseFile) user.get("pic"));
             if(p != null && p == null)
@@ -107,7 +108,9 @@ public class UserProfileFragment extends Fragment {
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : navigate to editProfile screen
+                Context context = getActivity();
+                Intent i = new Intent(context, UpdateProfileActivity.class);
+                context.startActivity(i);
             }
         });
         team = (Team) user.get("team");

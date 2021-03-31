@@ -70,14 +70,18 @@ public class UpdateProfileActivity extends AppCompatActivity {
         //Retrieve previous info
         etMMR.setText(user.get("MMR").toString());
         etUserName.setText(user.getUsername());
-        etUserInfo.setText(user.get("userinfo").toString());
+        etUserInfo.setText(user.getString("userInfo"));
         ivProfileImage.setImageBitmap((Bitmap) user.get("pic"));
-        selectedRace = user.get("inGameRace").toString();
+        selectedRace = user.getString("inGameRace");
 
-        if (selectedRace.equals("Terran")) {spRaces.setSelection(0);}
-        if (selectedRace.equals("Protoss")) {spRaces.setSelection(1);}
-        if (selectedRace.equals("Zerg")) {spRaces.setSelection(2);}
-        if (selectedRace.equals("Random")) {spRaces.setSelection(3);}
+        if (selectedRace.isEmpty()) {
+            spRaces.setSelection(3);
+        } else {
+            if (selectedRace.equals("Terran")) {spRaces.setSelection(0);}
+            if (selectedRace.equals("Protoss")) {spRaces.setSelection(1);}
+            if (selectedRace.equals("Zerg")) {spRaces.setSelection(2);}
+            if (selectedRace.equals("Random")) {spRaces.setSelection(3);}
+        }
 
 
         //set onClickListener: btnUploadImage
@@ -109,18 +113,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 }
 
                 //put request for changed info
-                if (userMMR != Integer.parseInt(user.get("MMR").toString())) {
-                    user.put("MMR", userMMR);
-                }
-                if (userName != user.getUsername()) {
-                    user.put("username", userName);
-                }
-                if (userInfo != user.get("userinfo").toString()) {
-                    user.put("userInfo", userInfo);
-                }
-                if (selectedRace != user.get("inGameRace").toString()) {
-                    user.put("inGameRace", selectedRace);
-                }
+                user.put("MMR", userMMR);
+                user.put("username", userName);
+                user.put("userInfo", userInfo);
+                user.put("userInfo", userInfo);
+                user.put("inGameRace", selectedRace);
 
                 //Update info
                 getCurrentUser().saveInBackground(e -> {
@@ -161,11 +158,16 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
 
         //set setOnItemClickListener: spRaces
-        spRaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spRaces.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedRace = parent.getItemAtPosition(position).toString();
                 spRaces.setSelection(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
