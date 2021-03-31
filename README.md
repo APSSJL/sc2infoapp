@@ -834,3 +834,4 @@ Aligulac API
 | ```GET```      | /player   | gets player object |
 | ```GET```      | /match   | gets match object |
 
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gif_1.gif' width='200'  />
