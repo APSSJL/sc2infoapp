@@ -50,6 +50,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
     ParseUser user;
 
+    private String changedRace;
     private String selectedRace;
     private Bitmap photoFile;
 
@@ -74,9 +75,19 @@ public class UpdateProfileActivity extends AppCompatActivity {
         //Retrieve previous info
         etMMR.setText(String.valueOf(user.getInt("MMR")));
         etUserName.setText(user.getUsername());
-
         etUserInfo.setText(user.getString("userInfo"));
-        ivProfileImage.setImageBitmap((Bitmap) user.get("pic"));
+        try {
+            ParseFile p = (user.getParseFile("pic"));
+            if (p != null) {
+                Log.i(TAG, "loaded");
+                Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivProfileImage);
+            } else {
+                Log.i(TAG, "null");
+                Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivProfileImage);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         selectedRace = user.getString("inGameRace");
 
         if (selectedRace.isEmpty()) {
@@ -123,8 +134,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 user.put("MMR", userMMR);
                 user.put("username", userName);
                 user.put("userInfo", userInfo);
-                user.put("userInfo", userInfo);
-                user.put("inGameRace", selectedRace);
+                user.put("pic", photoFile);
+                user.put("inGameRace", changedRace);
 
 
                 //Update info
@@ -169,7 +180,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         spRaces.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedRace = parent.getItemAtPosition(position).toString();
+                changedRace = parent.getItemAtPosition(position).toString();
                 spRaces.setSelection(position);
             }
 
