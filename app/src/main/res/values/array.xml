@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="races">
+        <item>"Terran"</item>
+        <item>"Protoss"</item>
+        <item>"Zerg"</item>
+        <item>"Random"</item>
+    </string-array>
+
+    <string-array name="category">
+        <item>"General"</item>
+        <item>"Tournament"</item>
+        <item>"Team"</item>
+        <item>"Player"</item>
+        <item>"Matches"</item>
+        <item>"Hiring"</item>
+        <item>"Stream"</item>
+        <item>"Terran"</item>
+        <item>"Zerg"</item>
+
+    </string-array>
+</resources>

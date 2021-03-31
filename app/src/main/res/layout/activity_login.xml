@@ -1,58 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity" >
+    android:layout_margin="15dp"
+    tools:context=".LoginActivity">
+
     <ImageView
+        android:id="@+id/ivLogo"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:id="@+id/ivLogo"
         android:layout_alignParentTop="true"
-        android:src="@drawable/appiconmin"
-        />
+        android:src="@drawable/appiconmin" />
+
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="10dp"
-        android:hint="username"
-        android:inputType="textMultiLine"
         android:layout_below="@+id/ivLogo"
-        />
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:hint="username"
+        android:inputType="textMultiLine" />
+
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="10dp"
-        android:hint="password"
-        android:inputType="textPassword"
         android:layout_below="@+id/etUsername"
-        />
+        android:layout_marginBottom="15dp"
+        android:hint="password"
+        android:inputType="textPassword" />
+
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/etPassword"
+        android:layout_marginBottom="15dp"
         android:text="Login"
-        />
+        android:textAllCaps="false" />
+
     <Button
         android:id="@+id/btnSignup"
-        android:layout_below="@id/btnLogin"
         android:layout_width="match_parent"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btnLogin"
         android:text="Create an account."
-        android:textAllCaps="false"
-        />
+        android:textAllCaps="false" />
 </RelativeLayout>
