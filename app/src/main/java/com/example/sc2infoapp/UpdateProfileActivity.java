@@ -54,7 +54,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
     ParseUser user;
 
-    private String changedRace;
     private String selectedRace;
     private Bitmap photoFile;
 
@@ -133,14 +132,17 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     return;
                 }
 
-                //put request for changed info
+                if (userMMR != Integer.parseInt(String.valueOf(user.getInt("MMR")))) {
+                    user.put("MMR", userMMR);
+                }
+                if (!userName.equals(user.getUsername())) {
+                    user.put("username", userName);
+                }
+                if (!userInfo.equals(user.getString("userInfo"))) {
+                    user.put("userInfo", userInfo);
+                }
 
-                user.put("MMR", userMMR);
-                user.put("username", userName);
-                user.put("userInfo", userInfo);
-                user.put("pic", photoFile);
-                user.put("inGameRace", changedRace);
-
+                user.put("inGameRace", spRaces.getSelectedItem().toString());
 
                 //Update info
                 user.saveInBackground(e -> {
@@ -180,19 +182,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         });
 
-        //set setOnItemClickListener: spRaces
-        spRaces.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                changedRace = parent.getItemAtPosition(position).toString();
-                spRaces.setSelection(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
     }
 
@@ -260,6 +249,5 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         }
     }
-
 
 }

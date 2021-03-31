@@ -129,6 +129,7 @@ public class UserProfileFragment extends Fragment {
         tvMmr.setText(String.valueOf(user.getInt("MMR")));
         tvBio.setText(user.getString("userInfo"));
 
+
         try {
             ParseFile p = (user.getParseFile("pic"));
             if (p != null) {
@@ -210,7 +211,7 @@ public class UserProfileFragment extends Fragment {
         ParseQuery<Tournament> query1 =  ParseQuery.getQuery(Tournament.class);
         query1.include("userCreated");
         query1.include("userCreated.organizer");
-        query1.setLimit(20);
+        query1.setLimit(5);
 
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
