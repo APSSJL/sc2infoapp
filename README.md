@@ -797,75 +797,24 @@ Model: Team
             }
          });
         ```
-        - (Update/PUT) Update user information (username)
+        - (Update/PUT) Update user information
         ```java
-        ParseUser user = getCurrentUser();
-        ParseQuery<User> query = ParseQuery.getQuery(User.class)
-        
-        query.whereEqualsTo("objectId", user.getObjectId());
-        
-        query.findInBackground(new FindCallback<User>(){
-            public void done(User user, ParseException e){
-                if(e!=null){
-                    throwException();
-                    return;
-                }
-                user.update("username",userInput)
+        if (userName != user.getUsername()) {
+            user.put("username", userName);
+        }
+        if (userInfo != user.get("userinfo").toString()) {
+            user.put("userInfo", userInfo);
+        }
+        if (selectedRace != user.get("inGameRace").toString()) {
+            user.put("inGameRace", selectedRace);
+        }
+        getCurrentUser().saveInBackground(e -> {
+            if (e != null) {
+                //throwException
             }
-         });
-        
-        
-        ``` 
-        - (Update/PUT) Update user information (password)
-        ```java
-        ParseUser user = getCurrentUser();
-        ParseQuery<User> query = ParseQuery.getQuery(User.class)
-        
-        query.whereEqualsTo("objectId", user.getObjectId());
-        
-        query.findInBackground(new FindCallback<User>(){
-            public void done(User user, ParseException e){
-                if(e!=null){
-                    throwException();
-                    return;
-                }
-                user.update("password",userInput)
-            }
-         });
-        ``` 
-        - (Update/PUT) Update user information (profile picture)
-        ```java
-        ParseUser user = getCurrentUser();
-        ParseQuery<User> query = ParseQuery.getQuery(User.class)
-        
-        query.whereEqualsTo("objectId", user.getObjectId());
-        
-        query.findInBackground(new FindCallback<User>(){
-            public void done(User user, ParseException e){
-                if(e!=null){
-                    throwException();
-                    return;
-                }
-                user.update("profile picture",userInput)
-            }
-         });
-        ``` 
-        - (Update/PUT) Update user information (userInfo)
-        ```java
-        ParseUser user = getCurrentUser();
-        ParseQuery<User> query = ParseQuery.getQuery(User.class)
-        
-        query.whereEqualsTo("objectId", user.getObjectId());
-        
-        query.findInBackground(new FindCallback<User>(){
-            public void done(User user, ParseException e){
-                if(e!=null){
-                    throwException();
-                    return;
-                }
-                user.update("userInfo",userInput)
-            }
-         });
+            Log.i(TAG, "Updated user successfully");
+            finish();
+        });
         ``` 
 
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
