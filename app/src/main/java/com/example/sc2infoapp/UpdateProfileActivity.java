@@ -89,10 +89,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
         }
         selectedRace = user.getString("inGameRace");
 
-        if (selectedRace.equals("Terran")) {spRaces.setSelection(0);}
-        if (selectedRace.equals("Protoss")) {spRaces.setSelection(1);}
-        if (selectedRace.equals("Zerg")) {spRaces.setSelection(2);}
-        if (selectedRace.equals("Random")) {spRaces.setSelection(3);}
+        if (selectedRace.equals("terran")) {spRaces.setSelection(0);}
+        if (selectedRace.equals("protoss")) {spRaces.setSelection(1);}
+        if (selectedRace.equals("zerg")) {spRaces.setSelection(2);}
+        if (selectedRace.equals("random")) {spRaces.setSelection(3);}
 
 
         //set onClickListener: btnUploadImage
@@ -133,9 +133,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 if (!userInfo.equals(user.getString("userInfo"))) {
                     user.put("userInfo", userInfo);
                 }
-                if (!selectedRace.equals(user.getString("inGameRace"))) {
-                    user.put("inGameRace", selectedRace);
-                }
+
+                user.put("inGameRace", spRaces.getSelectedItem().toString());
 
                 //Update info
                 user.saveInBackground(e -> {
