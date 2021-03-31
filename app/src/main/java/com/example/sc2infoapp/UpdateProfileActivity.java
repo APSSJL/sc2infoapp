@@ -78,7 +78,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         //Retrieve previous info
         etMMR.setText(String.valueOf(user.getInt("MMR")));
         etUserName.setText(user.getUsername());
-        etUserInfo.setText(user.getString("userinfo"));
+        etUserInfo.setText(user.getString("userInfo"));
         try {
             ParseFile p = (user.getParseFile("pic"));
             if (p != null) {
@@ -93,10 +93,15 @@ public class UpdateProfileActivity extends AppCompatActivity {
         }
         selectedRace = user.getString("inGameRace");
 
-        if (selectedRace.equals("terran")) {spRaces.setSelection(0);}
-        if (selectedRace.equals("protoss")) {spRaces.setSelection(1);}
-        if (selectedRace.equals("zerg")) {spRaces.setSelection(2);}
-        if (selectedRace.equals("random")) {spRaces.setSelection(3);}
+        if (selectedRace.isEmpty()) {
+            spRaces.setSelection(3);
+        } else {
+            if (selectedRace.equals("Terran")) {spRaces.setSelection(0);}
+            if (selectedRace.equals("Protoss")) {spRaces.setSelection(1);}
+            if (selectedRace.equals("Zerg")) {spRaces.setSelection(2);}
+            if (selectedRace.equals("Random")) {spRaces.setSelection(3);}
+        }
+
 
 
         //set onClickListener: btnUploadImage
@@ -127,7 +132,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     return;
                 }
 
-                //put request for changed info
                 if (userMMR != Integer.parseInt(String.valueOf(user.getInt("MMR")))) {
                     user.put("MMR", userMMR);
                 }
@@ -178,14 +182,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         });
 
-        //set setOnItemClickListener: spRaces
-        //spRaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        //    @Override
-        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //        selectedRace = parent.getItemAtPosition(position).toString();
-        //        spRaces.setSelection(position);
-        //    }
-        //});
+
     }
 
     @Override
