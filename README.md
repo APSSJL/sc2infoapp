@@ -28,37 +28,66 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 
 **Required Must-have Stories**
 
-* Create account / Login 
-* Tabs of different feeds
-    - Matches feed showing fixtures of games
-    - Home feed, showing users/players/tournaments activity when followed.
-* Filtering
-    - Matches feed: based off of tournament ratings and teams
-* Allow user to change account preferences
-    - User can add profile image
-    - User can edit preffered SC2 race(zerg/terran/protoss/random)
-    - User can edit displayed name
-    - User can add user info
-* Player/Team page showing respective info.
-    - Rating
-    - Logo/photo
-    - Recent/Upcoming matches
-    - User comments
-* Allow user to follow players, teams to get updates about their recent matches/activity
-* User can follow other users so they can see posts added by this users
-* Users can create posts
-* User can search a professional player by name
-* User can rate tournaments and leave comments
-* User can sort tournamnets based on user rating
+- [x] User can create an account and login
+- [ ] User can use bottom navigation view to switch between fragments
+    - [ ] Home feed fragment
+        - [ ] Homefeed showing recent activity based on user follows
+    - [ ] Profile fragment
+    - [ ] Match feed fragment
+        - [ ] Shows all recent tournaments and matches  
+- [x] User can change account preferences
+    - [x] User can add user info
+    - [x] User can edit username
+    - [x] User can edit preffered SC2 race(zerg/terran/protoss/random)
+    - [x] User can add profile image
+    - [x] User can edit MMR
+    - [ ] User can join and leave team
+    - [ ] User can create team
+- [x] User can view profile
+    - [x] User can view account info
+    - [ ] If user is in team, he/she can tap on team name to go to the team page
+    - [x] User can see recent posts and tournaments
+- [x] User can create post
+    - [ ] By tapping on the post, user can go to the detailed post view
+    - [ ] User can rate post in detailed view
+    - [ ] User can view comments in the detailed view
+    - [ ] User can leave comments 
+ - [ ] Users can view match detailed page
+    - [ ] Users can leave predictions
+    - [ ] Users can get predictions from aligulac
+- [ ] Users can create teams
+- [ ] User can view team detailed page
+    - [ ] Players without team can ask to join
+    - [ ] Team owners can manage team
+        - [ ] Can change team settings
+        - [ ] Can view, approve or decline requests
+        - [ ] Can set ishiring chackbox to find new players
+        - [ ] Can view user profile by tapping on the username in requests recycler view
+- [ ] User can view player's detailed page
+- [ ] User can rate and leave comments:
+    - [ ] Players
+    - [ ] Matches
+    - [ ] Tournaments
+    - [ ] Teams
+    - [ ] Posts
+- [ ] User can follow:
+    - [ ] Players
+    - [ ] Other users
+    - [ ] Tournaments
+    - [ ] Teams 
+- [ ] User can view tournament detailed screen
+    - [ ] User can create and edit new tournaments
+- [ ] User can search and filter posts, players, teams and tournaments
+    - [ ] by keywords
+    - [ ] by categories
+    - [ ] by tags
+    - [ ] by rating
+    - [ ] by ishiring (for teams)
+    - [ ] by type
 
 **Optional Nice-to-have Stories**
-
-* User can get predictions about the match
-* User can get latest player updates from twitter
-* Preview of game can be showcased on match
-* User can create tournaments
-    - User can view and edit details of activity about user tournament
-* User can get list of current players streams (possible to embbed?)
+- [ ]  User can get latest player updates from twitter
+- [ ]  User can get list of current players streams (possible to embbed?)
 
 ### 2. Screen Archetypes
 

@@ -1,10 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userProfileFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fragments.UserProfileFragment">
 
     <RelativeLayout
+        android:background="@color/primary_dark"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="15dp">
@@ -46,9 +48,11 @@
             android:textColor="@color/blue" />
 
         <ImageView
+
             android:id="@+id/ivPicture"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+
             android:layout_below="@+id/divider"
             android:layout_centerHorizontal="true"
             android:src="@mipmap/ic_launcher_round" />

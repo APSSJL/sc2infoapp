@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
         fragmentManager.beginTransaction().replace(R.id.flContainer, new UserProfileFragment()).commit();
     }
 }

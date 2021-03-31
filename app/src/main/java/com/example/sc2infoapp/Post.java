@@ -6,6 +6,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 @ParseClassName("Post")
 public class Post extends ParseObject implements IPublished {
@@ -33,6 +34,6 @@ public class Post extends ParseObject implements IPublished {
 
     @Override
     public int getPublishedType() {
-        return 0;
+        return POST;
     }
 }

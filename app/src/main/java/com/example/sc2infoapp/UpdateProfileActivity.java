@@ -23,6 +23,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.io.File;
@@ -68,8 +72,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
         spRaces = findViewById(R.id.spRaces);
 
         //Retrieve previous info
-        etMMR.setText(user.get("MMR").toString());
+        etMMR.setText(String.valueOf(user.getInt("MMR")));
         etUserName.setText(user.getUsername());
+
         etUserInfo.setText(user.getString("userInfo"));
         ivProfileImage.setImageBitmap((Bitmap) user.get("pic"));
         selectedRace = user.getString("inGameRace");
@@ -82,6 +87,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
             if (selectedRace.equals("Zerg")) {spRaces.setSelection(2);}
             if (selectedRace.equals("Random")) {spRaces.setSelection(3);}
         }
+
 
 
         //set onClickListener: btnUploadImage
@@ -113,14 +119,16 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 }
 
                 //put request for changed info
+
                 user.put("MMR", userMMR);
                 user.put("username", userName);
                 user.put("userInfo", userInfo);
                 user.put("userInfo", userInfo);
                 user.put("inGameRace", selectedRace);
 
+
                 //Update info
-                getCurrentUser().saveInBackground(e -> {
+                user.saveInBackground(e -> {
                     if (e != null) {
                         Log.e(TAG, "Error while updating user", e);
                     }
@@ -170,6 +178,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override
