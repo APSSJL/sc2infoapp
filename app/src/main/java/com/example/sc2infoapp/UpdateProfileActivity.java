@@ -138,6 +138,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 user.put("MMR", userMMR);
                 user.put("username", userName);
                 user.put("userInfo", userInfo);
+                user.put("pic", photoFile);
                 user.put("inGameRace", changedRace);
 
 
