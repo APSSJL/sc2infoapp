@@ -77,9 +77,8 @@ public class HomeFeedFragment extends Fragment {
 
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
-        query.setLimit(20);
-        query.whereEqualTo(Post.KEY_AUTHOR, ParseUser.getCurrentUser());
-        query.addDescendingOrder("created_at");
+        query.setLimit(5);
+        query.addDescendingOrder("createdAt");
 
         try {
             published.addAll(query.find());

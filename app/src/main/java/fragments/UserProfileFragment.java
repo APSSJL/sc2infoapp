@@ -217,7 +217,7 @@ public class UserProfileFragment extends Fragment {
         query.include(Post.KEY_AUTHOR);
         query.setLimit(5);
         query.whereEqualTo(Post.KEY_AUTHOR, ParseUser.getCurrentUser());
-        query.addDescendingOrder("created_at");
+        query.addDescendingOrder("createdAt");
 
         try {
             published.addAll(query.find());
