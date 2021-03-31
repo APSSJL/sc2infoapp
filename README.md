@@ -28,26 +28,26 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 
 **Required Must-have Stories**
 
-- [ ] User can create an account and login
+- [x] User can create an account and login
 - [ ] User can use bottom navigation view to switch between fragments
     - [ ] Home feed fragment
         - [ ] Homefeed showing recent activity based on user follows
     - [ ] Profile fragment
     - [ ] Match feed fragment
         - [ ] Shows all recent tournaments and matches  
-- [ ] User can change account preferences
-    - [ ] User can add user info
-    - [ ] User can edit username
-    - [ ] User can edit preffered SC2 race(zerg/terran/protoss/random)
-    - [ ] User can add profile image
-    - [ ] User can edit MMR
+- [x] User can change account preferences
+    - [x] User can add user info
+    - [x] User can edit username
+    - [x] User can edit preffered SC2 race(zerg/terran/protoss/random)
+    - [x] User can add profile image
+    - [x] User can edit MMR
     - [ ] User can join and leave team
     - [ ] User can create team
-- [ ] User can view profile
+- [x] User can view profile
     - [ ] User can view account info
-    - [ ] If user is in team, he/she can tap on team name to go to the team page
+    - [x] If user is in team, he/she can tap on team name to go to the team page
     - [ ] User can see recent posts and tournaments
-- [ ] User can create post
+- [x] User can create post
     - [ ] By tapping on the post, user can go to the detailed post view
     - [ ] User can rate post in detailed view
     - [ ] User can view comments in the detailed view
