@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TeamActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTeamName"
+        android:text="TeamName"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTeamInfo"
+        android:layout_below="@+id/btnManage"
+        android:text="team\n\n\n\ninfo"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rvRoster"
+        android:layout_below="@id/tvTeamInfo"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:text="Manage"
+        android:textAllCaps="false"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/btnManage"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="150dp"
+        android:text="Join"
+        android:textAllCaps="false"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:id="@+id/btnAskJoin"
+        android:layout_alignParentBottom="true"
+        />
+
+    <TextView
+        android:id="@+id/tvHiring"
+        android:layout_toEndOf="@+id/tvTeamName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="ishiring" />
+
+</RelativeLayout>
