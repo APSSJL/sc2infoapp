@@ -34,10 +34,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.ImageHeaderParserUtils;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.sc2infoapp.CreateTeamActivity;
 import com.example.sc2infoapp.IPublished;
+import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.Post;
 import com.example.sc2infoapp.R;
 import com.example.sc2infoapp.Team;
+import com.example.sc2infoapp.TeamActivity;
 import com.example.sc2infoapp.Tournament;
 import com.example.sc2infoapp.UpdateProfileActivity;
 import com.example.sc2infoapp.UserFeedAdapter;
@@ -188,10 +191,13 @@ public class UserProfileFragment extends Fragment {
             tvTeam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: navigate to team info page
+                    Intent i = new Intent(getActivity(), TeamActivity.class);
+                    i.putExtra("teamName", team.getTeamName());
+                    startActivity(i);
                 }
             });
             btnTeam.setText("Leave team");
+
             btnTeam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -249,7 +255,8 @@ public class UserProfileFragment extends Fragment {
         btnCreateTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : REDIRECT TO TEAM CREATION PAGE
+                Intent i = new Intent(getActivity(), CreateTeamActivity.class);
+                startActivity(i);
                 Log.i(TAG, "team create");
             }
         });

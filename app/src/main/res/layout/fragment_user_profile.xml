@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/divProfileTeam"
             android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@+id/btnCreateTeam"
+            android:layout_alignParentEnd="true"
             android:text="Join team"
             android:textAllCaps="false" />
 
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divProfileTeam"
-            android:layout_alignParentEnd="true"
+            android:layout_toStartOf="@+id/btnTeam"
             android:layout_marginTop="0dp"
             android:text="Create team"
             android:textAllCaps="false" />

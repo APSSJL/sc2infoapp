@@ -49,7 +49,25 @@ public class Team extends ParseObject {
             Log.i("TEAM", String.valueOf(getInt("ratingVotes")));
 
             put(KEY_RATING, getInt("ratingSum") / (float)getInt("ratingVotes"));
+    }
 
+    public void setOwner(ParseUser user)
+    {
+        put(KEY_OWNER, user);
+    }
 
+    public void setInfo(String info)
+    {
+        put(KEY_INFO, info);
+    }
+
+    public void setName(String name)
+    {
+        put(KEY_NAME, name);
+    }
+
+    public void setHiring(Boolean isHiring)
+    {
+        put(KEY_HIRING, isHiring);
     }
 }
