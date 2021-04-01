@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -159,8 +160,8 @@ public class UserProfileFragment extends Fragment {
 
         populateUserFeed();
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             Log.i(TAG, "fail");
             return;
         }
@@ -217,7 +218,7 @@ public class UserProfileFragment extends Fragment {
         query.include(Post.KEY_AUTHOR);
         query.setLimit(5);
         query.whereEqualTo(Post.KEY_AUTHOR, ParseUser.getCurrentUser());
-        query.addDescendingOrder("created_at");
+        query.addDescendingOrder("createdAt");
 
         try {
             published.addAll(query.find());
@@ -273,9 +274,8 @@ public class UserProfileFragment extends Fragment {
 
 //Set Address
         try {
-            if(context != null)
-            {
-                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
             if (addresses != null && addresses.size() > 0) {
 
@@ -293,8 +293,6 @@ public class UserProfileFragment extends Fragment {
                 Log.d(TAG, "getAddress:  postalCode" + postalCode);
                 Log.d(TAG, "getAddress:  knownName" + knownName);
                 return city + ", " + country;
-            }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
