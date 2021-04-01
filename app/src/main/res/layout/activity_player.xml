@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context=".PlayerActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvPlayerName"
+        android:text="BlyOnFire"
+        android:layout_margin="10dp"
+        android:layout_alignParentStart="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvPlayerRace"
+        android:layout_margin="10dp"
+        android:layout_toEndOf="@+id/tvPlayerName"
+        android:text="Zerg"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:id="@+id/tvPlayerRating"
+        android:text="#20/#10 by users"
+        android:layout_alignParentEnd="true"
+        />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/ivPlayerPhoto"
+        android:layout_below="@+id/tvPlayerName"
+        android:layout_centerHorizontal="true"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvPlayerBio"
+        android:layout_below="@+id/ivPlayerPhoto"
+        android:text="text\n\n\n\nMore text"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPlayerBio"
+        android:id="@+id/rvMatches"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Matches"
+        android:layout_above="@+id/ratingBar"
+        android:layout_centerHorizontal="true"/>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnFollow"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
+        android:layout_marginEnd="20dp"
+        android:numStars="10"
+        android:isIndicator="false"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="190dp"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:id="@+id/btnFollow"
+        android:layout_alignParentBottom="true"
+        android:text="Follow"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="190dp"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:id="@+id/btnComment"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="Comment"
+        />
+
+</RelativeLayout>
