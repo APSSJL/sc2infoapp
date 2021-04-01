@@ -8,7 +8,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/tvTeamName"
         android:text="TeamName"/>
 
@@ -40,9 +40,9 @@
         android:text="Join"
         android:textAllCaps="false"
         android:layout_height="50dp"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
         android:id="@+id/btnAskJoin"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/ratingBar"
         />
 
     <TextView
@@ -52,5 +52,19 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:text="ishiring" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:numStars="10"
+        android:isIndicator="false"
+        />
 
 </RelativeLayout>

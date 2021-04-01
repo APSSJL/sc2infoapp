@@ -1,5 +1,8 @@
 package com.example.sc2infoapp;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -19,6 +22,7 @@ public class Team extends ParseObject {
     public static final String KEY_HIRING = "isHiring";
     public static final String KEY_LINEUP = "lineup";
     public static final String KEY_REQ = "joinRequests";
+    public static final String KEY_RATING = "rating";
 
     public String getTeamName(){return getString(KEY_NAME);}
     public ParseUser getOwner(){return getParseUser(KEY_OWNER);}
@@ -35,4 +39,17 @@ public class Team extends ParseObject {
         }
     }
     public void UpdateRequests(String user){add(KEY_REQ, user);}
+    public double getRating(){return  getDouble(KEY_RATING);};
+    public void setRating(int i)
+    {
+            increment("ratingSum", i);
+            increment("ratingVotes");
+            put("rated", true);
+            Log.i("TEAM", String.valueOf(getInt("ratingSum")));
+            Log.i("TEAM", String.valueOf(getInt("ratingVotes")));
+
+            put(KEY_RATING, getInt("ratingSum") / (float)getInt("ratingVotes"));
+
+
+    }
 }

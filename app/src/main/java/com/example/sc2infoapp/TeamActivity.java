@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
@@ -19,8 +22,16 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -31,6 +42,7 @@ public class TeamActivity extends AppCompatActivity {
     Button btnManage;
     RecyclerView rvRoster;
     String teamName;
+    RatingBar rb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +56,99 @@ public class TeamActivity extends AppCompatActivity {
         tvHiring = findViewById(R.id.tvHiring);
         btnManage = findViewById(R.id.btnManage);
         rvRoster = findViewById(R.id.rvRoster);
+        rb = findViewById(R.id.ratingBar);
 
         teamName = getIntent().getStringExtra("teamName");
         Team t = tryGetTeam(teamName);
+
         if(t != null)
+        {
+            rb.setRating((int)(t.getRating()));
+            if(t.getBoolean("rated"))
+                rb.setIsIndicator(true);
+            else
+            {
+                rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                        t.setRating((int)rating);
+                        t.saveInBackground();
+                    }
+                });
+            }
+        }
+        else
+        {
+            rb.setVisibility(View.GONE);
+        }
+
+        if(t != null && t.getOwner() != null)
         {
             setupInternalTeam(t);
         }
         else
         {
-            //getInfoFromApi();
+            getInfoFromApi();
         }
 
+    }
+
+    private void getInfoFromApi() {
+        btnJoin.setVisibility(View.GONE);
+        btnManage.setVisibility(View.GONE);
+        tvHiring.setVisibility(View.GONE);
+        tvTeamName.setText(teamName);
+        ArrayList<Pair<String, String>> roster = new ArrayList<>();
+        ExternalTeamAdapter adapter = new ExternalTeamAdapter(roster, this);
+        TaskRunner taskRunner = new TaskRunner();
+
+        taskRunner.executeAsync(new LongRunningTask("Ence_eSports"), (data) -> {
+            // MyActivity activity = activityReference.get();
+            // activity.progressBar.setVisibility(View.GONE);
+            // populateData(activity, data) ;
+            Log.i("main", "ies alive");
+            Document doc = Jsoup.parse(data);
+            Elements x = doc.select("p");
+            StringBuilder sb = new StringBuilder();
+            int size = x.size();
+            getRoster(doc, roster);
+            for (int i = 1; i < size - 1; i++)
+            {
+                sb.append(x.get(i).text());
+            }
+            tvTeamInfo.setText(sb.toString());
+            adapter.notifyDataSetChanged();
+            Log.i("TEAM ACTIVITY", sb.toString());
+
+        });
+        rvRoster.setLayoutManager(new LinearLayoutManager(this));
+        rvRoster.setAdapter(adapter);
+    }
+
+    public void getRoster(Document doc, ArrayList<Pair<String, String>> resList)
+    {
+        Elements t = doc.select("table").select("tbody");
+        Element res = null;
+        for(Element e : t)
+        {
+            Element y = e.selectFirst("tr").selectFirst("th");
+            if(y != null && y.text().equals("Active Squad"))
+            {
+                res = e;
+                break;
+            }
+        }
+        Elements x = res.select("tr");
+        int size = x.size();
+        for(int i = 2; i < size; i++)
+        {
+
+            Elements rows = x.get(i).select("td");
+            String name = (rows.get(2).text());
+            String race = (rows.get(1).select("a").attr("title"));
+            resList.add(new Pair<>(name, race));
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -71,7 +164,10 @@ public class TeamActivity extends AppCompatActivity {
         {
             btnManage.setVisibility(View.GONE);
         }
-        Log.i("fuck", ParseUser.getCurrentUser().getUsername());
+        else
+        {
+            // TODO : redirect to manage team screen
+        }
         if(lineup.stream().anyMatch(t -> t.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())))
         {
             btnJoin.setVisibility(View.GONE);
@@ -88,6 +184,19 @@ public class TeamActivity extends AppCompatActivity {
         }
     }
 
+    class LongRunningTask implements Callable<String> {
+        private final String input;
+
+        public LongRunningTask(String input) {
+            this.input = input;
+        }
+
+        @Override
+        public String call() throws IOException, JSONException {
+            // Some long running task
+            return MainActivity.client.getPageByName(input);
+        }
+    }
 
     private Team tryGetTeam(String teamName)
     {

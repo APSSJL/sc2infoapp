@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigationView;
+    public static LiquipediaClient client = new LiquipediaClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent i = new Intent(MainActivity.this, TeamActivity.class);
-        i.putExtra("teamName", "test team");
+        i.putExtra("teamName", "cascade");
         startActivity(i);
 
 
