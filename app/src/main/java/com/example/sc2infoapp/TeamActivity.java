@@ -35,6 +35,7 @@ import java.util.concurrent.Callable;
 
 public class TeamActivity extends AppCompatActivity {
 
+    private static final String TAG = "TEAM ACTIVITY";
     TextView tvTeamName;
     TextView tvTeamInfo;
     TextView tvHiring;
@@ -103,19 +104,23 @@ public class TeamActivity extends AppCompatActivity {
         ExternalTeamAdapter adapter = new ExternalTeamAdapter(roster, this);
         TaskRunner taskRunner = new TaskRunner();
 
-        taskRunner.executeAsync(new LongRunningTask("Ence_eSports"), (data) -> {
+        taskRunner.executeAsync(new LongRunningTask(teamName), (data) -> {
             // MyActivity activity = activityReference.get();
             // activity.progressBar.setVisibility(View.GONE);
             // populateData(activity, data) ;
             Log.i("main", "ies alive");
             Document doc = Jsoup.parse(data);
-            Elements x = doc.select("p");
+            Elements x = doc.select("p,ul");
             StringBuilder sb = new StringBuilder();
             int size = x.size();
             getRoster(doc, roster);
-            for (int i = 1; i < size - 1; i++)
+            for (int i = 2; i < size - 1; i++)
             {
-                sb.append(x.get(i).text());
+                String v = x.get(i).text();
+                if(v.startsWith("Best Yearly") || v.startsWith("1 History"))
+                    break;
+                sb.append(v);
+                Log.i(TAG, String.valueOf(x.get(i).text()));
             }
             tvTeamInfo.setText(sb.toString());
             adapter.notifyDataSetChanged();
