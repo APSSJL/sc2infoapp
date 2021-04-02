@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigationView;
     public static LiquipediaClient client = new LiquipediaClient();
+    public static AligulacClient aligulacClient = new AligulacClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

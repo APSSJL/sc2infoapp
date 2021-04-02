@@ -8,6 +8,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +75,39 @@ public class PlayerActivity extends AppCompatActivity {
         playerName = getIntent().getStringExtra("playerName");
 
         getLiquipediaData();
+        getParseData();
+        getAligulacData();
 
+
+
+        btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO : navigate to comment section
+            }
+        });
+
+
+
+    }
+
+    public void getAligulacData()
+    {
+        TaskRunner taskRunner = new TaskRunner();
+        taskRunner.executeAsync(new AligulacTask(playerName), (data) ->
+        {
+            JSONObject cur = null;
+            try {
+                cur = data.getJSONObject("current_rating");
+                double vp = cur.getDouble("tot_vp");
+                double vt = cur.getDouble("tot_vt");
+                double vz = cur.getDouble("tot_vz");
+                tvRating.setText(String.format("vp: %f, vt: %f, vz: %f", vp, vt, vz));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
     public void getLiquipediaData()
@@ -95,6 +131,43 @@ public class PlayerActivity extends AppCompatActivity {
         });
     }
 
+    public void getParseData()
+    {
+        ParseQuery<Player> query = ParseQuery.getQuery(Player.class);
+        query.whereEqualTo("name", playerName);
+
+        try {
+            Player p = query.find().get(0);
+
+            btnFollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ParseUser user = ParseUser.getCurrentUser();
+                    user.add("follows", p.getObjectId());
+                }
+            });
+
+            ratingBar.setRating((int)(p.getRating()));
+            if(p.getBoolean("rated"))
+                ratingBar.setIsIndicator(true);
+            else
+            {
+                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                        p.setRating((int)rating);
+                        p.saveInBackground();
+                    }
+                });
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     class LongRunningTask implements Callable<JSONObject> {
         private final String input;
 
@@ -106,6 +179,20 @@ public class PlayerActivity extends AppCompatActivity {
         public JSONObject call() throws IOException, JSONException {
             // Some long running task
             return MainActivity.client.getFullPage(input);
+        }
+    }
+
+    class AligulacTask implements Callable<JSONObject> {
+        private final String input;
+
+        public AligulacTask(String input) {
+            this.input = input;
+        }
+
+        @Override
+        public JSONObject call() throws IOException, JSONException {
+            // Some long running task
+            return MainActivity.aligulacClient.getPlayer(input);
         }
     }
 }

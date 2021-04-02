@@ -14,6 +14,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Post.class);
         ParseObject.registerSubclass(UserTournament.class);
         ParseObject.registerSubclass(Tournament.class);
+        ParseObject.registerSubclass(Player.class);
 
         Parse.initialize(
                 new Parse.Configuration.Builder(this)
