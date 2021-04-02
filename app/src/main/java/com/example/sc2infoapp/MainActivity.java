@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent i = new Intent(MainActivity.this, PlayerActivity.class);
-        i.putExtra("")
-
+        i.putExtra("playerName", "Serral");
+        startActivity(i);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

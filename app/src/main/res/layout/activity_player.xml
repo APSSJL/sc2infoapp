@@ -51,12 +51,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvPlayerBio"
+        android:layout_above="@+id/tvMatches"
         android:id="@+id/rvMatches"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/tvMatches"
         android:text="Matches"
         android:layout_above="@+id/ratingBar"
         android:layout_centerHorizontal="true"/>

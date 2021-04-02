@@ -44,7 +44,7 @@ public class LiquipediaParser {
         Elements x = doc.select("p");
         StringBuilder sb = new StringBuilder();
         int size = x.size();
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i < 3; i++)
         {
             String v = x.get(i).text();
             if(v.contains("&#10;\n"))
