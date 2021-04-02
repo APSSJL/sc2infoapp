@@ -12,6 +12,7 @@ public class ParseApplication extends Application {
 
         ParseObject.registerSubclass(Team.class);
         ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(Match.class);
         ParseObject.registerSubclass(UserTournament.class);
         ParseObject.registerSubclass(Tournament.class);
         ParseObject.registerSubclass(Player.class);

@@ -9,6 +9,11 @@ import com.parse.ParseObject;
 public class Player extends ParseObject {
     private static final String KEY_RATING = "rating";
 
+    public  String getName()
+    {
+        return getString("name");
+    }
+
     public double getRating(){return  getDouble(KEY_RATING);};
     public void setRating(int i)
     {

@@ -27,7 +27,7 @@ public class AligulacClient {
     public JSONObject getPlayer(String name) throws IOException, JSONException {
         String apiUrl = getApiUrl("/player/?");
         HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
-        urlBuilder.addQueryParameter("lp_name", name);
+        urlBuilder.addQueryParameter("tag", name);
         urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
         String url = urlBuilder.build().toString();
         Request request = new Request.Builder().url(url).build();

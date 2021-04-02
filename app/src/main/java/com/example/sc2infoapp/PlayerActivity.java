@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -28,6 +30,7 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class PlayerActivity extends AppCompatActivity {
@@ -43,7 +46,7 @@ public class PlayerActivity extends AppCompatActivity {
     Button btnFollow;
     Button btnComment;
     MatchesAdapter adapter;
-    ArrayList<Pair<String,String>> opponents;
+    ArrayList<IMatch> opponents;
 
     String playerName;
 
@@ -122,8 +125,10 @@ public class PlayerActivity extends AppCompatActivity {
                 tvBio.setText(parser.getBio(doc));
                 tvName.setText(String.format("%s: %s", playerName, parser.getName(doc)));
                 //parser.getPhotoLink(data, playerName);
-
-                opponents.addAll(parser.getRecentMatches(doc));
+                for(Pair<String, String> p: parser.getRecentMatches(doc))
+                {
+                    opponents.add(new ExternalMatch(playerName + " vs " + p.first, p.second));
+                }
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -147,6 +152,20 @@ public class PlayerActivity extends AppCompatActivity {
                 }
             });
 
+            try {
+                ParseFile file = (p.getParseFile("picture"));
+                if (p != null) {
+                    Log.i(TAG, "loaded");
+                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivPicture);
+                } else {
+                    Log.i(TAG, "null");
+                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivPicture);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            getMatches(p);
             ratingBar.setRating((int)(p.getRating()));
             if(p.getBoolean("rated"))
                 ratingBar.setIsIndicator(true);
@@ -162,6 +181,33 @@ public class PlayerActivity extends AppCompatActivity {
                 });
             }
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void getMatches(Player p)
+    {
+        ParseQuery<ParseUser> q1 = ParseUser.getQuery();
+
+        q1.include("player");
+        q1.whereEqualTo("player",p);
+        try {
+            ParseUser x = q1.find().get(0);
+            ParseQuery<Match> q2 = ParseQuery.getQuery(Match.class);
+            q2.include("Player2");
+            q2.include("Player1");
+            q2.whereEqualTo("Player2", x);
+            opponents.addAll(q2.find());
+
+            ParseQuery<Match> q3 = ParseQuery.getQuery(Match.class);
+            q3.include("Player2");
+            q3.include("Player1");
+            q3.whereEqualTo("Player1", x);
+            opponents.addAll(q3.find());
+            Log.i("a","b");
+            adapter.notifyDataSetChanged();
         } catch (ParseException e) {
             e.printStackTrace();
         }

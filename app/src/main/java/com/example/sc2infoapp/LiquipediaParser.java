@@ -81,6 +81,20 @@ public class LiquipediaParser {
             String time = td.get(3).selectFirst("span").text();
             opponents.add(new Pair<>(opp, time));
         }
+
+        if(tags.size() == 3)
+        {
+            matches = tags.get(tags.size() - 2);
+            bodies = matches.select("tbody");
+            for(Element e : bodies)
+            {
+                Elements td = e.select("td");
+                String opp = td.get(2).select("span").get(1).selectFirst("a").attr("title");
+                String time = td.get(3).selectFirst("span").text();
+                opponents.add(new Pair<>(opp, time));
+            }
+        }
+
         return opponents;
     }
 }
