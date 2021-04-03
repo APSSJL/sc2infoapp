@@ -71,7 +71,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
 
         try {
-            user.fetchIfNeeded();
+            user.fetch();
         } catch (ParseException e) {
             e.printStackTrace();
         }
