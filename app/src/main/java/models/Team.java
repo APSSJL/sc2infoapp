@@ -77,4 +77,5 @@ public class Team extends ParseObject {
             return false;
         return  (((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId()));
     }
+
 }

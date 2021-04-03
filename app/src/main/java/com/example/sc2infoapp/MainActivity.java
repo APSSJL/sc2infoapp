@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        Intent i = new Intent(MainActivity.this, TeamActivity.class);
+        i.putExtra("teamName", "test team");
+        startActivity(i);
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -63,6 +67,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bottomNavigationView.setSelectedItemId(R.id.action_home);
+        //bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 }

@@ -14,11 +14,13 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,9 +32,13 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import adapters.ExternalTeamAdapter;
+import adapters.TeamMatchAdapter;
 import adapters.TeamPlayerAdapter;
+import models.Match;
+import models.Player;
 import models.TaskRunner;
 import models.Team;
+import models.TeamMatch;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -45,7 +51,9 @@ public class TeamActivity extends AppCompatActivity {
     RecyclerView rvRoster;
     String teamName;
     RatingBar rb;
+    RecyclerView rvMatches;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -59,12 +67,14 @@ public class TeamActivity extends AppCompatActivity {
         btnManage = findViewById(R.id.btnManage);
         rvRoster = findViewById(R.id.rvRoster);
         rb = findViewById(R.id.ratingBar);
+        rvMatches = findViewById(R.id.rvTeamMatches);
 
         teamName = getIntent().getStringExtra("teamName");
         Team t = tryGetTeam(teamName);
 
         if(t != null)
         {
+            getMatches(t);
             rb.setRating((int)(t.getRating()));
             if(t.getRated())
                 rb.setIsIndicator(true);
@@ -219,5 +229,43 @@ public class TeamActivity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void getMatches(Team t)
+    {
+
+        ArrayList<TeamMatch> matches = new ArrayList<>();
+        TeamMatchAdapter adapter = new TeamMatchAdapter(this, matches);
+        rvMatches.setLayoutManager(new LinearLayoutManager(this));
+        rvMatches.setAdapter(adapter);
+
+        ParseQuery<TeamMatch> q2 = ParseQuery.getQuery(TeamMatch.class);
+        q2.include("Team2");
+        q2.include("Team1");
+        q2.whereEqualTo("Team2", t);
+        q2.findInBackground(new FindCallback<TeamMatch>() {
+            @Override
+            public void done(List<TeamMatch> objects, ParseException e) {
+                matches.addAll(objects);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
+
+        ParseQuery<TeamMatch> q3 = ParseQuery.getQuery(TeamMatch.class);
+        q3.include("Team2");
+        q3.include("Team1");
+        q3.whereEqualTo("Team1", t);
+        q3.findInBackground(new FindCallback<TeamMatch>() {
+            @Override
+            public void done(List<TeamMatch> objects, ParseException e) {
+                matches.addAll(objects);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        Log.i("a","b");
+
     }
 }

@@ -23,11 +23,21 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/rvRoster"
-        android:layout_below="@id/tvTeamInfo"/>
+        android:layout_below="@id/tvTeamInfo"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnAskJoin"
+        android:id="@+id/rvTeamMatches"
+        android:layout_below="@+id/rvRoster"
+        />
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@color/transparent"
+        android:textColor="@color/accent_color"
         android:text="Manage"
         android:textAllCaps="false"
         android:layout_width="150dp"
@@ -36,7 +46,7 @@
         android:id="@+id/btnManage"
         />
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="150dp"
         android:text="Join"
         android:textAllCaps="false"
