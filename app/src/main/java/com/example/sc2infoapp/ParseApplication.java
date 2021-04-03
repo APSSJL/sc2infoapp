@@ -11,6 +11,7 @@ import models.Post;
 import models.Team;
 import models.TeamMatch;
 import models.Tournament;
+import models.UserInfo;
 import models.UserTournament;
 
 public class ParseApplication extends Application {
@@ -25,6 +26,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Tournament.class);
         ParseObject.registerSubclass(Player.class);
         ParseObject.registerSubclass(TeamMatch.class);
+        ParseObject.registerSubclass(UserInfo.class);
 
         Parse.initialize(
                 new Parse.Configuration.Builder(this)

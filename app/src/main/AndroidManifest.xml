@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sc2InfoApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TeamManageActivity"></activity>
+        <activity android:name=".ViewProfileActivity"></activity>
+        <activity android:name=".TeamManageActivity" />
         <activity android:name=".PlayerActivity" />
         <activity android:name=".CreateTeamActivity" />
         <activity android:name=".TeamActivity" />

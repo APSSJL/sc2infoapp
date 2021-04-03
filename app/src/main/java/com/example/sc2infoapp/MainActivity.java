@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseUser;
 
 import org.json.JSONException;
 
@@ -35,11 +36,6 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        Intent i = new Intent(MainActivity.this, TeamActivity.class);
-        i.putExtra("teamName", "Alpha_X");
-        startActivity(i);
 
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);

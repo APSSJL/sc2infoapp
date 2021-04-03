@@ -13,6 +13,8 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import models.UserInfo;
+
 public class SignupActivity extends AppCompatActivity {
 
     private static final String TAG = "Signup activity";
@@ -46,6 +48,9 @@ public class SignupActivity extends AppCompatActivity {
                             return;
                         }
                         Toast.makeText(SignupActivity.this, "User created!", Toast.LENGTH_SHORT).show();
+                        UserInfo info = new UserInfo();
+                        user.put("Additional", info);
+                        user.saveInBackground();
                         Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                         startActivity(i);
                         finish();

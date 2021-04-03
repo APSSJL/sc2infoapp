@@ -106,6 +106,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        published.clear();
         setupUserInfo();
     }
 
@@ -151,7 +152,7 @@ public class UserProfileFragment extends Fragment {
         rvItems.setLayoutManager(manager);
         rvItems.setAdapter(adapter);
 
-        populateUserFeed();
+        populateUserFeed(ParseUser.getCurrentUser(), published, adapter);
 
         if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -204,7 +205,7 @@ public class UserProfileFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void populateUserFeed() {
+    public static void populateUserFeed(ParseUser currentUser, List<IPublished> published, UserFeedAdapter adapter) {
         ParseQuery<Tournament> query1 =  ParseQuery.getQuery(Tournament.class);
         query1.include("userCreated");
         query1.include("userCreated.organizer");
@@ -213,7 +214,7 @@ public class UserProfileFragment extends Fragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.setLimit(5);
-        query.whereEqualTo(Post.KEY_AUTHOR, ParseUser.getCurrentUser());
+        query.whereEqualTo(Post.KEY_AUTHOR, currentUser);
         query.addDescendingOrder("createdAt");
 
         try {
@@ -223,7 +224,7 @@ public class UserProfileFragment extends Fragment {
         }
         try {
             List<Tournament> x = query1.find();
-            x.removeIf(t -> !(t.getUserCreated().getOrganizer().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())));
+            x.removeIf(t -> !(t.getUserCreated().getOrganizer().getObjectId().equals(currentUser.getObjectId())));
             Log.i(TAG, String.valueOf(x.size()));
             published.addAll(x);
         } catch (ParseException e) {

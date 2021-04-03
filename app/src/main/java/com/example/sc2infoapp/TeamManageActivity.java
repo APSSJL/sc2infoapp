@@ -1,8 +1,10 @@
 package com.example.sc2infoapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +14,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import adapters.RequestAdapter;
 import models.Team;
 
 public class TeamManageActivity extends AppCompatActivity {
@@ -28,12 +35,14 @@ public class TeamManageActivity extends AppCompatActivity {
     TextView tvCharCounter;
     RecyclerView rvRequests;
     Team team;
-
+    RequestAdapter adapter;
+    ArrayList<ParseUser> requests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_manage);
+
 
         edTeamName = findViewById(R.id.edTeamName);
         edTeamInfo = findViewById(R.id.edTeamInfo);
@@ -42,7 +51,15 @@ public class TeamManageActivity extends AppCompatActivity {
         tvCharCounter = findViewById(R.id.tvCharCount);
         rvRequests = findViewById(R.id.rvRequests);
 
+        requests = new ArrayList<>();
+
+
+
         team = getIntent().getParcelableExtra("team");
+        if(team == null)
+            finish();
+
+        adapter = new RequestAdapter(this, requests, team, this);
 
         edTeamName.setText(team.getTeamName());
         edTeamInfo.setText(team.getTeamInfo());
@@ -74,7 +91,6 @@ public class TeamManageActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Team team = new Team();
                 team.setOwner(ParseUser.getCurrentUser());
                 team.setName(name);
                 team.setInfo(edTeamInfo.getText().toString());
@@ -88,12 +104,29 @@ public class TeamManageActivity extends AppCompatActivity {
                             return;
                         }
                         Toast.makeText(TeamManageActivity.this, "Team saved!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
             }
         });
 
+        rvRequests.setLayoutManager(new LinearLayoutManager(this));
+        rvRequests.setAdapter(adapter);
+
+        getRequests();
+    }
 
 
+    public void getRequests()
+    {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("objectId", team.getJoinRequests());
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                requests.addAll(objects);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 }

@@ -80,7 +80,30 @@ public class Team extends ParseObject {
 
     public void addToLineup(ParseUser user)
     {
+        getRelation("lineup").add(user);
+        ArrayList<String> a = (ArrayList<String>) get("joinRequests");
+        assert a != null;
+        a.remove(user.getObjectId());
+        put("joinRequests", a);
+        saveInBackground();
         
+    }
+
+    public void removeRequest(String userId)
+    {
+        ArrayList<String> a = (ArrayList<String>) get("joinRequests");
+        assert a != null;
+        a.remove(userId);
+        put("joinRequests", a);
+        saveInBackground();
+    }
+
+    public ArrayList<String> getJoinRequests()
+    {
+        Object a = get("joinRequests");
+        if(a == null)
+            return new ArrayList<>();
+        return  (ArrayList<String>)a;
     }
 
 }
