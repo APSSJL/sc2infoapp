@@ -65,7 +65,7 @@ public class TeamActivity extends AppCompatActivity {
         if(t != null)
         {
             rb.setRating((int)(t.getRating()));
-            if(t.getBoolean("rated"))
+            if(t.getRated())
                 rb.setIsIndicator(true);
             else
             {

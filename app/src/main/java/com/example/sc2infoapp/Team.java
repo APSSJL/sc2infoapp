@@ -44,7 +44,7 @@ public class Team extends ParseObject {
     {
             increment("ratingSum", i);
             increment("ratingVotes");
-            put("rated", true);
+            add("rated", ParseUser.getCurrentUser().getObjectId());
             Log.i("TEAM", String.valueOf(getInt("ratingSum")));
             Log.i("TEAM", String.valueOf(getInt("ratingVotes")));
 
@@ -69,5 +69,12 @@ public class Team extends ParseObject {
     public void setHiring(Boolean isHiring)
     {
         put(KEY_HIRING, isHiring);
+    }
+
+    public boolean getRated() {
+        Object a = get("rated");
+        if(a == null)
+            return false;
+        return  (((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId()));
     }
 }

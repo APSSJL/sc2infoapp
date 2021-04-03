@@ -1,15 +1,23 @@
 package com.example.sc2infoapp;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ExternalMatch implements IMatch{
     private String opponent;
     private String time;
+    protected static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
+    protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
     public ExternalMatch(String opponent, String time)
     {
         this.opponent = opponent;
-        this.time = time;
+        try {
+            this.time = DATE_FORMATTER.format(DATE_PARRSER.parse(time));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -167,7 +167,7 @@ public class PlayerActivity extends AppCompatActivity {
 
             getMatches(p);
             ratingBar.setRating((int)(p.getRating()));
-            if(p.getBoolean("rated"))
+            if(p.getRated())
                 ratingBar.setIsIndicator(true);
             else
             {

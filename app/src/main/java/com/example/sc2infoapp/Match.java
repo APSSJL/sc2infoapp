@@ -7,11 +7,15 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 @ParseClassName("PlayerMatch")
 public class Match extends ParseObject implements IMatch {
-    public String getTime(){return getDate("time").toString();}
+    protected static final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
+    public String getTime(){return dt.format(getDate("time"));}
     public String getOpponent()
     {
         ParseUser p1 = ((ParseUser) getParseObject("Player1"));
@@ -27,6 +31,19 @@ public class Match extends ParseObject implements IMatch {
 
     }
 
+    public Pair<Integer, Integer> getDistribution()
+    {
+        return new Pair<>(getInt("p1PredictionVotes"), getInt("p2PredictionVotes"));
+    }
+
+
+    public Boolean getPredicted()
+    {
+        Object a = get("predicted");
+        if(a == null)
+            return false;
+        return ((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId());
+    }
     public int getMatchType()
     {
         return INTERNAL;

@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -141,6 +144,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         Button btnp1;
         Button btnp2;
         Button btnPredict;
+        ProgressBar pbChances;
 
         public InternalMatchesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -149,28 +153,53 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             btnp1 = itemView.findViewById(R.id.btnBet1);
             btnp2 = itemView.findViewById(R.id.btnBet2);
             btnPredict = itemView.findViewById(R.id.btnPredict);
-            btnPredict.setVisibility(View.GONE);
+            pbChances = itemView.findViewById(R.id.pbChances);
         }
 
-        public void bind(IMatch match)
-        {
+        public void bind(IMatch match) {
             Match m = (Match) match;
             tvName.setText(match.getOpponent());
             tvTime.setText(match.getTime());
-            btnp1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    m.increment("p1PredictionVotes");
-                    m.saveInBackground();
-                }
-            });
-            btnp2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    m.increment("p2PredictionVotes");
-                    m.saveInBackground();
-                }
-            });
+
+            if (!((Match) match).getPredicted()) {
+                btnp1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        m.add("predicted", ParseUser.getCurrentUser().getObjectId());
+                        m.increment("p1PredictionVotes");
+                        m.saveInBackground();
+                        pbChances.setProgress(pbChances.getProgress() + 1);
+                        pbChances.setMax(pbChances.getMax() + 1);
+                        btnp1.setEnabled(false);
+                        btnp2.setEnabled(false);
+                    }
+                });
+                btnp2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        m.add("predicted", ParseUser.getCurrentUser().getObjectId());
+                        m.increment("p2PredictionVotes");
+                        m.saveInBackground();
+                        pbChances.setMax(pbChances.getMax() + 1);
+                        btnp1.setEnabled(false);
+                        btnp2.setEnabled(false);
+                    }
+                });
+            }
+            else
+            {
+                btnp1.setEnabled(false);
+                btnp2.setEnabled(false);
+            }
+
+            Pair<Integer, Integer> chances = ((Match) match).getDistribution();
+            if(chances.first + chances.second == 0)
+                pbChances.setIndeterminate(true);
+            else
+            {
+                pbChances.setMax(chances.first + chances.second);
+                pbChances.setProgress(chances.first);
+            }
         }
     }
 

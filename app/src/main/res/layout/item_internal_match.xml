@@ -18,28 +18,29 @@
         android:text="4/1/2021 08.08"
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/tvVersus"/>
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/btnPredict"
-        android:text="Predict!"
-        android:textAllCaps="false"
-        />
+
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="40dp"
-        android:layout_toEndOf="@+id/tvTime"
         android:layout_height="40dp"
         android:id="@+id/btnBet1"
+        android:layout_alignParentEnd="true"
         android:text="p1"
         android:textAllCaps="false"
         />
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="40dp"
         android:id="@+id/btnBet2"
-        android:layout_toLeftOf="@+id/btnPredict"
+        android:layout_toLeftOf="@+id/btnBet1"
         android:layout_height="40dp"
         android:text="p2"
         android:textAllCaps="false"
+        />
+
+    <ProgressBar
+        android:id="@+id/pbChances"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnBet1"
         />
 </RelativeLayout>

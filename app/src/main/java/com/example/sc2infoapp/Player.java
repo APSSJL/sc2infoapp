@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
 
 @ParseClassName("Player")
 public class Player extends ParseObject {
@@ -19,10 +22,17 @@ public class Player extends ParseObject {
     {
         increment("ratingSum", i);
         increment("ratingVotes");
-        put("rated", true);
+        add("rated", ParseUser.getCurrentUser().getObjectId());
         Log.i("PLAYER", String.valueOf(getInt("ratingSum")));
         Log.i("PLAYER", String.valueOf(getInt("ratingVotes")));
 
         put(KEY_RATING, getInt("ratingSum") / (float)getInt("ratingVotes"));
+    }
+
+    public boolean getRated() {
+        Object a = get("rated");
+        if(a == null)
+            return false;
+        return ((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId());
     }
 }
