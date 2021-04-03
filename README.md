@@ -41,12 +41,13 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] User can edit preffered SC2 race(zerg/terran/protoss/random)
     - [x] User can add profile image
     - [x] User can edit MMR
-    - [ ] User can join and leave team
-    - [ ] User can create team
+    - [x] User can join and leave team
+    - [x] User can create team
 - [x] User can view profile
     - [x] User can view account info
-    - [ ] If user is in team, he/she can tap on team name to go to the team page
+    - [x] If user is in team, he/she can tap on team name to go to the team page
     - [x] User can see recent posts and tournaments
+    - [x] User can logout
 - [x] User can create post
     - [ ] By tapping on the post, user can go to the detailed post view
     - [ ] User can rate post in detailed view
@@ -55,15 +56,14 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
  - [ ] Users can view match detailed page
     - [ ] Users can leave predictions
     - [ ] Users can get predictions from aligulac
-- [ ] Users can create teams
-- [ ] User can view team detailed page
-    - [ ] Players without team can ask to join
-    - [ ] Team owners can manage team
-        - [ ] Can change team settings
-        - [ ] Can view, approve or decline requests
-        - [ ] Can set ishiring chackbox to find new players
-        - [ ] Can view user profile by tapping on the username in requests recycler view
-- [ ] User can view player's detailed page
+- [x] User can view team detailed page
+    - [x] Players without team can ask to join
+    - [x] Team owners can manage team
+        - [x] Can change team settings
+        - [x] Can view, approve or decline requests
+        - [x] Can set ishiring chackbox to find new players
+        - [x] Can view user profile by tapping on the username in requests recycler view
+- [x] User can view player's detailed page
 - [ ] User can rate and leave comments:
     - [ ] Players
     - [ ] Matches
