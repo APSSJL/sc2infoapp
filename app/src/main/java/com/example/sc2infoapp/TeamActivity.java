@@ -85,11 +85,6 @@ public class TeamActivity extends AppCompatActivity {
         teamName = getIntent().getStringExtra("teamName");
         Team t = tryGetTeam(teamName);
 
-        Intent i = new Intent(TeamActivity.this, TeamManageActivity.class);
-        i.putExtra("team", t);
-        startActivity(i);
-        finish();
-
         if(t != null)
         {
             getMatches(t);
@@ -219,13 +214,20 @@ public class TeamActivity extends AppCompatActivity {
         TeamPlayerAdapter adapter = new TeamPlayerAdapter(lineup, this);
         rvRoster.setAdapter(adapter);
         rvRoster.setLayoutManager(new LinearLayoutManager(this));
-        if(ParseUser.getCurrentUser() != team.getOwner())
+        if(!ParseUser.getCurrentUser().getObjectId().equals(team.getOwner().getObjectId()))
         {
             btnManage.setVisibility(View.GONE);
         }
         else
         {
-            // TODO : redirect to manage team screen
+            btnManage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(TeamActivity.this, TeamManageActivity.class);
+                    i.putExtra("team", team);
+                    startActivity(i);
+                }
+            });
         }
         if(lineup.stream().anyMatch(t -> t.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())))
         {
