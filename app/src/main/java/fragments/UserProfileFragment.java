@@ -42,6 +42,7 @@ import com.example.sc2infoapp.TeamActivity;
 import models.Tournament;
 import com.example.sc2infoapp.UpdateProfileActivity;
 import adapters.UserFeedAdapter;
+import models.UserInfo;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -166,7 +167,11 @@ public class UserProfileFragment extends Fragment {
 
     private void teamButtonSetup()
     {
-        team = (Team) user.get("team");
+        UserInfo info = (UserInfo) user.get("Additional");
+        if(info != null)
+        {
+            team = (Team) info.get("team");
+        }
 
         if (team == null) {
             tvTeam.setText("No team");

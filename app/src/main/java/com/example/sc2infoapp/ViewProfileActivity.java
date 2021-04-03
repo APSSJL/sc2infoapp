@@ -33,6 +33,7 @@ import adapters.UserFeedAdapter;
 import fragments.UserProfileFragment;
 import interfaces.IPublished;
 import models.Team;
+import models.UserInfo;
 
 public class ViewProfileActivity extends AppCompatActivity {
 
@@ -67,12 +68,20 @@ public class ViewProfileActivity extends AppCompatActivity {
         adapter = new UserFeedAdapter(this, published);
 
         user = getIntent().getParcelableExtra("user");
-        team = (Team) user.get("team");
+
+
         try {
             user.fetchIfNeeded();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        UserInfo info = (UserInfo) user.get("Additional");
+        if(info != null)
+        {
+            team = (Team) info.get("team");
+        }
+
         tvName.setText(user.getUsername());
         tvRace.setText(user.getString("inGameRace"));
         tvMmr.setText(String.valueOf(user.getInt("MMR")));
