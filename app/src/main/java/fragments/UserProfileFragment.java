@@ -36,6 +36,8 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.sc2infoapp.CreateTeamActivity;
 import interfaces.IPublished;
 import models.Post;
+
+import com.example.sc2infoapp.LoginActivity;
 import com.example.sc2infoapp.R;
 import models.Team;
 import com.example.sc2infoapp.TeamActivity;
@@ -46,6 +48,7 @@ import models.UserInfo;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -74,6 +77,7 @@ public class UserProfileFragment extends Fragment {
     Button btnTeam;
     Button btnCreateTeam;
     ParseUser user;
+    Button btnLogout;
     UserFeedAdapter adapter;
     List<IPublished> published;
     Team team;
@@ -88,6 +92,7 @@ public class UserProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         published = new ArrayList<>();
         tvName = view.findViewById(R.id.tvName);
+        btnLogout = view.findViewById(R.id.btnLogout);
         tvRace = view.findViewById(R.id.tvRace);
         ivPicture = view.findViewById(R.id.ivPicture);
         tvLocation = view.findViewById(R.id.tvLocation);
@@ -108,6 +113,7 @@ public class UserProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         published.clear();
+        teamButtonSetup();
         setupUserInfo();
     }
 
@@ -147,6 +153,16 @@ public class UserProfileFragment extends Fragment {
             }
         });
 
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                Intent i = new Intent(getActivity(), LoginActivity.class);
+                startActivity(i);
+                Objects.requireNonNull(getActivity()).finish();
+            }
+        });
+
         teamButtonSetup();
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -167,11 +183,20 @@ public class UserProfileFragment extends Fragment {
 
     private void teamButtonSetup()
     {
-        UserInfo info = (UserInfo) user.get("Additional");
-        if(info != null)
-        {
-            team = (Team) info.get("team");
-        }
+
+            try {
+
+                user.fetch();
+                UserInfo info = (UserInfo) user.getParseObject("Additional");
+                if(info != null) {
+                    info.fetch();
+                    team = (Team) info.get("team");
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
 
         if (team == null) {
             tvTeam.setText("No team");
