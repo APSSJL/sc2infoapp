@@ -18,6 +18,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import models.Team;
+import models.UserInfo;
 
 public class CreateTeamActivity extends AppCompatActivity {
 
@@ -82,6 +83,12 @@ public class CreateTeamActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+                UserInfo info = (UserInfo) ParseUser.getCurrentUser().get("Additional");
+                if(info != null)
+                {
+                    info.put("team", team);
+                    team.saveInBackground();
+                }
             }
         });
 
