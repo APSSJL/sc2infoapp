@@ -5,6 +5,15 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import models.Match;
+import models.Player;
+import models.Post;
+import models.Team;
+import models.TeamMatch;
+import models.Tournament;
+import models.UserInfo;
+import models.UserTournament;
+
 public class ParseApplication extends Application {
     @Override
     public void onCreate() {
@@ -12,8 +21,12 @@ public class ParseApplication extends Application {
 
         ParseObject.registerSubclass(Team.class);
         ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(Match.class);
         ParseObject.registerSubclass(UserTournament.class);
         ParseObject.registerSubclass(Tournament.class);
+        ParseObject.registerSubclass(Player.class);
+        ParseObject.registerSubclass(TeamMatch.class);
+        ParseObject.registerSubclass(UserInfo.class);
 
         Parse.initialize(
                 new Parse.Configuration.Builder(this)

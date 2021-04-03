@@ -1,4 +1,4 @@
-package com.example.sc2infoapp;
+package models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;

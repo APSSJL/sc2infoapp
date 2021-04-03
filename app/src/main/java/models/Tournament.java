@@ -1,9 +1,9 @@
-package com.example.sc2infoapp;
+package models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
-import java.util.Date;
+import interfaces.IPublished;
 
 @ParseClassName("tournament")
 public class Tournament extends ParseObject implements IPublished {
