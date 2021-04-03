@@ -34,6 +34,8 @@ import java.util.concurrent.Callable;
 import adapters.ExternalTeamAdapter;
 import adapters.TeamMatchAdapter;
 import adapters.TeamPlayerAdapter;
+import interfaces.IMatch;
+import models.ExternalMatch;
 import models.Match;
 import models.Player;
 import models.TaskRunner;
@@ -52,6 +54,8 @@ public class TeamActivity extends AppCompatActivity {
     String teamName;
     RatingBar rb;
     RecyclerView rvMatches;
+    ArrayList<IMatch> matches;
+    TeamMatchAdapter matchAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -68,6 +72,14 @@ public class TeamActivity extends AppCompatActivity {
         rvRoster = findViewById(R.id.rvRoster);
         rb = findViewById(R.id.ratingBar);
         rvMatches = findViewById(R.id.rvTeamMatches);
+
+
+
+        matches = new ArrayList<>();;
+        matchAdapter = new TeamMatchAdapter(this, matches);
+
+        rvMatches.setLayoutManager(new LinearLayoutManager(this));
+        rvMatches.setAdapter(matchAdapter);
 
         teamName = getIntent().getStringExtra("teamName");
         Team t = tryGetTeam(teamName);
@@ -95,6 +107,8 @@ public class TeamActivity extends AppCompatActivity {
             rb.setVisibility(View.GONE);
         }
 
+        getLiquipediaMatches();
+
         if(t != null && t.getOwner() != null)
         {
             setupInternalTeam(t);
@@ -104,6 +118,29 @@ public class TeamActivity extends AppCompatActivity {
             getInfoFromApi();
         }
 
+    }
+
+    private void getLiquipediaMatches()
+    {
+        TaskRunner taskRunner = new TaskRunner();
+        taskRunner.executeAsync(new MatchesTask(teamName), (data) ->
+        {
+            JSONObject cur = null;
+            try {
+                LiquipediaParser parser = new LiquipediaParser();
+                ArrayList<Pair<String, String>> matchList = parser.getRecentMatches(Jsoup.parse(data.getString("text")));
+                for(Pair<String,String> m : matchList )
+                {
+                    matches.add(new ExternalMatch(m.first, m.second));
+                }
+                matchAdapter.notifyDataSetChanged();
+                Log.i(TAG, "parsed");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
     private void getInfoFromApi() {
@@ -214,6 +251,20 @@ public class TeamActivity extends AppCompatActivity {
         }
     }
 
+    class MatchesTask implements Callable<JSONObject> {
+        private final String input;
+
+        public MatchesTask(String input) {
+            this.input = input;
+        }
+
+        @Override
+        public JSONObject call() throws IOException, JSONException {
+            // Some long running task
+            return MainActivity.client.getFullPage(input);
+        }
+    }
+
     private Team tryGetTeam(String teamName)
     {
         ParseQuery<Team> query =  ParseQuery.getQuery(Team.class);
@@ -234,10 +285,8 @@ public class TeamActivity extends AppCompatActivity {
     private void getMatches(Team t)
     {
 
-        ArrayList<TeamMatch> matches = new ArrayList<>();
-        TeamMatchAdapter adapter = new TeamMatchAdapter(this, matches);
-        rvMatches.setLayoutManager(new LinearLayoutManager(this));
-        rvMatches.setAdapter(adapter);
+
+
 
         ParseQuery<TeamMatch> q2 = ParseQuery.getQuery(TeamMatch.class);
         q2.include("Team2");
@@ -247,7 +296,7 @@ public class TeamActivity extends AppCompatActivity {
             @Override
             public void done(List<TeamMatch> objects, ParseException e) {
                 matches.addAll(objects);
-                adapter.notifyDataSetChanged();
+                matchAdapter.notifyDataSetChanged();
             }
         });
 
@@ -261,7 +310,7 @@ public class TeamActivity extends AppCompatActivity {
             @Override
             public void done(List<TeamMatch> objects, ParseException e) {
                 matches.addAll(objects);
-                adapter.notifyDataSetChanged();
+                matchAdapter.notifyDataSetChanged();
             }
         });
 

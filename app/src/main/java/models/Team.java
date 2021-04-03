@@ -78,4 +78,9 @@ public class Team extends ParseObject {
         return  (((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId()));
     }
 
+    public void addToLineup(ParseUser user)
+    {
+        
+    }
+
 }

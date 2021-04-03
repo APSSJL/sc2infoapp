@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Intent i = new Intent(MainActivity.this, TeamActivity.class);
-        i.putExtra("teamName", "test team");
+        i.putExtra("teamName", "Alpha_X");
         startActivity(i);
 
 

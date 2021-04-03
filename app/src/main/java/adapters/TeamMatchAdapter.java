@@ -17,15 +17,18 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
+import interfaces.IMatch;
+import models.ExternalMatch;
 import models.Match;
+import models.Team;
 import models.TeamMatch;
 
 public class TeamMatchAdapter  extends RecyclerView.Adapter<TeamMatchAdapter.TeamMatchViewHolder> {
 
     Context context;
-    ArrayList<TeamMatch> matches;
+    ArrayList<IMatch> matches;
 
-    public TeamMatchAdapter(Context context, ArrayList<TeamMatch> matches)
+    public TeamMatchAdapter(Context context, ArrayList<IMatch> matches)
     {
         this.context = context;
         this.matches = matches;
@@ -69,49 +72,58 @@ public class TeamMatchAdapter  extends RecyclerView.Adapter<TeamMatchAdapter.Tea
             pbChances = itemView.findViewById(R.id.pbChances);
         }
 
-        public void bind(TeamMatch tm)
+        public void bind(IMatch tm)
         {
-            tvName.setText(tm.getOpponent());
-            tvTime.setText(tm.getTime());
+            if(tm.getMatchType() == IMatch.TEAM) {
+                TeamMatch m = (TeamMatch)tm;
+                tvName.setText(tm.getOpponent());
+                tvTime.setText(tm.getTime());
 
-            if (!(tm.getPredicted())) {
-                btnp1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        tm.add("predicted", ParseUser.getCurrentUser().getObjectId());
-                        tm.increment("t1PredictionVotes");
-                        tm.saveInBackground();
-                        pbChances.setProgress(pbChances.getProgress() + 1);
-                        pbChances.setMax(pbChances.getMax() + 1);
-                        btnp1.setEnabled(false);
-                        btnp2.setEnabled(false);
-                    }
-                });
-                btnp2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        tm.add("predicted", ParseUser.getCurrentUser().getObjectId());
-                        tm.increment("t2PredictionVotes");
-                        tm.saveInBackground();
-                        pbChances.setMax(pbChances.getMax() + 1);
-                        btnp1.setEnabled(false);
-                        btnp2.setEnabled(false);
-                    }
-                });
-            }
-            else
-            {
-                btnp1.setEnabled(false);
-                btnp2.setEnabled(false);
-            }
+                if (!(m.getPredicted())) {
+                    btnp1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            m.add("predicted", ParseUser.getCurrentUser().getObjectId());
+                            m.increment("t1PredictionVotes");
+                            m.saveInBackground();
+                            pbChances.setProgress(pbChances.getProgress() + 1);
+                            pbChances.setMax(pbChances.getMax() + 1);
+                            btnp1.setEnabled(false);
+                            btnp2.setEnabled(false);
+                        }
+                    });
+                    btnp2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            m.add("predicted", ParseUser.getCurrentUser().getObjectId());
+                            m.increment("t2PredictionVotes");
+                            m.saveInBackground();
+                            pbChances.setMax(pbChances.getMax() + 1);
+                            btnp1.setEnabled(false);
+                            btnp2.setEnabled(false);
+                        }
+                    });
+                } else {
+                    btnp1.setEnabled(false);
+                    btnp2.setEnabled(false);
+                }
 
-            Pair<Integer, Integer> chances = (tm).getDistribution();
-            if(chances.first + chances.second == 0)
-                pbChances.setIndeterminate(true);
-            else
+                Pair<Integer, Integer> chances = (m).getDistribution();
+                if (chances.first + chances.second == 0)
+                    pbChances.setIndeterminate(true);
+                else {
+                    pbChances.setMax(chances.first + chances.second);
+                    pbChances.setProgress(chances.first);
+                }
+            }
+            else if (tm.getMatchType() == IMatch.EXTERNAL)
             {
-                pbChances.setMax(chances.first + chances.second);
-                pbChances.setProgress(chances.first);
+                ExternalMatch match = (ExternalMatch)tm;
+                tvName.setText(match.getOpponent());
+                tvTime.setText(match.getTime());
+                btnp1.setVisibility(View.GONE);
+                btnp2.setVisibility(View.GONE);
+                pbChances.setVisibility(View.GONE);
             }
         }
     }
