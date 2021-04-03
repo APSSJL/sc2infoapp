@@ -1,4 +1,4 @@
-package com.example.sc2infoapp;
+package models;
 
 import android.util.Pair;
 
@@ -7,10 +7,10 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+
+import interfaces.IMatch;
 
 @ParseClassName("PlayerMatch")
 public class Match extends ParseObject implements IMatch {

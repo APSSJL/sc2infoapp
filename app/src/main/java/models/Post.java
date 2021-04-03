@@ -1,12 +1,12 @@
-package com.example.sc2infoapp;
+package models;
 
+import interfaces.IPublished;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 @ParseClassName("Post")
 public class Post extends ParseObject implements IPublished {

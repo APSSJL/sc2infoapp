@@ -1,4 +1,4 @@
-package com.example.sc2infoapp;
+package models;
 
 import android.util.Log;
 import android.widget.Toast;

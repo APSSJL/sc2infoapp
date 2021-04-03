@@ -16,12 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.sc2infoapp.IPublished;
-import com.example.sc2infoapp.Post;
+import interfaces.IPublished;
+import models.Post;
 import com.example.sc2infoapp.PostComposeActivity;
 import com.example.sc2infoapp.R;
-import com.example.sc2infoapp.Tournament;
-import com.example.sc2infoapp.UserFeedAdapter;
+import models.Tournament;
+import adapters.UserFeedAdapter;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;

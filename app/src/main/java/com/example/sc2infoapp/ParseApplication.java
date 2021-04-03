@@ -5,6 +5,13 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import models.Match;
+import models.Player;
+import models.Post;
+import models.Team;
+import models.Tournament;
+import models.UserTournament;
+
 public class ParseApplication extends Application {
     @Override
     public void onCreate() {

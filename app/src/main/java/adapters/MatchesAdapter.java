@@ -1,4 +1,4 @@
-package com.example.sc2infoapp;
+package adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,13 +14,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import interfaces.IMatch;
+import com.example.sc2infoapp.LiquipediaParser;
+import com.example.sc2infoapp.MainActivity;
+import models.Match;
+import com.example.sc2infoapp.R;
+import models.TaskRunner;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;

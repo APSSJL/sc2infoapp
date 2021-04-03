@@ -1,6 +1,7 @@
-package com.example.sc2infoapp;
+package adapters;
 
 import android.content.Context;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.parse.ParseObject;
-import com.parse.ParseUser;
+import com.example.sc2infoapp.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class TeamPlayerAdapter extends RecyclerView.Adapter<TeamPlayerAdapter.TeamPlayerViewHolder>{
+public class ExternalTeamAdapter extends RecyclerView.Adapter<ExternalTeamAdapter.ExternalTeamViewHolder> {
 
-    ArrayList<ParseUser> players;
+    ArrayList<Pair<String, String>> players;
     Context context;
 
-    public TeamPlayerAdapter(ArrayList<ParseUser> players, Context context)
+    public ExternalTeamAdapter(ArrayList<Pair<String, String>> players, Context context)
     {
         this.players = players;
         this.context = context;
@@ -28,13 +27,13 @@ public class TeamPlayerAdapter extends RecyclerView.Adapter<TeamPlayerAdapter.Te
 
     @NonNull
     @Override
-    public TeamPlayerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExternalTeamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_team_user, parent, false);
-        return new TeamPlayerViewHolder(view);
+        return new ExternalTeamViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TeamPlayerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExternalTeamViewHolder holder, int position) {
         holder.bind(players.get(position));
     }
 
@@ -43,22 +42,23 @@ public class TeamPlayerAdapter extends RecyclerView.Adapter<TeamPlayerAdapter.Te
         return players.size();
     }
 
-    class TeamPlayerViewHolder extends RecyclerView.ViewHolder
+    class ExternalTeamViewHolder extends RecyclerView.ViewHolder
     {
 
         TextView tvName;
         TextView tvRace;
 
-        public TeamPlayerViewHolder(@NonNull View itemView) {
+        public ExternalTeamViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvRace = itemView.findViewById(R.id.tvRace);
         }
 
-        public void bind(ParseUser user)
+        public void bind(Pair<String, String> player)
         {
-            tvName.setText(user.getUsername());
-            tvRace.setText(user.getString("inGameRace"));
+            tvName.setText(player.first);
+            tvRace.setText(player.second);
         }
     }
 }
+

@@ -10,16 +10,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
@@ -32,6 +28,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import adapters.ExternalTeamAdapter;
+import adapters.TeamPlayerAdapter;
+import models.TaskRunner;
+import models.Team;
 
 public class TeamActivity extends AppCompatActivity {
 

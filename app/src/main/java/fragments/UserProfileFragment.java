@@ -32,39 +32,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.ImageHeaderParserUtils;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.sc2infoapp.CreateTeamActivity;
-import com.example.sc2infoapp.IPublished;
-import com.example.sc2infoapp.MainActivity;
-import com.example.sc2infoapp.Post;
+import interfaces.IPublished;
+import models.Post;
 import com.example.sc2infoapp.R;
-import com.example.sc2infoapp.Team;
+import models.Team;
 import com.example.sc2infoapp.TeamActivity;
-import com.example.sc2infoapp.Tournament;
+import models.Tournament;
 import com.example.sc2infoapp.UpdateProfileActivity;
-import com.example.sc2infoapp.UserFeedAdapter;
-import com.parse.FindCallback;
-import com.parse.Parse;
+import adapters.UserFeedAdapter;
+
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 public class UserProfileFragment extends Fragment {

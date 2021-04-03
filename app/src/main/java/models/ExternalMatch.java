@@ -1,10 +1,11 @@
-package com.example.sc2infoapp;
+package models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class ExternalMatch implements IMatch{
+import interfaces.IMatch;
+
+public class ExternalMatch implements IMatch {
     private String opponent;
     private String time;
     protected static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
