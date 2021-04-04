@@ -11,9 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import interfaces.IMatch;
+import interfaces.IPredictable;
 
 @ParseClassName("PlayerMatch")
-public class Match extends ParseObject implements IMatch {
+public class Match extends ParseObject implements IMatch, IPredictable {
     protected static final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
     public String getTime(){return dt.format(getDate("time"));}
     public String getOpponent()
@@ -44,6 +45,21 @@ public class Match extends ParseObject implements IMatch {
             return false;
         return ((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId());
     }
+
+    @Override
+    public void predict1() {
+        add("predicted", ParseUser.getCurrentUser().getObjectId());
+        increment("p1PredictionVotes");
+        saveInBackground();
+    }
+
+    @Override
+    public void predict2() {
+        add("predicted", ParseUser.getCurrentUser().getObjectId());
+        increment("p2PredictionVotes");
+        saveInBackground();
+    }
+
     public int getMatchType()
     {
         return INTERNAL;
