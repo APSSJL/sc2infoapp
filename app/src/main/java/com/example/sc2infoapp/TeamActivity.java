@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import adapters.ExternalTeamAdapter;
-import adapters.TeamMatchAdapter;
+import adapters.MatchesAdapter;
 import adapters.TeamPlayerAdapter;
 import interfaces.IMatch;
 import models.ExternalMatch;
@@ -56,7 +56,7 @@ public class TeamActivity extends AppCompatActivity {
     RatingBar rb;
     RecyclerView rvMatches;
     ArrayList<IMatch> matches;
-    TeamMatchAdapter matchAdapter;
+    MatchesAdapter matchAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -77,7 +77,7 @@ public class TeamActivity extends AppCompatActivity {
 
 
         matches = new ArrayList<>();;
-        matchAdapter = new TeamMatchAdapter(this, matches);
+        matchAdapter = new MatchesAdapter( matches, this);
 
         rvMatches.setLayoutManager(new LinearLayoutManager(this));
         rvMatches.setAdapter(matchAdapter);

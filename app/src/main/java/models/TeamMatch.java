@@ -11,9 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import interfaces.IMatch;
+import interfaces.IPredictable;
 
 @ParseClassName("TeamMatch")
-public class TeamMatch extends ParseObject implements IMatch {
+public class TeamMatch extends ParseObject implements IMatch, IPredictable {
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
     @Override
@@ -49,6 +50,20 @@ public class TeamMatch extends ParseObject implements IMatch {
         if(a == null)
             return false;
         return ((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId());
+    }
+
+    @Override
+    public void predict1() {
+        add("predicted", ParseUser.getCurrentUser().getObjectId());
+        increment("t1PredictionVotes");
+        saveInBackground();
+    }
+
+    @Override
+    public void predict2() {
+        add("predicted", ParseUser.getCurrentUser().getObjectId());
+        increment("t2PredictionVotes");
+        saveInBackground();
     }
 
 }
