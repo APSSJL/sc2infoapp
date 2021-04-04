@@ -20,6 +20,7 @@ import com.example.sc2infoapp.MainActivity;
 
 import interfaces.IPredictable;
 import interfaces.IPublished;
+import models.ExternalMatch;
 import models.Match;
 import com.example.sc2infoapp.R;
 import models.TaskRunner;
@@ -101,44 +102,46 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         {
             tvName.setText(match.getOpponent());
             tvTime.setText(match.getTime());
-            btnPredict.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TaskRunner taskRunner = new TaskRunner();
-                    LiquipediaParser parser = new LiquipediaParser();
-                    String[] s = match.getOpponent().split(" vs ");
-                    taskRunner.executeAsync(new PredicitonTask(s[0],s[1]), (data) -> {
-                        Log.i("PLAYER", data.toString());
-                        try {
-                            double prob = 0;
-                            JSONArray d = data.getJSONArray("outcomes");
-                            for(int i = 0 ; i < d.length() / 2; i++)
-                                prob += d.getJSONObject(i).getDouble("prob");
-                            Log.i("PROB", String.valueOf(prob));
-                            if(prob > 0.5)
-                            {
-                                Toast.makeText(context, data.getJSONObject("pla").getString("tag"), Toast.LENGTH_LONG).show();
+            if(((ExternalMatch)match).getBo() == -1)
+            {
+                btnPredict.setVisibility(View.GONE);
+            }
+            else {
+                btnPredict.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        TaskRunner taskRunner = new TaskRunner();
+                        LiquipediaParser parser = new LiquipediaParser();
+                        String[] s = match.getOpponent().split(" vs ");
+                        taskRunner.executeAsync(new PredicitonTask(s[0], s[1], ((ExternalMatch)match).getBo()), (data) -> {
+                            Log.i("PLAYER", data.toString());
+                            try {
+                                double prob = data.getDouble("proba");
+                                if (prob > 0.5) {
+                                    Toast.makeText(context, data.getJSONObject("pla").getString("tag"), Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(context, data.getJSONObject("plb").getString("tag"), Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            else
-                            {
-                                Toast.makeText(context, data.getJSONObject("plb").getString("tag"), Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
+            }
         }
     }
 
     class PredicitonTask implements Callable<JSONObject> {
         private final String input1;
         private final String input2;
+        private final Integer bo;
 
-        public PredicitonTask(String input1, String input2) {
+        public PredicitonTask(String input1, String input2, Integer bo) {
             this.input1 = input1;
             this.input2 = input2;
+            this.bo = bo;
         }
 
         @Override
@@ -146,7 +149,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             // Some long running task
             int p1 = MainActivity.aligulacClient.getPlayer(input1).getInt("id");
             int p2 = MainActivity.aligulacClient.getPlayer(input2).getInt("id");
-            return MainActivity.aligulacClient.getPrediction(p1, p2, 3);
+            return MainActivity.aligulacClient.getPrediction(p1, p2, bo);
         }
     }
 
