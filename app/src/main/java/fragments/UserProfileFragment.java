@@ -186,7 +186,6 @@ public class UserProfileFragment extends Fragment {
     {
 
             try {
-
                 user.fetch();
                 UserInfo info = (UserInfo) user.getParseObject("Additional");
                 if(info != null) {

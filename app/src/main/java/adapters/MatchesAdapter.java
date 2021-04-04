@@ -84,7 +84,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
     class ExternalMatchesViewHolder extends MatchesViewHolder
     {
-
         TextView tvName;
         TextView tvTime;
         Button btnPredict;
@@ -94,7 +93,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             tvName = itemView.findViewById(R.id.tvVersus);
             tvTime = itemView.findViewById(R.id.tvTime);
             btnPredict = itemView.findViewById(R.id.btnPredict);
-
         }
 
         public void bind(IMatch match)

@@ -16,6 +16,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class AligulacClient {
+    public static final String TAG = "ALIGULAC_CLIENT";
     public  static final String BASE_URL = "http://aligulac.com/api/v1";
     protected OkHttpClient client;
 
@@ -36,7 +37,7 @@ public class AligulacClient {
         JSONObject json = null;
         json = new JSONObject(responseData);
         JSONObject player = json.getJSONArray("objects").getJSONObject(0);
-        Log.i("CLIENT", player.toString());
+        Log.i(TAG, player.toString());
         return player;
     }
 
@@ -53,7 +54,7 @@ public class AligulacClient {
         JSONObject json = null;
         json = new JSONObject(responseData);
         JSONArray topPlayers = json.getJSONArray("objects");
-        Log.i("CLIENT", topPlayers.toString());
+        Log.i(TAG, topPlayers.toString());
         return topPlayers;
     }
 
@@ -69,8 +70,25 @@ public class AligulacClient {
         String responseData = response.body().string();
         JSONObject json = null;
         json = new JSONObject(responseData);
-        Log.i("CLIENT", json.toString());
+        Log.i(TAG, json.toString());
         return json;
+    }
+
+    public JSONObject getMatches() throws IOException, JSONException{
+        String apiUrl = getApiUrl("/match/?");
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
+        urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
+
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+        String responseData = response.body().string();
+        Log.i(TAG,responseData);
+        JSONObject json = null;
+        json = new JSONObject(responseData);
+        Log.i(TAG,json.toString());
+        return json;
+
     }
 
     protected String getApiUrl(String path) {

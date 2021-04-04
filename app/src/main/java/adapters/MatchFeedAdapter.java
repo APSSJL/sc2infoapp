@@ -19,7 +19,7 @@ import java.util.List;
 
 import models.Match;
 
-public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.ItemViewHolder>{
+public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.ViewHolder>{
 
     Context context;
     List<Match> matches;
@@ -37,7 +37,7 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.Item
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Match match=matches.get(position);
         holder.bind(match);
     }
@@ -47,31 +47,19 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.Item
         return matches.size();
     }
 
-    public class ViewHolder extends ItemViewHolder {
-
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvVersus;
         TextView tvTime;
-        Button btnPredict;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvVersus = itemView.findViewById(R.id.tvVersus);
             tvTime = itemView.findViewById(R.id.tvTime);
-            btnPredict = itemView.findViewById(R.id.btnPredict);
         }
 
-        @Override
         public void bind(Match match) {
             tvVersus.setText(match.getOpponent());
             tvTime.setText(match.getTime());
         }
-    }
-
-    abstract class ItemViewHolder extends RecyclerView.ViewHolder{
-        public ItemViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-
-        abstract public void bind(final Match match);
     }
 }
