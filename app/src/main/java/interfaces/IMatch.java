@@ -1,5 +1,7 @@
 package interfaces;
 
+import com.parse.ParseObject;
+
 import java.util.Date;
 
 public interface IMatch {

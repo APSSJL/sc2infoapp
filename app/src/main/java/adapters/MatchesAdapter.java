@@ -17,9 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import interfaces.IMatch;
 import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
+
+import interfaces.IPredictable;
+import interfaces.IPublished;
 import models.Match;
 import com.example.sc2infoapp.R;
 import models.TaskRunner;
+
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -27,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.spec.InvalidParameterSpecException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -54,10 +60,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             View view = LayoutInflater.from(context).inflate(R.layout.item_match, parent, false);
             return new MatchesAdapter.ExternalMatchesViewHolder(view);
         }
-        else
+        else if(viewType == IMatch.INTERNAL || viewType == IMatch.TEAM)
         {
             View view = LayoutInflater.from(context).inflate(R.layout.item_internal_match, parent, false);
             return new MatchesAdapter.InternalMatchesViewHolder(view);
+        }
+        else
+        {
+            return null;
         }
     }
 
@@ -161,17 +171,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         }
 
         public void bind(IMatch match) {
-            Match m = (Match) match;
             tvName.setText(match.getOpponent());
             tvTime.setText(match.getTime());
-
-            if (!((Match) match).getPredicted()) {
+            IPredictable m = (IPredictable) match;
+            if (!(m.getPredicted())) {
                 btnp1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        m.add("predicted", ParseUser.getCurrentUser().getObjectId());
-                        m.increment("p1PredictionVotes");
-                        m.saveInBackground();
+                        m.predict1();
                         pbChances.setProgress(pbChances.getProgress() + 1);
                         pbChances.setMax(pbChances.getMax() + 1);
                         btnp1.setEnabled(false);
@@ -181,9 +188,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
                 btnp2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        m.add("predicted", ParseUser.getCurrentUser().getObjectId());
-                        m.increment("p2PredictionVotes");
-                        m.saveInBackground();
+                        m.predict2();
                         pbChances.setMax(pbChances.getMax() + 1);
                         btnp1.setEnabled(false);
                         btnp2.setEnabled(false);
@@ -196,7 +201,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
                 btnp2.setEnabled(false);
             }
 
-            Pair<Integer, Integer> chances = ((Match) match).getDistribution();
+            Pair<Integer, Integer> chances = m.getDistribution();
             if(chances.first + chances.second == 0)
                 pbChances.setIndeterminate(true);
             else
