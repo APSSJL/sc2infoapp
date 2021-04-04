@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_user:
                     default:
                         fragment = new UserProfileFragment();
-                        Toast.makeText(MainActivity.this,"Matches!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,"User Profile!",Toast.LENGTH_SHORT).show();
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
