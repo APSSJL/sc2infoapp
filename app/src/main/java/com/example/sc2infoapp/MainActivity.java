@@ -20,6 +20,7 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import fragments.HomeFeedFragment;
+import fragments.MatchFeedFragment;
 import fragments.UserProfileFragment;
 
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,"Home!",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_matches:
-                        fragment = new UserProfileFragment();
+                        fragment = new MatchFeedFragment();
                         Toast.makeText(MainActivity.this,"Matches!",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_user:

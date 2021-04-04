@@ -104,6 +104,7 @@ public class UserProfileFragment extends Fragment {
         btnTeam = view.findViewById(R.id.btnTeam);
         btnCreateTeam = view.findViewById(R.id.btnCreateTeam);
         adapter = new UserFeedAdapter(getContext(), published);
+        Log.i(TAG,getContext().toString());
 
         setupUserInfo();
 
