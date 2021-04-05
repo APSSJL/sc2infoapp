@@ -15,6 +15,8 @@ public class MatchInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_match_info, container, false);
+
+
         return view;
     }
 }

@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, MatchDetailActivity.class);
         startActivity(i);
         finish();
     }

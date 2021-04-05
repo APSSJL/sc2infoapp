@@ -1,3 +1,4 @@
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/userProfileFragment"
@@ -6,232 +7,243 @@
     tools:context="fragments.UserProfileFragment">
 
     <ScrollView
-        android:id="@+id/svUserProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvRace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toEndOf="@+id/tvName"
+            android:text="in-game race"
+            android:textColor="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnEditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/transparent"
+            android:text="Edit profile"
+            android:textAllCaps="false"
+            android:textColor="@color/blue" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toLeftOf="@id/btnEditProfile"
+            android:background="@color/transparent"
+            android:text="Logout"
+            android:textAllCaps="false"
+            android:textColor="@color/blue" />
+
+        <ImageView
+
+            android:id="@+id/ivPicture"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:background="@color/white">
+            android:layout_height="200dp"
 
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="8dp"
-                android:text="Name"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+            android:layout_below="@+id/divProfileName"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/ic_launcher_round" />
 
-            <TextView
-                android:id="@+id/tvRace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginBottom="15dp"
-                android:layout_toStartOf="@+id/btnEditProfile"
-                android:text="in-game race"
-                android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divProfileLocation"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="New-York, USA" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnEditProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp"
-                android:background="@color/transparent"
-                android:text="Edit profile"
-                android:textAllCaps="false"
-                android:textColor="@color/blue" />
+        <TextView
+            android:id="@+id/tvMmr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divProfileLocation"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="@string/mmr_1_s" />
 
-            <ImageView
+        <TextView
+            android:id="@+id/tvBio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divProfileUserInfo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:text="user information\n.\n.\n.\nMore info"
+            android:textColor="@color/black" />
 
-                android:id="@+id/ivPicture"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
+        <TextView
+            android:id="@+id/tvTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTeamnameDes"
+            android:layout_marginTop="0dp"
+            android:text="Team Liquid"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-                android:layout_below="@+id/divProfileName"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/ic_launcher_round" />
-
-            <TextView
-                android:id="@+id/tvLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divProfileLocation"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="15dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                tools:text="New-York, USA" />
-
-            <TextView
-                android:id="@+id/tvMmr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divProfileLocation"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                tools:text="@string/mmr_1_s" />
-
-            <TextView
-                android:id="@+id/tvBio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divProfileUserInfo"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:text="user information\n.\n.\n.\nMore info"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/tvTeam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvTeamnameDes"
-                android:layout_marginTop="0dp"
-                android:text="Team Liquid"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnTeam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divProfileTeam"
-                android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@+id/btnCreateTeam"
-                android:text="Join team"
-                android:textAllCaps="false" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divProfileTeam"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:text="Join team"
+            android:textAllCaps="false" />
 
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnCreateTeam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divProfileTeam"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="0dp"
-                android:text="Create team"
-                android:textAllCaps="false" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCreateTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divProfileTeam"
+            android:layout_marginTop="0dp"
+            android:layout_toStartOf="@+id/btnTeam"
+            android:text="Create team"
+            android:textAllCaps="false" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvItems"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_below="@+id/btnTeam"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"
-                android:background="@color/divider_color" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvItems"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_below="@+id/btnTeam"
+            android:layout_marginTop="5dp"
+            android:background="@color/divider_color" />
 
-            <View
-                android:id="@+id/divProfileName"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@+id/tvRace"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:background="?android:attr/listDivider" />
+        <View
+            android:id="@+id/divProfileName"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/tvRace"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="?android:attr/listDivider" />
 
-            <View
-                android:id="@+id/divProfileLocation"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@+id/tvLocationDes"
-                android:layout_marginTop="0dp"
-                android:background="?android:attr/listDivider" />
+        <View
+            android:id="@+id/divProfileLocation"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/tvLocationDes"
+            android:layout_marginTop="0dp"
+            android:background="?android:attr/listDivider" />
 
-            <TextView
-                android:id="@+id/tvLocationDes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ivPicture"
-                android:layout_marginTop="15dp"
-                android:text="Location"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvLocationDes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivPicture"
+            android:layout_marginTop="15dp"
+            android:text="Location"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvMMRDes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/divProfileLocation"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="0dp"
-                android:text="MMR"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvMMRDes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/divProfileLocation"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="0dp"
+            android:text="MMR"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvUserInfoDes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvLocation"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="15dp"
-                android:text="User Information"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvUserInfoDes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvLocation"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="15dp"
+            android:text="User Information"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvTeamDes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvBio"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="0dp"
-                android:text="Team"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvTeamDes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvBio"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="0dp"
+            android:text="Team"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <View
-                android:id="@+id/divProfileUserInfo"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@+id/tvUserInfoDes"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="6dp"
-                android:background="?android:attr/listDivider" />
+        <View
+            android:id="@+id/divProfileUserInfo"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/tvUserInfoDes"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="6dp"
+            android:background="?android:attr/listDivider" />
 
-            <View
-                android:id="@+id/divProfileTeam"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@+id/tvTeamDes"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:background="?android:attr/listDivider" />
+        <View
+            android:id="@+id/divProfileTeam"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/tvTeamDes"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="?android:attr/listDivider" />
 
-            <TextView
-                android:id="@+id/tvTeamnameDes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvTeamDes"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="0dp"
-                android:text="Currently in..."
-                android:textColor="@color/black" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvTeamnameDes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTeamDes"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="0dp"
+            android:text="Currently in..."
+            android:textColor="@color/black" />
+    </RelativeLayout>
     </ScrollView>
-
 </FrameLayout>

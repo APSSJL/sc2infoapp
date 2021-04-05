@@ -17,7 +17,6 @@ public class MatchRankingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_match_ranking, container, false);
 
 
-
         return view;
     }
 }
