@@ -113,6 +113,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        published.clear();
         setupUserInfo();
     }
 

@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="fragments.MatchRankingFragment">
+
+    <TextView
+        android:id="@+id/tvMatchRank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ranking"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/dvMatchRank"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvMatchRank"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/tvMatchRankInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dvMatchRank"
+        android:layout_marginTop="5dp"
+        android:text="Rank"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvMatchPredict"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvMatchRankInfo"
+        android:layout_marginTop="15dp"
+        android:text="Predictions"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/dvMatchPredict"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvMatchPredict"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/tvMatchPredictInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dvMatchPredict"
+        android:layout_marginTop="5dp"
+        android:text="Rank"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvMatchComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMatchPredictInfo"
+        android:layout_marginTop="15dp"
+        android:text="Commentary"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/dvMatchComment"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvMatchComment"
+        android:background="?android:attr/listDivider" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMatchComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dvMatchComment"
+        android:layout_marginTop="5dp" />
+
+</RelativeLayout>
