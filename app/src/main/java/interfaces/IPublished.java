@@ -1,4 +1,4 @@
-package com.example.sc2infoapp;
+package interfaces;
 
 import java.util.Date;
 

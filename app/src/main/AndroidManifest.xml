@@ -7,12 +7,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
 
     <application
         android:name=".ParseApplication"
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -20,6 +22,14 @@
         android:theme="@style/Theme.Sc2InfoApp"
         android:usesCleartextTraffic="true">
         <activity android:name=".MatchDetailActivity"></activity>
+        <activity android:name=".UpdateProfileActivity" />
+        android:theme="@style/Theme.Sc2InfoApp"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ViewProfileActivity"></activity>
+        <activity android:name=".TeamManageActivity" />
+        <activity android:name=".PlayerActivity" />
+        <activity android:name=".CreateTeamActivity" />
+        <activity android:name=".TeamActivity" />
         <activity android:name=".UpdateProfileActivity" />
         <activity android:name=".PostComposeActivity" />
         <activity android:name=".SignupActivity" />

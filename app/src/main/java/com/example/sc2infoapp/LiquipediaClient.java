@@ -44,4 +44,24 @@ public class LiquipediaClient {
     public String getMatches() throws IOException, JSONException {
         return  getPageByName("Liquipedia:Upcoming_and_ongoing_matches");
     }
+
+    public JSONObject getFullPage(String name) throws JSONException, IOException {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL).newBuilder();
+        urlBuilder.addQueryParameter("action", "parse");
+        urlBuilder.addQueryParameter("page", name);
+        urlBuilder.addQueryParameter("format", "json");
+        urlBuilder.addQueryParameter("formatversion", "2");
+        urlBuilder.addQueryParameter("contentmodel", "wikitext");
+
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+
+        String responseData = response.body().string();
+        JSONObject json = null;
+        json = new JSONObject(responseData);
+        JSONObject jsonRes = json.getJSONObject("parse");
+        //Log.i("CLIENT", text.substring(0,500));
+        return jsonRes;
+    }
 }

@@ -32,36 +32,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.ImageHeaderParserUtils;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.example.sc2infoapp.IPublished;
-import com.example.sc2infoapp.Post;
+import com.example.sc2infoapp.CreateTeamActivity;
+import interfaces.IPublished;
+import models.Post;
+
+import com.example.sc2infoapp.LoginActivity;
 import com.example.sc2infoapp.R;
-import com.example.sc2infoapp.Team;
-import com.example.sc2infoapp.Tournament;
+import models.Team;
+import com.example.sc2infoapp.TeamActivity;
+import models.Tournament;
 import com.example.sc2infoapp.UpdateProfileActivity;
-import com.example.sc2infoapp.UserFeedAdapter;
-import com.parse.FindCallback;
-import com.parse.Parse;
+import adapters.UserFeedAdapter;
+import models.UserInfo;
+
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 public class UserProfileFragment extends Fragment {
@@ -80,6 +77,7 @@ public class UserProfileFragment extends Fragment {
     Button btnTeam;
     Button btnCreateTeam;
     ParseUser user;
+    Button btnLogout;
     UserFeedAdapter adapter;
     List<IPublished> published;
     Team team;
@@ -94,6 +92,7 @@ public class UserProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         published = new ArrayList<>();
         tvName = view.findViewById(R.id.tvName);
+        btnLogout = view.findViewById(R.id.btnLogout);
         tvRace = view.findViewById(R.id.tvRace);
         ivPicture = view.findViewById(R.id.ivPicture);
         tvLocation = view.findViewById(R.id.tvLocation);
@@ -114,6 +113,7 @@ public class UserProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         published.clear();
+        teamButtonSetup();
         setupUserInfo();
     }
 
@@ -153,13 +153,23 @@ public class UserProfileFragment extends Fragment {
             }
         });
 
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                Intent i = new Intent(getActivity(), LoginActivity.class);
+                startActivity(i);
+                Objects.requireNonNull(getActivity()).finish();
+            }
+        });
+
         teamButtonSetup();
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvItems.setLayoutManager(manager);
         rvItems.setAdapter(adapter);
 
-        populateUserFeed();
+        populateUserFeed(ParseUser.getCurrentUser(), published, adapter);
 
         if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -173,7 +183,20 @@ public class UserProfileFragment extends Fragment {
 
     private void teamButtonSetup()
     {
-        team = (Team) user.get("team");
+
+            try {
+
+                user.fetch();
+                UserInfo info = (UserInfo) user.getParseObject("Additional");
+                if(info != null) {
+                    info.fetch();
+                    team = (Team) info.get("team");
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
 
         if (team == null) {
             tvTeam.setText("No team");
@@ -189,10 +212,13 @@ public class UserProfileFragment extends Fragment {
             tvTeam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: navigate to team info page
+                    Intent i = new Intent(getActivity(), TeamActivity.class);
+                    i.putExtra("teamName", team.getTeamName());
+                    startActivity(i);
                 }
             });
             btnTeam.setText("Leave team");
+
             btnTeam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -209,7 +235,7 @@ public class UserProfileFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void populateUserFeed() {
+    public static void populateUserFeed(ParseUser currentUser, List<IPublished> published, UserFeedAdapter adapter) {
         ParseQuery<Tournament> query1 =  ParseQuery.getQuery(Tournament.class);
         query1.include("userCreated");
         query1.include("userCreated.organizer");
@@ -218,7 +244,7 @@ public class UserProfileFragment extends Fragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.setLimit(5);
-        query.whereEqualTo(Post.KEY_AUTHOR, ParseUser.getCurrentUser());
+        query.whereEqualTo(Post.KEY_AUTHOR, currentUser);
         query.addDescendingOrder("createdAt");
 
         try {
@@ -228,7 +254,7 @@ public class UserProfileFragment extends Fragment {
         }
         try {
             List<Tournament> x = query1.find();
-            x.removeIf(t -> !(t.getUserCreated().getOrganizer().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())));
+            x.removeIf(t -> !(t.getUserCreated().getOrganizer().getObjectId().equals(currentUser.getObjectId())));
             Log.i(TAG, String.valueOf(x.size()));
             published.addAll(x);
         } catch (ParseException e) {
@@ -250,7 +276,8 @@ public class UserProfileFragment extends Fragment {
         btnCreateTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : REDIRECT TO TEAM CREATION PAGE
+                Intent i = new Intent(getActivity(), CreateTeamActivity.class);
+                startActivity(i);
                 Log.i(TAG, "team create");
             }
         });
