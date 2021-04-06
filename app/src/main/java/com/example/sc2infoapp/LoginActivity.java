@@ -16,6 +16,8 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import models.Player;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "Login activity";
@@ -72,7 +74,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, PlayerActivity.class);
+        i.putExtra("playerName", "Vanya");
         startActivity(i);
         finish();
     }

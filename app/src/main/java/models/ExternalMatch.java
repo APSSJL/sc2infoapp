@@ -9,6 +9,7 @@ public class ExternalMatch implements IMatch {
     private String opponent;
     private String time;
     private Integer bo;
+    private String tournament;
     protected static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
@@ -21,6 +22,23 @@ public class ExternalMatch implements IMatch {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public ExternalMatch(String opponent, String time, int bo, String tournament)
+    {
+        this.opponent = opponent;
+        this.bo = bo;
+        try {
+            this.time = DATE_FORMATTER.format(DATE_PARRSER.parse(time));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.tournament = tournament;
+    }
+
+    public String getTournament()
+    {
+        return this.tournament;
     }
 
     @Override

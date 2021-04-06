@@ -143,8 +143,12 @@ public class PlayerActivity extends AppCompatActivity {
         query.whereEqualTo("name", playerName);
 
         try {
-            Player p = query.find().get(0);
+            List<Player> players = query.find();
 
+            if(players.size() == 0)
+                return;
+            Player p = players.get(0);
+            
             btnFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
