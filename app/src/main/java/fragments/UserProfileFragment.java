@@ -90,6 +90,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        rvItems = view.findViewById(R.id.rvItems);
         published = new ArrayList<>();
         tvName = view.findViewById(R.id.tvName);
         btnLogout = view.findViewById(R.id.btnLogout);
@@ -98,7 +99,6 @@ public class UserProfileFragment extends Fragment {
         tvLocation = view.findViewById(R.id.tvLocation);
         tvMmr = view.findViewById(R.id.tvMmr);
         tvBio = view.findViewById(R.id.tvBio);
-        rvItems = view.findViewById(R.id.rvItems);
         btnEditProfile = view.findViewById(R.id.btnEditProfile);
         tvTeam = view.findViewById(R.id.tvTeam);
         btnTeam = view.findViewById(R.id.btnTeam);
@@ -332,6 +332,7 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 }
