@@ -56,7 +56,7 @@ public class MatchFeedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //find recycler view
-        rvMatchFeed.findViewById(R.id.rvMatches);
+        rvMatchFeed = view.findViewById(R.id.rvMatches);
         //Initialize matches and adapter
         matches = new ArrayList<>();
         adapter = new MatchFeedAdapter(getContext(), matches);
