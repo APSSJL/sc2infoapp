@@ -255,6 +255,7 @@ Model: PlayerMatch [this entity for internal/user tournaments only, for other to
 | rating        | Number   | rating[need for queries] |
 | p1PredictionVotes | Number | predictions for the player 1 |
 | p2PredictionVotes | Number | predictions for the player 2 |
+| predicted     | Array    | Shows if user added prediciton for this match|
 
 Model: TeamMatch [this entity for internal/user tournaments only, for other tournaments data should be fetched from the API] 
 | Property      | Type     | Description |
@@ -271,6 +272,7 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 | winner        | String | who won this match |
 | t1PredictionVotes | Number | predictions for the team 1 |
 | t2PredictionVotes | Number | predictions for the team 2 |
+| predicted     | Array    | Shows if user added prediciton for this match|
 
 Model: Team
 | Property      | Type     | Description |
