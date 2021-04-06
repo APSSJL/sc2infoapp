@@ -54,19 +54,19 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
         Object a = get("predicted");
         if(a == null)
             return false;
-        return ((ArrayList)a).contains(getCurrentUser().getObjectId());
+        return ((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId());
     }
 
     @Override
     public void predict1() {
-        add("predicted", getCurrentUser().getObjectId());
+        add("predicted", ParseUser.getCurrentUser().getObjectId());
         increment("p1PredictionVotes");
         saveInBackground();
     }
 
     @Override
     public void predict2() {
-        add("predicted", getCurrentUser().getObjectId());
+        add("predicted", ParseUser.getCurrentUser().getObjectId());
         increment("p2PredictionVotes");
         saveInBackground();
     }

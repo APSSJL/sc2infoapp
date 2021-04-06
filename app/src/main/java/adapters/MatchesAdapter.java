@@ -88,7 +88,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             super(itemView);
             tvName = itemView.findViewById(R.id.tvVersus);
             tvTime = itemView.findViewById(R.id.tvTime);
-            btnPredict = itemView.findViewById(R.id.btnMatchMakePredict);
+            btnPredict = itemView.findViewById(R.id.btnPredict);
 
         }
 
@@ -161,7 +161,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             tvTime = itemView.findViewById(R.id.tvTime);
             btnp1 = itemView.findViewById(R.id.btnBet1);
             btnp2 = itemView.findViewById(R.id.btnBet2);
-            btnPredict = itemView.findViewById(R.id.btnMatchMakePredict);
+            btnPredict = itemView.findViewById(R.id.btnPredict);
             pbChances = itemView.findViewById(R.id.pbChances);
         }
 
