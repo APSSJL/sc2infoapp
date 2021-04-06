@@ -129,11 +129,7 @@ public class TeamActivity extends AppCompatActivity {
             JSONObject cur = null;
             try {
                 LiquipediaParser parser = new LiquipediaParser();
-                ArrayList<Pair<String, String>> matchList = parser.getRecentMatches(Jsoup.parse(data.getString("text")));
-                for(Pair<String,String> m : matchList )
-                {
-                    matches.add(new ExternalMatch(m.first, m.second));
-                }
+                matches.addAll(parser.getRecentMatches(Jsoup.parse(data.getString("text")), teamName));
                 matchAdapter.notifyDataSetChanged();
                 Log.i(TAG, "parsed");
 

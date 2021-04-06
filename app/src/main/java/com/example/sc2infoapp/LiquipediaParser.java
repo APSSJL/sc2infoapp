@@ -11,6 +11,8 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
+import models.ExternalMatch;
+
 public class LiquipediaParser {
     public String getRace(JSONObject json) throws JSONException {
         JSONArray categories = json.getJSONArray("categories");
@@ -68,9 +70,9 @@ public class LiquipediaParser {
         return name;
     }
 
-    public ArrayList<Pair<String, String>> getRecentMatches(Document doc)
+    public ArrayList<ExternalMatch> getRecentMatches(Document doc, String playerName)
     {
-        ArrayList<Pair<String, String>> opponents = new ArrayList<>();
+        ArrayList<ExternalMatch> opponents = new ArrayList<>();
         Elements tags = doc.select("div.fo-nttax-infobox-wrapper");
         Element matches = tags.get(tags.size() - 1);
         Elements bodies = matches.select("tbody");
@@ -79,7 +81,7 @@ public class LiquipediaParser {
             Elements td = e.select("td");
             String opp = td.get(2).select("span").get(1).selectFirst("a").attr("title");
             String time = td.get(3).selectFirst("span").text();
-            opponents.add(new Pair<>(opp, time));
+            opponents.add(new ExternalMatch(opp, time, -1));
         }
 
         if(tags.size() == 3)
@@ -91,7 +93,11 @@ public class LiquipediaParser {
                 Elements td = e.select("td");
                 String opp = td.get(2).select("span").get(1).selectFirst("a").attr("title");
                 String time = td.get(3).selectFirst("span").text();
-                opponents.add(new Pair<>(opp, time));
+
+                String bo = td.get(1).select("abbr").attr("title");
+                String[] x = bo.split(" ");
+                Integer boInt = Integer.parseInt(x[2]);
+                opponents.add(new ExternalMatch(playerName + " vs " + opp, time, boInt));
             }
         }
 
