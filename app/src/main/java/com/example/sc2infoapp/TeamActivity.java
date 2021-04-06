@@ -56,6 +56,7 @@ public class TeamActivity extends AppCompatActivity {
     RatingBar rb;
     RecyclerView rvMatches;
     ArrayList<IMatch> matches;
+    ArrayList<ExternalMatch> externalMatches;
     MatchesAdapter matchAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -76,7 +77,8 @@ public class TeamActivity extends AppCompatActivity {
 
 
 
-        matches = new ArrayList<>();;
+        matches = new ArrayList<>();
+        externalMatches = new ArrayList<>();
         matchAdapter = new MatchesAdapter( matches, this);
 
         rvMatches.setLayoutManager(new LinearLayoutManager(this));
@@ -139,6 +141,7 @@ public class TeamActivity extends AppCompatActivity {
 
         });
     }
+
 
     private void getInfoFromApi() {
         btnJoin.setVisibility(View.GONE);

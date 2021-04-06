@@ -17,14 +17,15 @@ import com.example.sc2infoapp.R;
 
 import java.util.List;
 
+import models.ExternalMatch;
 import models.Match;
 
 public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.ViewHolder>{
 
     Context context;
-    List<Match> matches;
+    List<ExternalMatch> matches;
 
-    public MatchFeedAdapter(Context context, List<Match> matches){
+    public MatchFeedAdapter(Context context, List<ExternalMatch> matches){
         this.context = context;
         this.matches = matches;
     }
@@ -38,7 +39,7 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Match match=matches.get(position);
+        ExternalMatch match=matches.get(position);
         holder.bind(match);
     }
 
@@ -57,7 +58,7 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.View
             tvTime = itemView.findViewById(R.id.tvTime);
         }
 
-        public void bind(Match match) {
+        public void bind(ExternalMatch match) {
             tvVersus.setText(match.getOpponent());
             tvTime.setText(match.getTime());
         }

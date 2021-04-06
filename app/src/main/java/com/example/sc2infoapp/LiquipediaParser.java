@@ -1,6 +1,7 @@
 package com.example.sc2infoapp;
 
 import android.os.Build;
+import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
@@ -127,8 +128,9 @@ public class LiquipediaParser {
                 boInt = Integer.parseInt(x[2]);
 
             matches.add(new ExternalMatch(String.format("%s vs %s", player1, player2), time, boInt, tournament));
-            //Log.i(TAG, String.format("%s vs %s, bo %s, time %s, tournament %s", player1, player2, bo, time, tournament));
+            Log.i("tester", String.format("%s vs %s, bo %s, time %s, tournament %s", player1, player2, bo, time, tournament));
         };
+        Log.i("tester", matches.toString());
         return matches;
     }
 }
