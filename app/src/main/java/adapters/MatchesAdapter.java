@@ -19,20 +19,15 @@ import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
 
 import interfaces.IPredictable;
-import interfaces.IPublished;
-import models.Match;
+
 import com.example.sc2infoapp.R;
 import models.TaskRunner;
-
-import com.parse.ParseObject;
-import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.spec.InvalidParameterSpecException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -93,7 +88,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             super(itemView);
             tvName = itemView.findViewById(R.id.tvVersus);
             tvTime = itemView.findViewById(R.id.tvTime);
-            btnPredict = itemView.findViewById(R.id.btnPredict);
+            btnPredict = itemView.findViewById(R.id.btnMatchMakePredict);
 
         }
 
@@ -166,7 +161,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
             tvTime = itemView.findViewById(R.id.tvTime);
             btnp1 = itemView.findViewById(R.id.btnBet1);
             btnp2 = itemView.findViewById(R.id.btnBet2);
-            btnPredict = itemView.findViewById(R.id.btnPredict);
+            btnPredict = itemView.findViewById(R.id.btnMatchMakePredict);
             pbChances = itemView.findViewById(R.id.pbChances);
         }
 

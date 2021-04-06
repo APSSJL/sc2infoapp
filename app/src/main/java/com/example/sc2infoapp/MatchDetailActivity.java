@@ -8,31 +8,40 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.material.tabs.TabLayout;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.json.JSONException;
+import org.parceler.Parcels;
+
+import java.io.IOException;
 
 import fragments.MatchH2HFragment;
 import fragments.MatchInfoFragment;
 import fragments.MatchRankingFragment;
+import interfaces.IMatch;
+import models.Player;
+import models.Team;
 
 public class MatchDetailActivity extends AppCompatActivity {
 
     public static final String TAG = "MatchDetailActivity";
 
     ImageView ivProfileImage;
-    TextView tvMatchName;
+    ImageView ivOpponentLeft;
+    ImageView ivOpponentRight;
+    TextView tvOpponentLeft;
+    TextView tvOpponentRight;
     TabLayout tlMatchTab;
-
-    private MatchInfoFragment matchInfoFragment;
-    private MatchRankingFragment matchRankingFragment;
-    private MatchH2HFragment matchH2HFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +49,11 @@ public class MatchDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_match_detail);
 
         ivProfileImage = findViewById(R.id.ivProfileSmall);
-        tvMatchName = findViewById(R.id.tvMatchName);
+        ivOpponentLeft = findViewById(R.id.ivOpponentLeft);
+        ivOpponentRight = findViewById(R.id.ivOpponentRight);
+        tvOpponentLeft = findViewById(R.id.tvOpponentLeft);
+        tvOpponentRight = findViewById(R.id.tvOpponentRight);
         tlMatchTab = findViewById(R.id.tlMatchTab);
-
-        matchInfoFragment = new MatchInfoFragment();
-        matchRankingFragment = new MatchRankingFragment();
-        matchH2HFragment = new MatchH2HFragment();
 
         try {
             ParseFile p = (ParseUser.getCurrentUser().getParseFile("pic"));
@@ -60,7 +68,25 @@ public class MatchDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //TODO: Match info
+        IMatch match = Parcels.unwrap(getIntent().getParcelableExtra("match"));
+        //TODO: Match should be passed as an extra from previous screen
+
+        String opponentLeft = match.getOpponent().split("vs")[0];
+        String opponentRight = match.getOpponent().split("vs")[1];
+        tvOpponentLeft.setText(opponentLeft);
+        tvOpponentRight.setText(opponentRight);
+
+        switch (match.getMatchType()) {
+            case 0:
+                getExternalTeam(opponentLeft, opponentRight);
+                break;
+            case 1:
+                getParsePlayer(opponentLeft, opponentRight);
+                break;
+            case 2:
+                getParseTeam(opponentLeft, opponentRight);
+                break;
+        }
 
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,20 +96,22 @@ public class MatchDetailActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMatchFragment, matchInfoFragment).commit();
         tlMatchTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Fragment selected = matchInfoFragment;
+                Fragment selected;
                 switch (tab.getPosition()) {
                     case 1:
-                        selected = matchInfoFragment;
+                        selected = new MatchInfoFragment(match);
                         break;
                     case 2:
-                        selected = matchRankingFragment;
+                        selected = new MatchRankingFragment(match);
                         break;
                     case 3:
-                        selected = matchH2HFragment;
+                        selected = new MatchH2HFragment();
+                        break;
+                    default:
+                        selected = new MatchInfoFragment(match);
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.flMatchFragment, selected).commit();
@@ -95,7 +123,111 @@ public class MatchDetailActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
+    }
 
+    public void getExternalTeam(String left, String right) {
+        LiquipediaClient client = new LiquipediaClient();
+
+        try {
+            String imagePathLeft = client.getPageByName(left);
+            String imagePathRight = client.getPageByName(right);
+
+            imagePathLeft.substring(imagePathLeft.indexOf("600px"));
+            imagePathLeft.substring(0, imagePathLeft.indexOf(".png") + 4);
+            imagePathRight.substring(imagePathRight.indexOf("600px"));
+            imagePathRight.substring(0, imagePathRight.indexOf(".png") + 4);
+
+            Glide.with(this).load("https://liquipedia.net/starcraft2/File:" + imagePathLeft).transform(new CircleCrop()).into(ivOpponentLeft);
+            Glide.with(this).load("https://liquipedia.net/starcraft2/File:" + imagePathRight).transform(new CircleCrop()).into(ivOpponentLeft);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getParsePlayer(String left, String right) {
+        ParseQuery<Player> query1 = ParseQuery.getQuery(Player.class);
+        ParseQuery<Player> query2 = ParseQuery.getQuery(Player.class);
+        query1.whereEqualTo("name", left);
+        query2.whereEqualTo("name", right);
+
+        try {
+            Player p1 = query1.find().get(0);
+            Player p2 = query2.find().get(0);
+
+            try {
+                ParseFile file = (p1.getParseFile("picture"));
+                if (p1 != null) {
+                    Log.i(TAG, "loaded");
+                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
+                } else {
+                    Log.i(TAG, "null");
+                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                ParseFile file = (p2.getParseFile("picture"));
+                if (p2 != null) {
+                    Log.i(TAG, "loaded");
+                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
+                } else {
+                    Log.i(TAG, "null");
+                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getParseTeam(String left, String right) {
+        ParseQuery<Team> query1 = ParseQuery.getQuery(Team.class);
+        ParseQuery<Team> query2 = ParseQuery.getQuery(Team.class);
+        query1.whereEqualTo("name", left);
+        query2.whereEqualTo("name", right);
+
+        try {
+            Team t1 = query1.find().get(0);
+            Team t2 = query2.find().get(0);
+
+            try {
+                ParseFile file = (t1.getParseFile("picture"));
+                if (t1 != null) {
+                    Log.i(TAG, "loaded");
+                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
+                } else {
+                    Log.i(TAG, "null");
+                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                ParseFile file = (t2.getParseFile("picture"));
+                if (t2 != null) {
+                    Log.i(TAG, "loaded");
+                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentRight);
+                } else {
+                    Log.i(TAG, "null");
+                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentRight);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 }

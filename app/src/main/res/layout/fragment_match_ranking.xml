@@ -4,74 +4,131 @@
     android:layout_height="wrap_content"
     tools:context="fragments.MatchRankingFragment">
 
-    <TextView
-        android:id="@+id/tvMatchRank"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ranking"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <View
-        android:id="@+id/dvMatchRank"
+    <RelativeLayout
+        android:id="@+id/rlMatchRanking"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/tvMatchRank"
-        android:background="?android:attr/listDivider" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvMatchRankInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dvMatchRank"
-        android:layout_marginTop="5dp"
-        android:text="Rank"
-        android:textColor="@color/black" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnMatchMakePredict2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@color/transparent"
+            android:text="Rate this match"
+            android:textAllCaps="false"
+            android:textColor="@color/blue">
+
+        </androidx.appcompat.widget.AppCompatButton>
+
+        <TextView
+            android:id="@+id/tvMatchRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dvMatchRank"
+            android:layout_marginBottom="10dp"
+            android:text="Ranking"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/dvMatchRank"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/btnMatchMakePredict2"
+            android:background="?android:attr/listDivider" />
+
+        <RatingBar
+            android:id="@+id/rbMatchRanking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dvMatchRank"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvMatchPredict"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvMatchRankInfo"
-        android:layout_marginTop="15dp"
+        android:layout_above="@+id/dvPredict"
+        android:layout_marginBottom="10dp"
         android:text="Predictions"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <View
-        android:id="@+id/dvMatchPredict"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/tvMatchPredict"
-        android:background="?android:attr/listDivider" />
-
-    <TextView
-        android:id="@+id/tvMatchPredictInfo"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnMatchMakePredict"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dvMatchPredict"
+        android:layout_below="@id/rlMatchRanking"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="1dp"
+        android:background="@color/transparent"
+        android:text="Make Prediction"
+        android:textAllCaps="false"
+        android:textColor="@color/blue">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+    <View
+        android:id="@+id/dvPredict"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/btnMatchMakePredict"
+        android:background="?android:attr/listDivider" />
+
+    <ProgressBar
+        android:id="@+id/pbMatchPrediction"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/dvPredict"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:id="@+id/tvPredictionHead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pbMatchPrediction"
         android:layout_marginTop="5dp"
-        android:text="Rank"
-        android:textColor="@color/black" />
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        tools:text="**** is predicted as winner!" />
 
     <TextView
         android:id="@+id/tvMatchComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvMatchPredictInfo"
-        android:layout_marginTop="15dp"
+        android:layout_above="@+id/dvMatchComment"
+        android:layout_marginBottom="10dp"
         android:text="Commentary"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnMatchMakeComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPredictionHead"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:background="@color/transparent"
+        android:text="Make Comment"
+        android:textAllCaps="false"
+        android:textColor="@color/blue">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
     <View
         android:id="@+id/dvMatchComment"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tvMatchComment"
+        android:layout_below="@+id/btnMatchMakeComment"
         android:background="?android:attr/listDivider" />
 
     <androidx.recyclerview.widget.RecyclerView

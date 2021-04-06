@@ -12,9 +12,10 @@ import java.util.ArrayList;
 
 import interfaces.IMatch;
 import interfaces.IPredictable;
+import interfaces.IRateable;
 
 @ParseClassName("TeamMatch")
-public class TeamMatch extends ParseObject implements IMatch, IPredictable {
+public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRateable {
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
     @Override
@@ -43,6 +44,10 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable {
         return new Pair<>(getInt("t1PredictionVotes"), getInt("t2PredictionVotes"));
     }
 
+    public String getDetails()
+    {
+        return getString("details");
+    }
 
     public Boolean getPredicted()
     {
@@ -66,4 +71,21 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable {
         saveInBackground();
     }
 
+    @Override
+    public void setRate(double rate) {
+        increment("ratingSum", rate);
+        increment("ratingVotes", 1);
+        put("rating", getRatingSum() / getRatingVotes());
+        saveInBackground();
+    }
+
+    @Override
+    public double getRatingSum() {
+        return getDouble("ratingSum");
+    }
+
+    @Override
+    public double getRatingVotes() {
+        return getDouble("ratingVotes");
+    }
 }

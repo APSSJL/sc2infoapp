@@ -74,6 +74,6 @@ public class AligulacClient {
     }
 
     protected String getApiUrl(String path) {
-        return BASE_URL + "/" + path;
+        return BASE_URL + path;
     }
 }

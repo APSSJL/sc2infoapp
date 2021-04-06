@@ -11,27 +11,27 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/ivTeamLeft2"
+            android:id="@+id/ivOpponentLeft"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_below="@+id/tvTeamLeft"
+            android:layout_below="@+id/tvOpponentLeft"
             android:layout_alignParentStart="true"
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/ivTeamRight"
+            android:id="@+id/ivOpponentRight"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_below="@+id/tvTeamRight"
+            android:layout_below="@+id/tvOpponentRight"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/tvTeamLeft"
+            android:id="@+id/tvOpponentLeft"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tlMatchTab"
@@ -44,7 +44,7 @@
             tools:text="Team Left" />
 
         <TextView
-            android:id="@+id/tvTeamRight"
+            android:id="@+id/tvOpponentRight"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tlMatchTab"
@@ -63,10 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tlMatchTab"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="100dp"
             android:layout_marginEnd="0dp"
-            android:layout_toStartOf="@+id/ivTeamRight"
-            android:layout_toEndOf="@+id/ivTeamLeft2"
+            android:layout_toStartOf="@+id/ivOpponentRight"
+            android:layout_toEndOf="@+id/ivOpponentLeft"
             android:text="vs"
             android:textAlignment="center"
             android:textColor="@color/black"
@@ -84,13 +84,13 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/tvMatchName"
+            android:id="@+id/tvMatchTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="17dp"
-            android:text="Match Name"
+            android:text="Match Detail"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -123,7 +123,7 @@
             android:id="@+id/flMatchFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/ivTeamRight"
+            android:layout_below="@+id/ivOpponentRight"
             android:layout_alignParentStart="true"
             android:layout_margin="15dp"
             android:layout_marginTop="15dp"></FrameLayout>

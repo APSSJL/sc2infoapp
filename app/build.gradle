@@ -54,4 +54,10 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:${appCompatVersion}"
     implementation "com.google.android.material:material:${designSupportVersion}"
+
+    //Make custom variable to be passable
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
+
+    implementation 'org.jsoup:jsoup:1.13.1'
 }
