@@ -193,6 +193,7 @@ Model: User
 | userInfo      | String | bio information |
 | follows       | Array | players/tournaments/users followed by user |
 | player        | Pointer to Player | if user is a progamer, she/he can link the account |
+| Additional    | Pointer to additional | additional info associated with user that should be edited from other accounts |
 
 Model: Tournament
 | Property      | Type     | Description |
@@ -238,6 +239,7 @@ Model: Player
 | name          | String   | players name |
 | rating        | Number   | rating[need for queries] |
 |Picture        |File      | Player's photo|
+| rated     | Array    | Shows if user have rated this player|
 
 Model: PlayerMatch [this entity for internal/user tournaments only, for other tournaments data should be fetched from the API] 
 | Property      | Type     | Description |
@@ -256,6 +258,8 @@ Model: PlayerMatch [this entity for internal/user tournaments only, for other to
 | p1PredictionVotes | Number | predictions for the player 1 |
 | p2PredictionVotes | Number | predictions for the player 2 |
 | predicted     | Array    | Shows if user added prediciton for this match|
+| bo            | Number    | Shows number of maps in match | 
+| rated     | Array    | Shows if user have rated this match|
 
 Model: TeamMatch [this entity for internal/user tournaments only, for other tournaments data should be fetched from the API] 
 | Property      | Type     | Description |
@@ -273,20 +277,26 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 | t1PredictionVotes | Number | predictions for the team 1 |
 | t2PredictionVotes | Number | predictions for the team 2 |
 | predicted     | Array    | Shows if user added prediciton for this match|
+| rating        | Number   | Team Match rating |
+| ratingSum     | Number   | average Team Match rating |
+| ratingVotes   | Number   | votes for rating |
+| rated     | Array    | Shows if user have rated this team|
 
 Model: Team
 | Property      | Type     | Description |
 | ------------- | -------- | ------------|
 | objectId      | String   | unique id for the comment (default field) |
 | teamName      |  String  | Name of team |
-| lineup        |   Array  | List of players within the team |
 | details       | String   | Information regarding the team, like wikipage info  |
 | rating        | Number   | Team rating |
 | updatedAt     | DateTime | date when team was last updated |
 | createdAt     | DateTime | date when team was created |
 | owner         | Pointer to user | user that manages team |
-| lineup        | array    | users in team |
+| lineup        | Relation    | users in team |
 | ishiring      | boolean  | shows if team looking for new members | 
+| ratingSum     | Number   | average team rating |
+| ratingVotes   | Number   | votes for rating |
+| rated     | Array    | Shows if user have rated this team|
 
 
 ### Networking
