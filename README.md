@@ -848,3 +848,11 @@ Aligulac API
 | ```GET```      | /match   | gets match object |
 
 <img src='https://github.com/APSSJL/sc2infoapp/blob/main/gif_1.gif' width='200'  />
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/gif_team.gif' width='200'  />
+User can view and manage team
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/matches.gif' width='200'  />
+User can view matches
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/player_act.gif' width='200'  />
+Players info uploaded from external api
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/team_ext.gif' width='200'  />
+Team also could be uploaded from external api
