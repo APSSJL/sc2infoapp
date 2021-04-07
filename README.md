@@ -33,8 +33,8 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] Home feed fragment
         - [ ] Homefeed showing recent activity based on user follows
     - [x] Profile fragment
-    - [ ] Match feed fragment
-        - [ ] Shows all recent tournaments and matches  
+    - [x] Match feed fragment
+        - [x] Shows all recent tournaments and matches  
 - [x] User can change account preferences
     - [x] User can add user info
     - [x] User can edit username
@@ -51,8 +51,8 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 - [x] User can create post
     - [ ] By tapping on the post, user can go to the detailed post view
     - [ ] User can rate post in detailed view
-    - [ ] User can view comments in the detailed view
-    - [ ] User can leave comments 
+    - [x] User can view comments in the detailed view
+    - [x] User can leave comments 
  - [x] Users can view match detailed page
     - [x] Users can leave predictions
     - [x] Users can get predictions from aligulac
@@ -66,7 +66,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 - [x] User can view player's detailed page
 - [ ] User can rate and leave comments:
     - [ ] Players
-    - [ ] Matches
+    - [x] Matches
     - [ ] Tournaments
     - [ ] Teams
     - [ ] Posts
