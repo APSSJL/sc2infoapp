@@ -59,6 +59,12 @@ public class TeamManageActivity extends AppCompatActivity {
         if(team == null)
             finish();
 
+        try {
+            team.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         adapter = new RequestAdapter(this, requests, team, this);
 
         edTeamName.setText(team.getTeamName());
@@ -82,15 +88,6 @@ public class TeamManageActivity extends AppCompatActivity {
                 }
                 ParseQuery<Team> query = new ParseQuery<Team>(Team.class);
                 query.whereEqualTo(Team.KEY_NAME, name);
-                try {
-                    if(query.find().size() != 0)
-                    {
-                        Toast.makeText(TeamManageActivity.this, "Team already exists", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
                 team.setOwner(ParseUser.getCurrentUser());
                 team.setName(name);
                 team.setInfo(edTeamInfo.getText().toString());
@@ -104,7 +101,6 @@ public class TeamManageActivity extends AppCompatActivity {
                             return;
                         }
                         Toast.makeText(TeamManageActivity.this, "Team saved!", Toast.LENGTH_SHORT).show();
-                        finish();
                     }
                 });
             }
