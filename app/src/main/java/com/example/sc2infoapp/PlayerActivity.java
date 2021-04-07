@@ -27,6 +27,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import adapters.MatchesAdapter;
@@ -127,11 +128,8 @@ public class PlayerActivity extends AppCompatActivity {
                 Document doc = Jsoup.parse(data.getString("text"));
                 tvBio.setText(parser.getBio(doc));
                 tvName.setText(String.format("%s: %s", playerName, parser.getName(doc)));
-                //parser.getPhotoLink(data, playerName);
-                for(Pair<String, String> p: parser.getRecentMatches(doc))
-                {
-                    opponents.add(new ExternalMatch(playerName + " vs " + p.first, p.second));
-                }
+                //parser.getPhotoLink(data, playerName);]
+                opponents.addAll(parser.getRecentMatches(doc, playerName));
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -157,7 +155,7 @@ public class PlayerActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (p.getParseFile("picture"));
-                if (p != null) {
+                if (p != null && file != null) {
                     Log.i(TAG, "loaded");
                     Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivPicture);
                 } else {
@@ -197,7 +195,10 @@ public class PlayerActivity extends AppCompatActivity {
         q1.include("player");
         q1.whereEqualTo("player",p);
         try {
-            ParseUser x = q1.find().get(0);
+            List<ParseUser> users = q1.find();
+            if(users.size() == 0)
+                return;
+            ParseUser x = users.get(0);
             ParseQuery<Match> q2 = ParseQuery.getQuery(Match.class);
             q2.include("Player2");
             q2.include("Player1");
