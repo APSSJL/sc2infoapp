@@ -33,17 +33,8 @@ public class LiquipediaParser {
         return "";
     }
 
-    public String getPhotoLink(JSONObject json, String name) throws JSONException {
-        JSONArray images = json.getJSONArray("images");
-        name = name.toLowerCase();
-        for (int i = 0; i < images.length(); i++)
-        {
-            if(images.getString(i).toLowerCase().contains(name))
-            {
-                return  "https://liquipedia.net/starcraft2/File:" + images.getString(i);
-            }
-        }
-        return null;
+    public String getPhotoLink(JSONObject json) throws JSONException {
+        return json.getJSONObject("properties").getString("metaimageurl");
     }
 
     public String getBio(Document doc) throws JSONException {

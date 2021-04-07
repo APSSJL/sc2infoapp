@@ -23,6 +23,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ import interfaces.IMatch;
 import models.ExternalMatch;
 import models.Match;
 import models.Player;
+import models.TaskRunner;
 import models.Team;
 import models.TeamMatch;
 
@@ -90,8 +92,8 @@ public class MatchDetailActivity extends AppCompatActivity {
         switch (match.getMatchType()) {
             case IMatch.EXTERNAL:
                 try {
-                    Glide.with(MatchDetailActivity.this).load(getExternalTeam(opponentLeft)).transform(new CircleCrop()).into(ivOpponentLeft);
-                    Glide.with(MatchDetailActivity.this).load(getExternalTeam(opponentRight)).transform(new CircleCrop()).into(ivOpponentRight);
+                    getExternalTeam(opponentLeft, ivOpponentLeft);
+                    getExternalTeam(opponentRight, ivOpponentRight);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -146,34 +148,34 @@ public class MatchDetailActivity extends AppCompatActivity {
 
     }
 
-    public String getExternalTeam(String opponent) throws ExecutionException, InterruptedException {
-        LiquipediaClient client = new LiquipediaClient();
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-        Callable<String> callable = new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-
-                String imagePath = null;
-
-                Log.i(TAG, "new thread entered");
-                try {
-                    imagePath = client.getPageByName(opponent);
-
-                    imagePath = imagePath.substring(imagePath.indexOf("/commons/images/thumb/"));
-                    imagePath = imagePath.substring(0, imagePath.indexOf("/600px-"));
-                    imagePath = imagePath.replace("thumb/", "");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return imagePath;
+    public void getExternalTeam(String opponent, ImageView target) throws ExecutionException, InterruptedException {
+        TaskRunner taskRunner = new TaskRunner();
+        taskRunner.executeAsync(new ImageTask(opponent), (data) ->
+        {
+            try {
+                LiquipediaParser parser = new LiquipediaParser();
+                String link = parser.getPhotoLink(data);
+                Glide.with(MatchDetailActivity.this).load(link).transform(new CircleCrop()).into(target);
+                Log.i(TAG, link);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        };
 
-        Future<String> future = executor.submit(callable);
-        return String.format(IMAGE_BASE_URL + future.get());
+        });
+    }
+
+    class ImageTask implements Callable<JSONObject> {
+        private final String input;
+
+        public ImageTask(String input) {
+            this.input = input;
+        }
+
+        @Override
+        public JSONObject call() throws IOException, JSONException {
+            // Some long running task
+            return (MainActivity.client.getFullPage(input));
+        }
     }
 
     public void getParsePlayer(String left, String right) {

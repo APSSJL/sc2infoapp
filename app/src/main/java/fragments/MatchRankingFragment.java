@@ -78,7 +78,6 @@ public class MatchRankingFragment extends Fragment {
             btnMatchMakePredict.setVisibility(View.GONE);
 
             TaskRunner taskRunner = new TaskRunner();
-            LiquipediaParser parser = new LiquipediaParser();
             String[] s = match.getOpponent().split(" vs ");
             taskRunner.executeAsync(new PredicitonTask(s[0], s[1], ((ExternalMatch)match).getBo()), (data) -> {
                 Log.i("PLAYER", data.toString());
