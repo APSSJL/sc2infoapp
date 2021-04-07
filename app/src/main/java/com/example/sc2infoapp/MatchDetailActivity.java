@@ -153,11 +153,12 @@ public class MatchDetailActivity extends AppCompatActivity {
         taskRunner.executeAsync(new ImageTask(opponent), (data) ->
         {
             try {
+                Thread.sleep(3000);
                 LiquipediaParser parser = new LiquipediaParser();
                 String link = parser.getPhotoLink(data);
                 Glide.with(MatchDetailActivity.this).load(link).transform(new CircleCrop()).into(target);
                 Log.i(TAG, link);
-            } catch (JSONException e) {
+            } catch (JSONException | InterruptedException e) {
                 e.printStackTrace();
             }
 
