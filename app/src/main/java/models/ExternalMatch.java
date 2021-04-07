@@ -1,11 +1,17 @@
 package models;
 
+import com.parse.ParseUser;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
+import interfaces.IFollowable;
 import interfaces.IMatch;
 
-public class ExternalMatch implements IMatch {
+import static com.parse.ParseUser.getCurrentUser;
+
+public class ExternalMatch implements IMatch, IFollowable {
     private String opponent;
     private String time;
     protected static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
@@ -34,5 +40,25 @@ public class ExternalMatch implements IMatch {
     @Override
     public int getMatchType() {
         return EXTERNAL;
+    }
+
+    @Override
+    public boolean setFollow() {
+        ParseUser user = getCurrentUser();
+        if (this.getFollow()) {
+            return false;
+        } else {
+            user.add("follows", String.format("External: " + opponent));
+            user.saveInBackground();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean getFollow() {
+        Object a = getCurrentUser().get("follows");
+        if(a == null)
+            return false;
+        return ((ArrayList)a).contains(String.format("External: "+ opponent));
     }
 }

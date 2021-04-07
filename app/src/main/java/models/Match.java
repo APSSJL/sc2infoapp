@@ -95,10 +95,15 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
     }
 
     @Override
-    public void setFollow() {
+    public boolean setFollow() {
         ParseUser user = getCurrentUser();
-        user.add("follows", getString("objectID"));
-        user.saveInBackground();
+        if (this.getFollow()) {
+            return false;
+        } else {
+            user.add("follows", getString("objectId"));
+            user.saveInBackground();
+            return true;
+        }
     }
 
     @Override

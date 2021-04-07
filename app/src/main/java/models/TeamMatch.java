@@ -10,12 +10,15 @@ import com.parse.ParseUser;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import interfaces.IFollowable;
 import interfaces.IMatch;
 import interfaces.IPredictable;
 import interfaces.IRateable;
 
+import static com.parse.ParseUser.getCurrentUser;
+
 @ParseClassName("TeamMatch")
-public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRateable {
+public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable {
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
     @Override
@@ -87,5 +90,25 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
     @Override
     public double getRatingVotes() {
         return getDouble("ratingVotes");
+    }
+
+    @Override
+    public boolean setFollow() {
+        ParseUser user = getCurrentUser();
+        if (this.getFollow()) {
+            return false;
+        } else {
+            user.add("follows", getString("objectId"));
+            user.saveInBackground();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean getFollow() {
+        Object a = getCurrentUser().get("follows");
+        if(a == null)
+            return false;
+        return ((ArrayList)a).contains(getString("objectID"));
     }
 }

@@ -1,6 +1,6 @@
 package interfaces;
 
 public interface IFollowable {
-    public void setFollow();
+    public boolean setFollow();
     public boolean getFollow();
 }

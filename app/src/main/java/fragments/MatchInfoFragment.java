@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sc2infoapp.R;
 import com.parse.FindCallback;
@@ -52,8 +53,8 @@ public class MatchInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_match_info, container, false);
 
-        btnComment = view.findViewById(R.id.btnComment);
-        btnFollow = view.findViewById(R.id.btnFollow);
+        btnComment = view.findViewById(R.id.btnMatchComment);
+        btnFollow = view.findViewById(R.id.btnMatchFollow);
         tvMatchDetailList = view.findViewById(R.id.tvMatchDetailList);
         tvTeamLeft = view.findViewById(R.id.tvLineupLeft);
         tvTeamRight = view.findViewById(R.id.tvLineupRight);
@@ -85,7 +86,13 @@ public class MatchInfoFragment extends Fragment {
         btnFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((IFollowable) match).setFollow();
+                if (((IFollowable) match).setFollow()) {
+                    Log.i(TAG, "Follow successfully: " + match.getOpponent());
+                    Toast.makeText(getActivity(), String.format("Successfully followed: " + match.getOpponent()), Toast.LENGTH_SHORT);
+                } else {
+                    Log.i(TAG, "Already followed: " + match.getOpponent());
+                    Toast.makeText(getActivity(), String.format("Already followed: " + match.getOpponent()), Toast.LENGTH_SHORT);
+                }
             }
         });
 
@@ -94,11 +101,11 @@ public class MatchInfoFragment extends Fragment {
 
     public String setMatchDetail() {
         switch (match.getMatchType()) {
-            case 0:
+            case IMatch.EXTERNAL:
                 return match.getTime();
-            case 1:
+            case IMatch.INTERNAL:
                 return String.format(match.getTime() + "%n" + ((Match) match).getDetails());
-            case 2:
+            case IMatch.TEAM:
                 return String.format(match.getTime() + "%n" + ((TeamMatch) match).getDetails());
         }
         return null;
@@ -123,10 +130,10 @@ public class MatchInfoFragment extends Fragment {
     }
 
     public String lineupIntoString(ArrayList<ParseUser> lineups) {
-        String a = "";
+        StringBuilder sb = new StringBuilder();
         for (ParseUser player : lineups) {
-            a += (player.getUsername() + "%d");
+            sb.append(player.getUsername() + "%d");
         }
-        return a;
+        return sb.toString();
     }
 }

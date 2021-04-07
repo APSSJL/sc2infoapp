@@ -14,6 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
             android:background="@color/transparent"
             android:text="Rate this match"
             android:textAllCaps="false"
@@ -45,7 +46,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/dvMatchRank"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:clickable="false"
+            android:isIndicator="true" />
     </RelativeLayout>
 
     <TextView
@@ -66,7 +69,7 @@
         android:layout_below="@id/rlMatchRanking"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="1dp"
+        android:layout_marginEnd="5dp"
         android:background="@color/transparent"
         android:text="Make Prediction"
         android:textAllCaps="false"
@@ -87,7 +90,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/dvPredict"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:progressBackgroundTint="#855E24"
+        android:progressBackgroundTintMode="add"
+        android:progressTint="#0080B4"
+        android:progressTintMode="add" />
 
     <TextView
         android:id="@+id/tvPredictionHead"
@@ -117,6 +124,7 @@
         android:layout_below="@+id/tvPredictionHead"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="5dp"
         android:background="@color/transparent"
         android:text="Make Comment"
         android:textAllCaps="false"

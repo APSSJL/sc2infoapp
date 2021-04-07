@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,17 +26,26 @@ import org.json.JSONException;
 import org.parceler.Parcels;
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import fragments.MatchH2HFragment;
 import fragments.MatchInfoFragment;
 import fragments.MatchRankingFragment;
 import interfaces.IMatch;
+import models.ExternalMatch;
+import models.Match;
 import models.Player;
 import models.Team;
+import models.TeamMatch;
 
 public class MatchDetailActivity extends AppCompatActivity {
 
     public static final String TAG = "MatchDetailActivity";
+    public static final String IMAGE_BASE_URL = "https://liquipedia.net";
 
     ImageView ivProfileImage;
     ImageView ivOpponentLeft;
@@ -77,13 +88,20 @@ public class MatchDetailActivity extends AppCompatActivity {
         tvOpponentRight.setText(opponentRight);
 
         switch (match.getMatchType()) {
-            case 0:
-                getExternalTeam(opponentLeft, opponentRight);
+            case IMatch.EXTERNAL:
+                try {
+                    Glide.with(MatchDetailActivity.this).load(getExternalTeam(opponentLeft)).transform(new CircleCrop()).into(ivOpponentLeft);
+                    Glide.with(MatchDetailActivity.this).load(getExternalTeam(opponentRight)).transform(new CircleCrop()).into(ivOpponentRight);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
-            case 1:
+            case IMatch.INTERNAL:
                 getParsePlayer(opponentLeft, opponentRight);
                 break;
-            case 2:
+            case IMatch.TEAM:
                 getParseTeam(opponentLeft, opponentRight);
                 break;
         }
@@ -96,18 +114,20 @@ public class MatchDetailActivity extends AppCompatActivity {
             }
         });
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMatchFragment, new MatchInfoFragment(match)).commit();
+
         tlMatchTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Fragment selected;
                 switch (tab.getPosition()) {
-                    case 1:
+                    case 0:
                         selected = new MatchInfoFragment(match);
                         break;
-                    case 2:
+                    case 1:
                         selected = new MatchRankingFragment(match);
                         break;
-                    case 3:
+                    case 2:
                         selected = new MatchH2HFragment();
                         break;
                     default:
@@ -123,28 +143,37 @@ public class MatchDetailActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
+
     }
 
-    public void getExternalTeam(String left, String right) {
+    public String getExternalTeam(String opponent) throws ExecutionException, InterruptedException {
         LiquipediaClient client = new LiquipediaClient();
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        try {
-            String imagePathLeft = client.getPageByName(left);
-            String imagePathRight = client.getPageByName(right);
+        Callable<String> callable = new Callable<String>() {
+            @Override
+            public String call() throws Exception {
 
-            imagePathLeft.substring(imagePathLeft.indexOf("600px"));
-            imagePathLeft.substring(0, imagePathLeft.indexOf(".png") + 4);
-            imagePathRight.substring(imagePathRight.indexOf("600px"));
-            imagePathRight.substring(0, imagePathRight.indexOf(".png") + 4);
+                String imagePath = null;
 
-            Glide.with(this).load("https://liquipedia.net/starcraft2/File:" + imagePathLeft).transform(new CircleCrop()).into(ivOpponentLeft);
-            Glide.with(this).load("https://liquipedia.net/starcraft2/File:" + imagePathRight).transform(new CircleCrop()).into(ivOpponentLeft);
+                Log.i(TAG, "new thread entered");
+                try {
+                    imagePath = client.getPageByName(opponent);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                    imagePath = imagePath.substring(imagePath.indexOf("/commons/images/thumb/"));
+                    imagePath = imagePath.substring(0, imagePath.indexOf("/600px-"));
+                    imagePath = imagePath.replace("thumb/", "");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return imagePath;
+            }
+        };
+
+        Future<String> future = executor.submit(callable);
+        return String.format(IMAGE_BASE_URL + future.get());
     }
 
     public void getParsePlayer(String left, String right) {

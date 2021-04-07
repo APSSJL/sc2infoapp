@@ -20,6 +20,7 @@ public class MatchH2HFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_match_h2h, container, false);
 
         rvPreviousMeeting = view.findViewById(R.id.rvPreviousMeeting);
+        //TODO: Recylcer View adapter for previous matches
 
         return view;
     }
