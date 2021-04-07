@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +17,29 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sc2infoapp.AligulacClient;
+import com.example.sc2infoapp.LiquipediaParser;
+import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.R;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import adapters.MatchesAdapter;
 import interfaces.IMatch;
 import interfaces.IPredictable;
 import interfaces.IRateable;
+import models.ExternalMatch;
+import models.TaskRunner;
 
 public class MatchRankingFragment extends Fragment {
 
@@ -68,24 +77,24 @@ public class MatchRankingFragment extends Fragment {
             rlMatchRanking.setVisibility(View.GONE);
             btnMatchMakePredict.setVisibility(View.GONE);
 
-            AligulacClient client = new AligulacClient();
-            ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-            Callable<Double> callable = new Callable<Double>() {
-                @Override
-                public Double call() throws Exception {
-                    JSONObject result = client.getPrediction(client.getPlayer(opponentLeft).getInt("id"), client.getPlayer(opponentRight).getInt("id"), 1);
-                    return result.getDouble("proba");
+            TaskRunner taskRunner = new TaskRunner();
+            LiquipediaParser parser = new LiquipediaParser();
+            String[] s = match.getOpponent().split(" vs ");
+            taskRunner.executeAsync(new PredicitonTask(s[0], s[1], ((ExternalMatch)match).getBo()), (data) -> {
+                Log.i("PLAYER", data.toString());
+                try {
+                    double prob = data.getDouble("proba");
+                    if (prob > 0.5) {
+                        Toast.makeText(getContext(), data.getJSONObject("pla").getString("tag"), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), data.getJSONObject("plb").getString("tag"), Toast.LENGTH_LONG).show();
+                    }
+                    leftDistribution = prob * 100;
+                    setProgressBar(opponentLeft, opponentRight);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            };
-            Future<Double> future = executor.submit(callable);
-            try {
-                leftDistribution = future.get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            });
 
         } else {
             rbMatchRanking.setRating((float) (((IRateable)match).getRatingSum()/((IRateable)match).getRatingVotes()));
@@ -98,17 +107,11 @@ public class MatchRankingFragment extends Fragment {
 
             Pair<Integer, Integer> distribution = ((IPredictable)match).getDistribution();
             leftDistribution = (distribution.first / (distribution.first + distribution.second)) * 100;
+            setProgressBar(opponentLeft, opponentRight);
 
         }
 
-        pbMatchPrediction.setProgress((int) Math.round(leftDistribution));
-        if (leftDistribution > 50) {
-            tvPredictionHead.setText(opponentLeft + "is predicted as winner!");
-        } else if (leftDistribution < 50) {
-            tvPredictionHead.setText(opponentRight + "is predicted as winner!");
-        } else {
-            tvPredictionHead.setText("Fierce fight! Nobody know who will going to win!");
-        }
+
 
         btnMatchMakeComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +123,17 @@ public class MatchRankingFragment extends Fragment {
         //TODO: Set Recycler View adapter for rvMatchComment
 
         return view;
+    }
+
+    private void setProgressBar(String opponentLeft, String opponentRight) {
+        pbMatchPrediction.setProgress((int) Math.round(leftDistribution));
+        if (leftDistribution > 50) {
+            tvPredictionHead.setText(opponentLeft + "is predicted as winner!");
+        } else if (leftDistribution < 50) {
+            tvPredictionHead.setText(opponentRight + "is predicted as winner!");
+        } else {
+            tvPredictionHead.setText("Fierce fight! Nobody know who will going to win!");
+        }
     }
 
     public void showDialog() {
@@ -148,4 +162,24 @@ public class MatchRankingFragment extends Fragment {
         popDialog.create();
         popDialog.show();
     }
+    public class PredicitonTask implements Callable<JSONObject> {
+        private final String input1;
+        private final String input2;
+        private final Integer bo;
+
+        public PredicitonTask(String input1, String input2, Integer bo) {
+            this.input1 = input1;
+            this.input2 = input2;
+            this.bo = bo;
+        }
+
+        @Override
+        public JSONObject call() throws IOException, JSONException {
+            // Some long running task
+            int p1 = MainActivity.aligulacClient.getPlayer(input1).getInt("id");
+            int p2 = MainActivity.aligulacClient.getPlayer(input2).getInt("id");
+            return MainActivity.aligulacClient.getPrediction(p1, p2, bo);
+        }
+    }
+
 }
