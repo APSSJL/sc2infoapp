@@ -14,11 +14,13 @@ import static com.parse.ParseUser.getCurrentUser;
 public class ExternalMatch implements IMatch, IFollowable {
     private String opponent;
     private String time;
+    private Integer bo;
     protected static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
-    public ExternalMatch(String opponent, String time)
+    public ExternalMatch(String opponent, String time, Integer bo)
     {
+        this.bo = bo;
         this.opponent = opponent;
         try {
             this.time = DATE_FORMATTER.format(DATE_PARRSER.parse(time));
@@ -30,6 +32,11 @@ public class ExternalMatch implements IMatch, IFollowable {
     @Override
     public String getOpponent() {
         return opponent;
+    }
+
+    public Integer getBo()
+    {
+        return bo;
     }
 
     @Override
