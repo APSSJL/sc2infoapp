@@ -53,9 +53,9 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [ ] User can rate post in detailed view
     - [ ] User can view comments in the detailed view
     - [ ] User can leave comments 
- - [ ] Users can view match detailed page
-    - [ ] Users can leave predictions
-    - [ ] Users can get predictions from aligulac
+ - [x] Users can view match detailed page
+    - [x] Users can leave predictions
+    - [x] Users can get predictions from aligulac
 - [x] User can view team detailed page
     - [x] Players without team can ask to join
     - [x] Team owners can manage team
@@ -75,6 +75,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [ ] Other users
     - [ ] Tournaments
     - [ ] Teams 
+    - [x] Match
 - [ ] User can view tournament detailed screen
     - [ ] User can create and edit new tournaments
 - [ ] User can search and filter posts, players, teams and tournaments
