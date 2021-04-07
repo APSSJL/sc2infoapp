@@ -75,9 +75,9 @@ public class BaseCommentActivity extends AppCompatActivity {
                 if (content.isEmpty()){
                     Toast.makeText(BaseCommentActivity.this,"Comment cannot be empty",Toast.LENGTH_SHORT).show();
                 }
-                Log.i(TAG,"in");
 
                 Comment comment = new Comment();
+                Log.i(TAG,content);
                 comment.setAuthor(user);
                 comment.setContent(content);
 
@@ -115,5 +115,13 @@ public class BaseCommentActivity extends AppCompatActivity {
         }
 
         adapter.notifyDataSetChanged();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onResume() {
+        super.onResume();
+        allComments.clear();
+        queryComments();
     }
 }

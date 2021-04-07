@@ -10,6 +10,8 @@ public class Comment extends ParseObject {
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_CONTENT = "content";
 
+
+
     //GET
     public ParseUser getAuthor(){
         return getParseUser(KEY_AUTHOR);
@@ -21,11 +23,11 @@ public class Comment extends ParseObject {
 
     //POST
     public void setAuthor(ParseUser author){
-        put(KEY_AUTHOR,author);
+        put(KEY_AUTHOR, author);
     }
 
     public void setContent(String content){
-        put(KEY_CONTENT,content);
+        put(KEY_CONTENT, content);
     }
 
 
