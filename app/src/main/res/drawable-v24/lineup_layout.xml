@@ -1,0 +1,13 @@
+<!-- res/drawable/myrect.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#ffffff" />
+    <stroke
+        android:width="1sp"
+        android:color="@color/divider_color" />
+    <padding
+        android:left="1px"
+        android:top="1px"
+        android:right="1px"
+        android:bottom="1px" />
+</shape>

@@ -31,17 +31,17 @@
             android:text="by author"
             />
     </RelativeLayout>
+
     <TextView
+        android:id="@+id/tvCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="category"
-        android:paddingStart="15dp"
+        android:layout_below="@+id/rvTitleContainer"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:background="@color/accent_color"
-        android:layout_below="@+id/rvTitleContainer"
-        android:id="@+id/tvCategory"
-        />
+        android:paddingStart="15dp"
+        android:text="category" />
     <TextView
         android:paddingStart="15dp"
         android:background="@color/light_primary_color"

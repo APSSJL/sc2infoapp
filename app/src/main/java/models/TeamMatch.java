@@ -10,11 +10,15 @@ import com.parse.ParseUser;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import interfaces.IFollowable;
 import interfaces.IMatch;
 import interfaces.IPredictable;
+import interfaces.IRateable;
+
+import static com.parse.ParseUser.getCurrentUser;
 
 @ParseClassName("TeamMatch")
-public class TeamMatch extends ParseObject implements IMatch, IPredictable {
+public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable {
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
     @Override
@@ -43,6 +47,10 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable {
         return new Pair<>(getInt("t1PredictionVotes"), getInt("t2PredictionVotes"));
     }
 
+    public String getDetails()
+    {
+        return getString("details");
+    }
 
     public Boolean getPredicted()
     {
@@ -66,4 +74,41 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable {
         saveInBackground();
     }
 
+    @Override
+    public void setRate(double rate) {
+        increment("ratingSum", rate);
+        increment("ratingVotes", 1);
+        put("rating", getRatingSum() / getRatingVotes());
+        saveInBackground();
+    }
+
+    @Override
+    public double getRatingSum() {
+        return getDouble("ratingSum");
+    }
+
+    @Override
+    public double getRatingVotes() {
+        return getDouble("ratingVotes");
+    }
+
+    @Override
+    public boolean setFollow() {
+        ParseUser user = getCurrentUser();
+        if (this.getFollow()) {
+            return false;
+        } else {
+            user.add("follows", getString("objectId"));
+            user.saveInBackground();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean getFollow() {
+        Object a = getCurrentUser().get("follows");
+        if(a == null)
+            return false;
+        return ((ArrayList)a).contains(getString("objectID"));
+    }
 }

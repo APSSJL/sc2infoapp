@@ -1,3 +1,4 @@
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/userProfileFragment"
@@ -5,9 +6,13 @@
     android:layout_height="match_parent"
     tools:context="fragments.UserProfileFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:background="@color/white">
 
@@ -27,9 +32,9 @@
             android:id="@+id/tvRace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="0dp"
-            android:layout_marginStart="10dp"
             android:layout_marginBottom="15dp"
             android:layout_toEndOf="@+id/tvName"
             android:text="in-game race"
@@ -47,14 +52,15 @@
             android:text="Edit profile"
             android:textAllCaps="false"
             android:textColor="@color/blue" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/btnEditProfile"
             android:layout_marginStart="15dp"
             android:layout_marginBottom="15dp"
+            android:layout_toLeftOf="@id/btnEditProfile"
             android:background="@color/transparent"
             android:text="Logout"
             android:textAllCaps="false"
@@ -119,8 +125,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divProfileTeam"
-            android:layout_marginEnd="10dp"
             android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
             android:text="Join team"
             android:textAllCaps="false" />
 
@@ -130,17 +136,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divProfileTeam"
-            android:layout_toStartOf="@+id/btnTeam"
             android:layout_marginTop="0dp"
+            android:layout_toStartOf="@+id/btnTeam"
             android:text="Create team"
             android:textAllCaps="false" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvItems"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="500dp"
             android:layout_below="@+id/btnTeam"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:background="@color/divider_color" />
 
         <View
             android:id="@+id/divProfileName"
@@ -238,4 +245,5 @@
             android:text="Currently in..."
             android:textColor="@color/black" />
     </RelativeLayout>
+    </ScrollView>
 </FrameLayout>

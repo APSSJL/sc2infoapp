@@ -19,21 +19,19 @@ import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
 
 import interfaces.IPredictable;
+
 import interfaces.IPublished;
 import models.ExternalMatch;
 import models.Match;
+
 import com.example.sc2infoapp.R;
 import models.TaskRunner;
-
-import com.parse.ParseObject;
-import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.spec.InvalidParameterSpecException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 

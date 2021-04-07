@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="fragments.MatchH2HFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPreviousMeeting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dvH2H"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:background="@color/divider_color" />
+
+    <View
+        android:id="@+id/dvH2H"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvPreviousMeetings"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/tvPreviousMeetings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Previous Meetings"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+</RelativeLayout>
