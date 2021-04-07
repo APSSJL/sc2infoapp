@@ -111,6 +111,6 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
         Object a = getCurrentUser().get("follows");
         if(a == null)
             return false;
-        return ((ArrayList)a).contains(getString("objectID"));
+        return ((ArrayList)a).contains(getString("objectId"));
     }
 }
