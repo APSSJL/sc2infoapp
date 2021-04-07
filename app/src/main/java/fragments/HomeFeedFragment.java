@@ -32,11 +32,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class HomeFeedFragment extends Fragment {
-    private static final String TAG = "Home feed fragemnt";
+    private static final String TAG = "HOME_FEED";
     Button btnCreatePost;
     RecyclerView rvFeed;
     UserFeedAdapter adapter;
     List<IPublished> published;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +56,7 @@ public class HomeFeedFragment extends Fragment {
         btnCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG,getContext().toString());
                 Intent i = new Intent(getContext(), PostComposeActivity.class);
                 startActivity(i);
             }

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import fragments.HomeFeedFragment;
+import fragments.MatchFeedFragment;
 import fragments.UserProfileFragment;
 
 
@@ -36,7 +38,13 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        Intent i = new Intent(MainActivity.this, BaseCommentActivity.class);
+        i.putExtra("CommentType", "Tournament");
+        startActivity(i);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -49,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,"Home!",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_matches:
-                        fragment = new UserProfileFragment();
+                        fragment = new MatchFeedFragment();
                         Toast.makeText(MainActivity.this,"Matches!",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_user:
                     default:
                         fragment = new UserProfileFragment();
-                        Toast.makeText(MainActivity.this,"Matches!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,"User Profile!",Toast.LENGTH_SHORT).show();
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

@@ -16,6 +16,8 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import models.Player;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "Login activity";
@@ -51,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void done(ParseUser user, ParseException e) {
                                 if(e != null)
                                 {
-                                    Log.e(TAG, "Login failed");
+                                    Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                                 goToMainActivity();
@@ -73,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void goToMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
+//        i.putExtra("playerName", "Vanya");
         startActivity(i);
         finish();
     }

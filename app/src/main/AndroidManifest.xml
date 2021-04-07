@@ -24,6 +24,7 @@
         <activity android:name=".PlayerActivity" />
         <activity android:name=".CreateTeamActivity" />
         <activity android:name=".TeamActivity" />
+        <activity android:name=".BaseCommentActivity" />
         <activity android:name=".UpdateProfileActivity" />
         <activity android:name=".PostComposeActivity" />
         <activity android:name=".SignupActivity" />
