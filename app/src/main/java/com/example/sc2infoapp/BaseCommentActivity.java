@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -63,6 +64,7 @@ public class BaseCommentActivity extends AppCompatActivity {
 
         rvComments.setLayoutManager(new LinearLayoutManager(this));
         rvComments.setAdapter(adapter);
+
         queryComments();
 
 
@@ -105,7 +107,7 @@ public class BaseCommentActivity extends AppCompatActivity {
         query.include("author");
         query.setLimit(5);
         query.addDescendingOrder("createdAt");
-        Log.i(TAG,"in query");
+
 
         try {
             allComments.addAll(query.find());
@@ -114,6 +116,7 @@ public class BaseCommentActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        Log.i(TAG, allComments.get(1).getContent());
         adapter.notifyDataSetChanged();
     }
 

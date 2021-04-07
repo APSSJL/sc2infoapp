@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +35,14 @@ public class BaseCommentAdapter extends RecyclerView.Adapter<BaseCommentAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseCommentAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = comments.get(position);
         holder.bind(comment);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return this.comments.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

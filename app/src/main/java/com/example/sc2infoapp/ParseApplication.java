@@ -5,6 +5,7 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import models.Comment;
 import models.Match;
 import models.Player;
 import models.Post;
@@ -20,6 +21,7 @@ public class ParseApplication extends Application {
         super.onCreate();
 
         ParseObject.registerSubclass(Team.class);
+        ParseObject.registerSubclass(Comment.class);
         ParseObject.registerSubclass(Post.class);
         ParseObject.registerSubclass(Match.class);
         ParseObject.registerSubclass(UserTournament.class);
