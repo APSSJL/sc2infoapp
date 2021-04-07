@@ -77,6 +77,7 @@ public class TeamActivity extends AppCompatActivity {
 
 
 
+
         matches = new ArrayList<>();
         externalMatches = new ArrayList<>();
         matchAdapter = new MatchesAdapter( matches, this);
@@ -86,6 +87,7 @@ public class TeamActivity extends AppCompatActivity {
 
         teamName = getIntent().getStringExtra("teamName");
         Team t = tryGetTeam(teamName);
+
 
         if(t != null)
         {
@@ -228,7 +230,7 @@ public class TeamActivity extends AppCompatActivity {
                 }
             });
         }
-        if(lineup.stream().anyMatch(t -> t.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())))
+        if(ParseUser.getCurrentUser().getParseObject("Additional").get("team") != null)
         {
             btnJoin.setVisibility(View.GONE);
         }

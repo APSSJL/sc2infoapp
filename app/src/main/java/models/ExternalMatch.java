@@ -2,6 +2,8 @@ package models;
 
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import interfaces.IMatch;
 
 import static com.parse.ParseUser.getCurrentUser;
 
+@Parcel
 public class ExternalMatch implements IMatch, IFollowable {
     private String opponent;
     private String time;
@@ -18,6 +21,9 @@ public class ExternalMatch implements IMatch, IFollowable {
     private String tournament;
     protected static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
+
+    public ExternalMatch()
+    {}
 
     public ExternalMatch(String opponent, String time, Integer bo)
     {

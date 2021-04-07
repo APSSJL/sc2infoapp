@@ -42,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        Intent i = new Intent(MainActivity.this, BaseCommentActivity.class);
-        i.putExtra("CommentType", "Tournament");
+        Intent i = new Intent(MainActivity.this, PlayerActivity.class);
+        i.putExtra("playerName", "SKillous");
         startActivity(i);
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,6 +72,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //bottomNavigationView.setSelectedItemId(R.id.action_home);
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 }
