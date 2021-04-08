@@ -105,7 +105,7 @@ public class MatchRankingFragment extends Fragment {
             });
 
             Pair<Integer, Integer> distribution = ((IPredictable)match).getDistribution();
-            leftDistribution = (distribution.first / (distribution.first + distribution.second)) * 100;
+            leftDistribution = ((double)distribution.first / (distribution.first + distribution.second)) * 100;
             setProgressBar(opponentLeft, opponentRight);
 
         }
@@ -127,9 +127,9 @@ public class MatchRankingFragment extends Fragment {
     private void setProgressBar(String opponentLeft, String opponentRight) {
         pbMatchPrediction.setProgress((int) Math.round(leftDistribution));
         if (leftDistribution > 50) {
-            tvPredictionHead.setText(opponentLeft + "is predicted as winner!");
+            tvPredictionHead.setText(opponentLeft + " is predicted as winner!");
         } else if (leftDistribution < 50) {
-            tvPredictionHead.setText(opponentRight + "is predicted as winner!");
+            tvPredictionHead.setText(opponentRight + " is predicted as winner!");
         } else {
             tvPredictionHead.setText("Fierce fight! Nobody know who will going to win!");
         }

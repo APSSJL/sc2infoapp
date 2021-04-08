@@ -20,6 +20,11 @@ public class UserInfo extends ParseObject implements IPublished {
     public UserInfo() {
     }
 
+    public ParseUser getUser()
+    {
+        return user;
+    }
+
     @Override
     public int getPublishedType() {
         return USER_SUMMARY;

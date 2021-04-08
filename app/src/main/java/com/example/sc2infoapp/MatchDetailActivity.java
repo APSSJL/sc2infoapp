@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -84,8 +85,8 @@ public class MatchDetailActivity extends AppCompatActivity {
         IMatch match = Parcels.unwrap(getIntent().getParcelableExtra("match"));
         //TODO: Match should be passed as an extra from previous screen
 
-        String opponentLeft = match.getOpponent().split("vs")[0];
-        String opponentRight = match.getOpponent().split("vs")[1];
+        String opponentLeft = match.getOpponent().split(" vs ")[0];
+        String opponentRight = match.getOpponent().split(" vs ")[1];
         tvOpponentLeft.setText(opponentLeft);
         tvOpponentRight.setText(opponentRight);
 
@@ -186,13 +187,16 @@ public class MatchDetailActivity extends AppCompatActivity {
         query2.whereEqualTo("name", right);
 
         try {
+            List<Player> x = query1.find();
+            List<Player> y = query2.find();
             Player p1 = query1.find().get(0);
             Player p2 = query2.find().get(0);
 
             try {
                 ParseFile file = (p1.getParseFile("picture"));
-                if (p1 != null) {
+                if (p1 != null && file != null) {
                     Log.i(TAG, "loaded");
+                    file.getFile();
                     Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
                     Log.i(TAG, "null");
@@ -204,9 +208,10 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (p2.getParseFile("picture"));
-                if (p2 != null) {
+                if (p2 != null && file != null) {
                     Log.i(TAG, "loaded");
-                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
+                    file.getFile();
+                    //Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
                     Log.i(TAG, "null");
                     Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
@@ -224,8 +229,8 @@ public class MatchDetailActivity extends AppCompatActivity {
     public void getParseTeam(String left, String right) {
         ParseQuery<Team> query1 = ParseQuery.getQuery(Team.class);
         ParseQuery<Team> query2 = ParseQuery.getQuery(Team.class);
-        query1.whereEqualTo("name", left);
-        query2.whereEqualTo("name", right);
+        query1.whereEqualTo("teamName", left);
+        query2.whereEqualTo("teamName", right);
 
         try {
             Team t1 = query1.find().get(0);
@@ -233,7 +238,7 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (t1.getParseFile("picture"));
-                if (t1 != null) {
+                if (t1 != null && file != null) {
                     Log.i(TAG, "loaded");
                     Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
@@ -246,7 +251,7 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (t2.getParseFile("picture"));
-                if (t2 != null) {
+                if (t2 != null  && file != null) {
                     Log.i(TAG, "loaded");
                     Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentRight);
                 } else {

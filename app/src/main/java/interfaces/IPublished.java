@@ -9,7 +9,7 @@ public interface IPublished {
     int PLAYER_SUMMARY = 2;
     int USER_SUMMARY = 3;
     int TEAM_SUMMARY = 4;
-    int MATCH_SUMMARY = 4;
+    int MATCH_SUMMARY = 5;
     public int getPublishedType();
     public Date getCreatedAt();
     String getTitle();

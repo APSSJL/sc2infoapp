@@ -42,6 +42,7 @@ import models.Player;
 import models.TaskRunner;
 import models.Team;
 import models.TeamMatch;
+import models.UserInfo;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -230,7 +231,13 @@ public class TeamActivity extends AppCompatActivity {
                 }
             });
         }
-        if(ParseUser.getCurrentUser().getParseObject("Additional").get("team") != null)
+        UserInfo info = (UserInfo) ParseUser.getCurrentUser().getParseObject("Additional");
+        try {
+            info.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(info.get("team") != null)
         {
             btnJoin.setVisibility(View.GONE);
         }

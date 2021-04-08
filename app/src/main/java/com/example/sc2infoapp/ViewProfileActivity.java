@@ -79,6 +79,11 @@ public class ViewProfileActivity extends AppCompatActivity {
         UserInfo info = (UserInfo) user.get("Additional");
         if(info != null)
         {
+            try {
+                info.fetch();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             team = (Team) info.get("team");
         }
 

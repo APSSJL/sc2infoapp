@@ -1,12 +1,16 @@
 package adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,16 +18,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 
+import fragments.HomeFeedFragment;
+import fragments.MatchFeedFragment;
+import fragments.UserProfileFragment;
+import interfaces.IMatch;
 import interfaces.IPublished;
 import models.Post;
 
+import com.example.sc2infoapp.MainActivity;
+import com.example.sc2infoapp.MatchDetailActivity;
+import com.example.sc2infoapp.PlayerActivity;
 import com.example.sc2infoapp.R;
 
 import models.Tournament;
+import models.UserInfo;
 import models.UserTournament;
 
+import com.example.sc2infoapp.TeamActivity;
+import com.example.sc2infoapp.ViewProfileActivity;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.io.File;
 import java.util.List;
@@ -32,10 +48,12 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
 
     List<IPublished> published;
     Context context;
+    Activity activity;
 
     public UserFeedAdapter(Context context, List<IPublished> published) {
         this.context = context;
         this.published = published;
+        activity = (Activity)context;
     }
 
 
@@ -129,6 +147,36 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
                 Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
             }
 
+            tvTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (published.getPublishedType())
+                    {
+                        case IPublished.PLAYER_SUMMARY:
+                            Intent i = new Intent(activity, PlayerActivity.class);
+                            i.putExtra("playerName", published.getTitle());
+                            activity.startActivity(i);
+                            break;
+                        case IPublished.TEAM_SUMMARY:
+                            i = new Intent(activity, TeamActivity.class);
+                            i.putExtra("teamName", published.getTitle());
+                            activity.startActivity(i);
+                            break;
+                        case IPublished.USER_SUMMARY:
+                            i = new Intent(activity, ViewProfileActivity.class);
+                            i.putExtra("user", ((UserInfo)published).getUser());
+                            activity.startActivity(i);
+                            break;
+                        case IPublished.MATCH_SUMMARY:
+                        default:
+                            i = new Intent(activity, MatchDetailActivity.class);
+                            i.putExtra("match", Parcels.wrap((IMatch)published));
+                            activity.startActivity(i);
+                            break;
+                    }
+                }
+            });
+
         }
     }
 
@@ -166,6 +214,7 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
         }
     }
 
