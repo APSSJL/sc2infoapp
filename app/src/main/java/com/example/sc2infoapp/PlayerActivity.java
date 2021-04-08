@@ -54,6 +54,7 @@ public class PlayerActivity extends AppCompatActivity {
     ArrayList<IMatch> opponents;
 
     String playerName;
+    Player player;
 
     AligulacClient aClient = new AligulacClient();
     LiquipediaParser parser = new LiquipediaParser();
@@ -94,6 +95,8 @@ public class PlayerActivity extends AppCompatActivity {
                 Intent i = new Intent(PlayerActivity.this, PlayerCommentActivity.class);
                 i.putExtra("name", tvName.getText().toString());
                 i.putExtra("race", tvRace.getText().toString());
+
+                i.putExtra("id", player.getObjectId());
                 i.putExtra("rating", tvRating.getText().toString());
                 startActivity(i);
             }
@@ -153,6 +156,7 @@ public class PlayerActivity extends AppCompatActivity {
             if(players.size() == 0)
                 return;
             Player p = players.get(0);
+            player = p;
             
             btnFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
