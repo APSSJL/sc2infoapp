@@ -2,9 +2,12 @@ package models;
 
 import interfaces.IPublished;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +19,21 @@ public class Post extends ParseObject implements IPublished {
     public static final String KEY_CATEGORY = "category";
     public static final String KEY_TAGS = "tags";
 
-    public ParseUser getAuthor() {return getParseUser(KEY_AUTHOR);}
+    public ParseUser getUser() {return getParseUser(KEY_AUTHOR);}
+    public String getAuthor() {return getParseUser(KEY_AUTHOR).getUsername();}
+
+    @Override
+    public File getImage() {
+        ParseFile p = getUser().getParseFile("pic");
+        if(p == null)
+            return null;
+        try {
+            return p.getFile();
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
     public String getTitle() {return getString(KEY_TITLE);}
     public String getContent() {return getString(KEY_CONTENT);}
     public String getCategory() {return getString(KEY_CATEGORY);}

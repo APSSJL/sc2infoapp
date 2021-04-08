@@ -13,23 +13,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+
 import interfaces.IPublished;
 import models.Post;
+
 import com.example.sc2infoapp.R;
+
 import models.Tournament;
 import models.UserTournament;
+
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
+import java.io.File;
 import java.util.List;
 
-public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemViewHolder>{
+public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemViewHolder> {
 
     List<IPublished> published;
     Context context;
 
-    public  UserFeedAdapter(Context context, List<IPublished> published)
-    {
+    public UserFeedAdapter(Context context, List<IPublished> published) {
         this.context = context;
         this.published = published;
     }
@@ -38,16 +42,19 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == IPublished.POST){
+        if (viewType == IPublished.POST) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
             return new PostViewHolder(view);
         }
-        if(viewType == IPublished.TOURNAMENT)
-        {
+        if (viewType == IPublished.TOURNAMENT) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_tournament, parent, false);
             return new TournamentViewHolder(view);
         }
-        return null;
+        else
+        {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_summary, parent, false);
+            return new SummaryViewHolder(view);
+        }
     }
 
     @Override
@@ -65,8 +72,7 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
         return published.size();
     }
 
-    class PostViewHolder extends ItemViewHolder
-    {
+    class PostViewHolder extends ItemViewHolder {
         TextView tvTitle;
         TextView tvcategory;
         TextView tvAuthor;
@@ -84,19 +90,49 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
         }
 
         @SuppressLint("NewApi")
-        public void bind(final IPublished published)
-        {
-            Post post = (Post)published;
+        public void bind(final IPublished published) {
+            Post post = (Post) published;
             tvTitle.setText(post.getTitle());
             tvcategory.setText(post.getCategory());
-            tvAuthor.setText(post.getAuthor().getUsername());
+            tvAuthor.setText(post.getAuthor());
             tvContent.setText(post.getContent());
             tvTags.setText(String.join(",", post.getTags()));
         }
     }
 
-    class TournamentViewHolder extends ItemViewHolder
-    {
+    class SummaryViewHolder extends ItemViewHolder {
+        TextView tvTitle;
+        ImageView ivLogo;
+        TextView tvAuthor;
+        TextView tvDescription;
+
+        public SummaryViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            ivLogo = itemView.findViewById(R.id.ivLogo);
+            tvAuthor = itemView.findViewById(R.id.tvAuthor);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
+        }
+
+        @Override
+        public void bind(IPublished published) {
+            tvTitle.setText(published.getTitle());
+            tvAuthor.setText(published.getAuthor());
+            tvDescription.setText(published.getContent());
+            if(published.getPublishedType() == IPublished.PLAYER_SUMMARY)
+                tvDescription.setVisibility(View.GONE);
+            File p = published.getImage();
+            if (p != null) {
+                Glide.with(context).load(p).transform(new CircleCrop()).into(ivLogo);
+            } else {
+                Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
+            }
+
+        }
+    }
+
+    class TournamentViewHolder extends ItemViewHolder {
         TextView tvTitle;
         ImageView ivLogo;
         TextView tvAuthor;
@@ -113,9 +149,8 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
             tvRating = itemView.findViewById(R.id.tvRating);
         }
 
-        public void bind(final IPublished published)
-        {
-            Tournament tournament = (Tournament)published;
+        public void bind(final IPublished published) {
+            Tournament tournament = (Tournament) published;
             tvTitle.setText(tournament.getName());
             tvRating.setText(String.format("%d/10", tournament.getRating()));
             UserTournament ut = tournament.getUserCreated();
@@ -123,11 +158,9 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
             tvDescription.setText(ut.getDescription());
             try {
                 ParseFile p = (ut.getParseFile("logo"));
-                if(p != null)
-                {
+                if (p != null) {
                     Glide.with(context).load(p.getFile()).transform(new CircleCrop()).into(ivLogo);
-                }
-                else {
+                } else {
                     Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
                 }
             } catch (ParseException e) {
@@ -136,8 +169,7 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
         }
     }
 
-    abstract class ItemViewHolder extends RecyclerView.ViewHolder
-    {
+    abstract class ItemViewHolder extends RecyclerView.ViewHolder {
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);

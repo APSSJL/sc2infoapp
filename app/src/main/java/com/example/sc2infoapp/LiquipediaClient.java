@@ -1,5 +1,6 @@
 package com.example.sc2infoapp;
 
+import android.icu.text.CaseMap;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -43,6 +44,24 @@ public class LiquipediaClient {
 
     public String getMatches() throws IOException, JSONException {
         return  getPageByName("Liquipedia:Upcoming_and_ongoing_matches");
+    }
+
+    public boolean checkIfPageExists(String title) throws JSONException, IOException
+    {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL).newBuilder();
+        urlBuilder.addQueryParameter("action", "query");
+        urlBuilder.addQueryParameter("titles", title);
+        urlBuilder.addQueryParameter("format", "json");
+
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+
+        String responseData = response.body().string();
+        JSONObject json = null;
+        json = new JSONObject(responseData);
+
+        return !json.getJSONObject("query").getJSONObject("pages").has("-1");
     }
 
     public JSONObject getFullPage(String name) throws JSONException, IOException {

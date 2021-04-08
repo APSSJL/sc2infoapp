@@ -54,37 +54,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip2"
+            android:id="@+id/chipPlayers"
             android:checkable="true"
             android:layout_width="wrap_content"
             android:text="Players"
             android:layout_height="wrap_content" />
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip3"
+            android:id="@+id/chipTeams"
             android:text="Teams"
             android:checkable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip5"
+            android:id="@+id/chipUsers"
             android:text="Users"
             android:checkable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip7"
+            android:id="@+id/chipPosts"
             android:text="Posts"
             android:checkable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip8"
+            android:id="@+id/chipTournaments"
             android:text="Tournaments"
             android:checkable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip9"
+            android:id="@+id/chipMatches"
             android:text="Matches"
             android:checkable="true"
             android:layout_width="wrap_content"

@@ -10,11 +10,14 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import interfaces.IPublished;
+
 @ParseClassName("Team")
-public class Team extends ParseObject {
+public class Team extends ParseObject implements IPublished {
     public Team(){};
     public static final String KEY_NAME = "teamName";
     public static final String KEY_OWNER = "owner";
@@ -106,4 +109,28 @@ public class Team extends ParseObject {
         return  (ArrayList<String>)a;
     }
 
+    @Override
+    public int getPublishedType() {
+        return TEAM_SUMMARY;
+    }
+
+    @Override
+    public String getTitle() {
+        return getTeamName();
+    }
+
+    @Override
+    public String getContent() {
+        return getTeamInfo();
+    }
+
+    @Override
+    public String getAuthor() {
+        return "";
+    }
+
+    @Override
+    public File getImage() {
+        return null;
+    }
 }
