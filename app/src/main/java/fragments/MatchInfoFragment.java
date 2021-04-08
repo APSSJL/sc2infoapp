@@ -63,8 +63,8 @@ public class MatchInfoFragment extends Fragment {
         rlLineup =  view.findViewById(R.id.rlLineup);
 
         if (match.getMatchType() == 2) {
-            left = findTeam(match.getOpponent().split("vs")[0]);
-            right = findTeam(match.getOpponent().split("vs")[1]);
+            left = findTeam(match.getOpponent().split(" vs ")[0]);
+            right = findTeam(match.getOpponent().split(" vs ")[1]);
 
             tvTeamLeft.setText(left.getTeamName());
             tvTeamRight.setText(right.getTeamName());
@@ -104,35 +104,32 @@ public class MatchInfoFragment extends Fragment {
             case IMatch.EXTERNAL:
                 return match.getTime();
             case IMatch.INTERNAL:
-                return String.format(match.getTime() + "%n" + ((Match) match).getDetails());
+                return String.format(match.getTime() + "\n" + ((Match) match).getDetails());
             case IMatch.TEAM:
-                return String.format(match.getTime() + "%n" + ((TeamMatch) match).getDetails());
+                return String.format(match.getTime() + "\n" + ((TeamMatch) match).getDetails());
         }
         return null;
     }
 
     public Team findTeam(String name) {
-        Team founded = new Team();
-
+        Team res = null;
         ParseQuery<Team> query = new ParseQuery<Team>(Team.class);
         query.whereEqualTo(Team.KEY_NAME, name);
-        query.findInBackground(new FindCallback<Team>() {
-            @Override
-            public void done(List<Team> objects, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Cannot find TeamLeft", e);
-                }
-                left = objects.get(0);
-            }
-        });
-
-        return founded;
+        try {
+            List<Team> x = query.find();
+            if(x == null)
+                return null;
+            return  x.get(0);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public String lineupIntoString(ArrayList<ParseUser> lineups) {
         StringBuilder sb = new StringBuilder();
         for (ParseUser player : lineups) {
-            sb.append(player.getUsername() + "%d");
+            sb.append(player.getUsername() + "\n");
         }
         return sb.toString();
     }

@@ -9,18 +9,20 @@ import com.parse.ParseUser;
 
 import org.json.JSONArray;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import interfaces.IFollowable;
 import interfaces.IMatch;
 import interfaces.IPredictable;
+import interfaces.IPublished;
 import interfaces.IRateable;
 
 import static com.parse.ParseUser.getCurrentUser;
 
 @ParseClassName("PlayerMatch")
-public class Match extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable {
+public class Match extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable, IPublished {
     protected static final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
     public String getTime(){return dt.format(getDate("time"));}
     public String getOpponent()
@@ -112,5 +114,30 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
         if(a == null)
             return false;
         return ((ArrayList)a).contains(getString("objectId"));
+    }
+
+    @Override
+    public int getPublishedType() {
+        return MATCH_SUMMARY;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Match";
+    }
+
+    @Override
+    public String getContent() {
+        return getDetails() + "\n" + getTime();
+    }
+
+    @Override
+    public String getAuthor() {
+        return "";
+    }
+
+    @Override
+    public File getImage() {
+        return null;
     }
 }

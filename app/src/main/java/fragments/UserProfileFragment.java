@@ -40,6 +40,8 @@ import models.Post;
 import com.example.sc2infoapp.LoginActivity;
 import com.example.sc2infoapp.R;
 import models.Team;
+
+import com.example.sc2infoapp.SearchActivity;
 import com.example.sc2infoapp.TeamActivity;
 import models.Tournament;
 import com.example.sc2infoapp.UpdateProfileActivity;
@@ -286,7 +288,9 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "team join");
-                // TODO : redirect to team search page
+                Intent i = new Intent(getActivity(), SearchActivity.class);
+                i.putExtra("teamSearch", true);
+                startActivity(i);
             }
         });
     }
@@ -302,25 +306,26 @@ public class UserProfileFragment extends Fragment {
 
 //Set Address
         try {
+            if(context != null) {
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+                if (addresses != null && addresses.size() > 0) {
 
-            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null && addresses.size() > 0) {
 
+                    String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                    String city = addresses.get(0).getLocality();
+                    String state = addresses.get(0).getAdminArea();
+                    String country = addresses.get(0).getCountryName();
+                    String postalCode = addresses.get(0).getPostalCode();
+                    String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
 
-                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                String city = addresses.get(0).getLocality();
-                String state = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalCode = addresses.get(0).getPostalCode();
-                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
-
-                Log.d(TAG, "getAddress:  address" + address);
-                Log.d(TAG, "getAddress:  city" + city);
-                Log.d(TAG, "getAddress:  state" + state);
-                Log.d(TAG, "getAddress:  postalCode" + postalCode);
-                Log.d(TAG, "getAddress:  knownName" + knownName);
-                return city + ", " + country;
+                    Log.d(TAG, "getAddress:  address" + address);
+                    Log.d(TAG, "getAddress:  city" + city);
+                    Log.d(TAG, "getAddress:  state" + state);
+                    Log.d(TAG, "getAddress:  postalCode" + postalCode);
+                    Log.d(TAG, "getAddress:  knownName" + knownName);
+                    return city + ", " + country;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

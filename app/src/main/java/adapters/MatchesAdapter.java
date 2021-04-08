@@ -129,7 +129,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         }
     }
 
-    class PredicitonTask implements Callable<JSONObject> {
+    public class PredicitonTask implements Callable<JSONObject> {
         private final String input1;
         private final String input2;
         private final Integer bo;

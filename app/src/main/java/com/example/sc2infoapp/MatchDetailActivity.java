@@ -23,9 +23,11 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -39,6 +41,7 @@ import interfaces.IMatch;
 import models.ExternalMatch;
 import models.Match;
 import models.Player;
+import models.TaskRunner;
 import models.Team;
 import models.TeamMatch;
 
@@ -82,16 +85,16 @@ public class MatchDetailActivity extends AppCompatActivity {
         IMatch match = Parcels.unwrap(getIntent().getParcelableExtra("match"));
         //TODO: Match should be passed as an extra from previous screen
 
-        String opponentLeft = match.getOpponent().split("vs")[0];
-        String opponentRight = match.getOpponent().split("vs")[1];
+        String opponentLeft = match.getOpponent().split(" vs ")[0];
+        String opponentRight = match.getOpponent().split(" vs ")[1];
         tvOpponentLeft.setText(opponentLeft);
         tvOpponentRight.setText(opponentRight);
 
         switch (match.getMatchType()) {
             case IMatch.EXTERNAL:
                 try {
-                    Glide.with(MatchDetailActivity.this).load(getExternalTeam(opponentLeft)).transform(new CircleCrop()).into(ivOpponentLeft);
-                    Glide.with(MatchDetailActivity.this).load(getExternalTeam(opponentRight)).transform(new CircleCrop()).into(ivOpponentRight);
+                    getExternalTeam(opponentLeft, ivOpponentLeft);
+                    getExternalTeam(opponentRight, ivOpponentRight);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -146,34 +149,35 @@ public class MatchDetailActivity extends AppCompatActivity {
 
     }
 
-    public String getExternalTeam(String opponent) throws ExecutionException, InterruptedException {
-        LiquipediaClient client = new LiquipediaClient();
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-        Callable<String> callable = new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-
-                String imagePath = null;
-
-                Log.i(TAG, "new thread entered");
-                try {
-                    imagePath = client.getPageByName(opponent);
-
-                    imagePath = imagePath.substring(imagePath.indexOf("/commons/images/thumb/"));
-                    imagePath = imagePath.substring(0, imagePath.indexOf("/600px-"));
-                    imagePath = imagePath.replace("thumb/", "");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return imagePath;
+    public void getExternalTeam(String opponent, ImageView target) throws ExecutionException, InterruptedException {
+        TaskRunner taskRunner = new TaskRunner();
+        taskRunner.executeAsync(new ImageTask(opponent), (data) ->
+        {
+            try {
+                Thread.sleep(3000);
+                LiquipediaParser parser = new LiquipediaParser();
+                String link = parser.getPhotoLink(data);
+                Glide.with(MatchDetailActivity.this).load(link).transform(new CircleCrop()).into(target);
+                Log.i(TAG, link);
+            } catch (JSONException | InterruptedException e) {
+                e.printStackTrace();
             }
-        };
 
-        Future<String> future = executor.submit(callable);
-        return String.format(IMAGE_BASE_URL + future.get());
+        });
+    }
+
+    class ImageTask implements Callable<JSONObject> {
+        private final String input;
+
+        public ImageTask(String input) {
+            this.input = input;
+        }
+
+        @Override
+        public JSONObject call() throws IOException, JSONException {
+            // Some long running task
+            return (MainActivity.client.getFullPage(input));
+        }
     }
 
     public void getParsePlayer(String left, String right) {
@@ -183,13 +187,16 @@ public class MatchDetailActivity extends AppCompatActivity {
         query2.whereEqualTo("name", right);
 
         try {
+            List<Player> x = query1.find();
+            List<Player> y = query2.find();
             Player p1 = query1.find().get(0);
             Player p2 = query2.find().get(0);
 
             try {
                 ParseFile file = (p1.getParseFile("picture"));
-                if (p1 != null) {
+                if (p1 != null && file != null) {
                     Log.i(TAG, "loaded");
+                    file.getFile();
                     Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
                     Log.i(TAG, "null");
@@ -201,9 +208,10 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (p2.getParseFile("picture"));
-                if (p2 != null) {
+                if (p2 != null && file != null) {
                     Log.i(TAG, "loaded");
-                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
+                    file.getFile();
+                    //Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
                     Log.i(TAG, "null");
                     Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
@@ -221,8 +229,8 @@ public class MatchDetailActivity extends AppCompatActivity {
     public void getParseTeam(String left, String right) {
         ParseQuery<Team> query1 = ParseQuery.getQuery(Team.class);
         ParseQuery<Team> query2 = ParseQuery.getQuery(Team.class);
-        query1.whereEqualTo("name", left);
-        query2.whereEqualTo("name", right);
+        query1.whereEqualTo("teamName", left);
+        query2.whereEqualTo("teamName", right);
 
         try {
             Team t1 = query1.find().get(0);
@@ -230,7 +238,7 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (t1.getParseFile("picture"));
-                if (t1 != null) {
+                if (t1 != null && file != null) {
                     Log.i(TAG, "loaded");
                     Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
@@ -243,7 +251,7 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (t2.getParseFile("picture"));
-                if (t2 != null) {
+                if (t2 != null  && file != null) {
                     Log.i(TAG, "loaded");
                     Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentRight);
                 } else {

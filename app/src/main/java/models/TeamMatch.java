@@ -7,18 +7,20 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import interfaces.IFollowable;
 import interfaces.IMatch;
 import interfaces.IPredictable;
+import interfaces.IPublished;
 import interfaces.IRateable;
 
 import static com.parse.ParseUser.getCurrentUser;
 
 @ParseClassName("TeamMatch")
-public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable {
+public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable, IPublished {
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
     @Override
@@ -110,5 +112,30 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
         if(a == null)
             return false;
         return ((ArrayList)a).contains(getString("objectID"));
+    }
+
+    @Override
+    public int getPublishedType() {
+        return MATCH_SUMMARY;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Match";
+    }
+
+    @Override
+    public String getContent() {
+        return getDetails() + "\n" + getTime();
+    }
+
+    @Override
+    public String getAuthor() {
+        return "";
+    }
+
+    @Override
+    public File getImage() {
+        return null;
     }
 }

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchActivity"
+    android:padding="10dp">
+    <ImageView
+        android:layout_width="200px"
+        android:layout_height="200px"
+        android:id="@+id/ivProfileImage"
+        android:scaleType="fitXY"
+        tools:srcCompat="@tools:sample/avatars"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edSearch"
+        android:hint="Search..."
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/btnSearch"
+        android:background="@drawable/layout_bg"
+
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Search"
+        android:id="@+id/btnSearch"
+        android:background="@color/transparent"
+        android:textColor="@color/accent_color"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/ivProfileImage"
+        />
+
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cgCategories"
+    android:layout_below="@+id/edSearch">
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAll"
+            android:text="All"
+            android:checkable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPlayers"
+            android:checkable="true"
+            android:layout_width="wrap_content"
+            android:text="Players"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTeams"
+            android:text="Teams"
+            android:checkable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipUsers"
+            android:text="Users"
+            android:checkable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPosts"
+            android:text="Posts"
+            android:checkable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTournaments"
+            android:text="Tournaments"
+            android:checkable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMatches"
+            android:text="Matches"
+            android:checkable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.chip.ChipGroup>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkboxIsHiring"
+        android:text="Is hiring?"
+        android:layout_below="@+id/cgCategories"
+        android:textColor="@color/secondary_text"
+        />
+
+    <View
+        android:layout_below="@id/checkboxIsHiring"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/divider"
+        android:background="@android:color/darker_gray"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider"
+        android:layout_marginTop="10dp"
+        />
+
+</RelativeLayout>

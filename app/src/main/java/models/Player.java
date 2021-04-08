@@ -3,13 +3,18 @@ package models;
 import android.util.Log;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import interfaces.IPublished;
+
 @ParseClassName("Player")
-public class Player extends ParseObject {
+public class Player extends ParseObject implements IPublished {
     private static final String KEY_RATING = "rating";
 
     public  String getName()
@@ -34,5 +39,37 @@ public class Player extends ParseObject {
         if(a == null)
             return false;
         return ((ArrayList)a).contains(ParseUser.getCurrentUser().getObjectId());
+    }
+
+    @Override
+    public int getPublishedType() {
+        return PLAYER_SUMMARY;
+    }
+
+    @Override
+    public String getTitle() {
+        return getName();
+    }
+
+    @Override
+    public String getContent() {
+        return "";
+    }
+
+    @Override
+    public String getAuthor() {
+        return "";
+    }
+
+    @Override
+    public File getImage() {
+        ParseFile p = getParseFile("picture");
+        if(p == null)
+            return null;
+        try {
+            return p.getFile();
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }
