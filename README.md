@@ -65,7 +65,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
         - [x] Can view user profile by tapping on the username in requests recycler view
 - [x] User can view player's detailed page
 - [ ] User can rate and leave comments:
-    - [ ] Players
+    - [x] Players
     - [x] Matches
     - [ ] Tournaments
     - [ ] Teams
