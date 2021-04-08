@@ -34,11 +34,10 @@ import static com.parse.ParseUser.getCurrentUser;
 public class BaseCommentActivity extends AppCompatActivity {
 
     public static final String TAG = "BASE_COMMENT_ACTIVITY";
+    //TextView tvCommentType;
     RecyclerView rvComments;
     EditText etComment;
     Button btnPostComment;
-    protected String info;
-    public TextView tvInfo;
 
     List<Comment> allComments;
     BaseCommentAdapter adapter;
@@ -50,15 +49,15 @@ public class BaseCommentActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_base_comments);
-        //tvInfo = findViewById(R.id.tvInfo);
-        //tvInfo.setText(info);
 
         user = getCurrentUser();
 
+        //tvCommentType = findViewById(R.id.tvCommentType);
         rvComments = findViewById(R.id.rvComments);
         etComment = findViewById(R.id.etComment);
         btnPostComment = findViewById(R.id.btnPostComment);
 
+        //tvCommentType.setText(getIntent().getStringExtra("CommentType"));
 
         allComments = new ArrayList<>();
         adapter = new BaseCommentAdapter(this, allComments);

@@ -28,6 +28,7 @@ public class PlayerCommentActivity extends BaseCommentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_player_comment);
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_player_comment);
         tvPlayerName = findViewById(R.id.tvPlayerName);
         tvRace = findViewById(R.id.tvPlayerRace);
         tvRating = findViewById(R.id.tvPlayerRating);

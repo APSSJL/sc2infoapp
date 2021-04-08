@@ -74,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        Intent i = new Intent(this, MainActivity.class);
-        //i.putExtra("playerName", "Vanya");
+        Intent i = new Intent(this, PlayerActivity.class);
+        i.putExtra("playerName", "Vanya");
         startActivity(i);
         finish();
     }
