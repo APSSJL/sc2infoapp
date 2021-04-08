@@ -40,6 +40,8 @@ import models.Post;
 import com.example.sc2infoapp.LoginActivity;
 import com.example.sc2infoapp.R;
 import models.Team;
+
+import com.example.sc2infoapp.SearchActivity;
 import com.example.sc2infoapp.TeamActivity;
 import models.Tournament;
 import com.example.sc2infoapp.UpdateProfileActivity;
@@ -287,6 +289,9 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 Log.i(TAG, "team join");
                 // TODO : redirect to team search page
+                Intent i = new Intent(getActivity(), SearchActivity.class);
+                i.putExtra("teamSearch", true);
+                startActivity(i);
             }
         });
     }

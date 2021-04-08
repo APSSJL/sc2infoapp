@@ -70,6 +70,14 @@ public class SearchActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         rvResults = findViewById(R.id.rvResults);
 
+        if(getIntent().getBooleanExtra("teamSearch", false))
+        {
+            isHiring.setChecked(true);
+            Chip team = findViewById(R.id.chipTeams);
+            team.setChecked(true);
+            SearchTeams();
+        }
+
         searchResults = new ArrayList<>();
         adapter = new UserFeedAdapter(this, searchResults);
 
