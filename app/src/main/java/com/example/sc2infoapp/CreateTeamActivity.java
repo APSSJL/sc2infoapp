@@ -71,6 +71,7 @@ public class CreateTeamActivity extends AppCompatActivity {
                 team.setName(name);
                 team.setInfo(edTeamInfo.getText().toString());
                 team.setHiring(checkboxIsHiring.isChecked());
+                team.getRelation("lineup").add(ParseUser.getCurrentUser());
                 team.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
