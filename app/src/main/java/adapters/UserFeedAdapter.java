@@ -27,6 +27,7 @@ import models.Post;
 
 import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.MatchDetailActivity;
+import com.example.sc2infoapp.Notification;
 import com.example.sc2infoapp.PlayerActivity;
 import com.example.sc2infoapp.R;
 
@@ -168,10 +169,13 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
                             activity.startActivity(i);
                             break;
                         case IPublished.MATCH_SUMMARY:
-                        default:
                             i = new Intent(activity, MatchDetailActivity.class);
                             i.putExtra("match", Parcels.wrap((IMatch)published));
                             activity.startActivity(i);
+                            break;
+                        case IPublished.NOTIFICATION:
+                            ((Notification)published).Enforce();
+                        default:
                             break;
                     }
                 }

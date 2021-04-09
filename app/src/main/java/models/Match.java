@@ -140,4 +140,9 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
     public File getImage() {
         return null;
     }
+
+    public ParseUser getWinner()
+    {
+        return getParseUser("winner");
+    }
 }
