@@ -249,6 +249,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void done(List<Player> objects, ParseException e) {
                 searchResults.addAll(objects);
+                adapter.notifyDataSetChanged();
             }
         });
     }

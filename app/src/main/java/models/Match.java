@@ -102,7 +102,7 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
         if (this.getFollow()) {
             return false;
         } else {
-            user.add("follows", getString("objectId"));
+            user.add("follows", "Match:"+getString("objectId"));
             user.saveInBackground();
             return true;
         }
@@ -113,7 +113,7 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
         Object a = getCurrentUser().get("follows");
         if(a == null)
             return false;
-        return ((ArrayList)a).contains(getString("objectId"));
+        return ((ArrayList)a).contains("Match:"+getString("objectId"));
     }
 
     @Override

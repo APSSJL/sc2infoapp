@@ -174,6 +174,8 @@ public class HomeFeedFragment extends Fragment {
 
     private void ExternalTeamUpdates(ArrayList<String> names)
     {
+        if(names == null)
+            return;
         final int[] c = {0};
         Activity a = getActivity();
         for(String name : names) {
