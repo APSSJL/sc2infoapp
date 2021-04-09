@@ -6,7 +6,7 @@ import androidx.room.TypeConverters;
 
 import interfaces.NotificationDao;
 
-@Database(entities = {ExternalMatchNotification.class}, version = 1)
+@Database(entities = {ExternalMatchNotification.class}, version = 2)
 @TypeConverters({DateConverter.class})
 public abstract class MatchesDatabase extends RoomDatabase {
     public abstract NotificationDao notDao();

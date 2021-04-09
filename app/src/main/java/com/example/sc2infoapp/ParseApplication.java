@@ -1,6 +1,7 @@
 package com.example.sc2infoapp;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.room.Room;
 
@@ -21,6 +22,7 @@ import models.UserTournament;
 public class ParseApplication extends Application {
 
     MatchesDatabase database;
+
 
     @Override
     public void onCreate() {

@@ -197,10 +197,10 @@ public class MatchDetailActivity extends AppCompatActivity {
                 if (p1 != null && file != null) {
                     Log.i(TAG, "loaded");
                     file.getFile();
-                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
+                   // Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
                     Log.i(TAG, "null");
-                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
+                   // Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -214,7 +214,7 @@ public class MatchDetailActivity extends AppCompatActivity {
                     //Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
                     Log.i(TAG, "null");
-                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
+                  //  Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -238,12 +238,13 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (t1.getParseFile("picture"));
+                file.getFile();
                 if (t1 != null && file != null) {
                     Log.i(TAG, "loaded");
-                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
+                    //Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
                     Log.i(TAG, "null");
-                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
+                    //Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentLeft);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -251,12 +252,13 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (t2.getParseFile("picture"));
+                file.getFile();
                 if (t2 != null  && file != null) {
                     Log.i(TAG, "loaded");
-                    Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentRight);
+                    //Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentRight);
                 } else {
                     Log.i(TAG, "null");
-                    Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentRight);
+                    //Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivOpponentRight);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();

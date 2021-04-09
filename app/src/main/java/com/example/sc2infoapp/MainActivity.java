@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     public static LiquipediaClient client = new LiquipediaClient();
     public static AligulacClient aligulacClient = new AligulacClient();
+    public static NotificationDao notDao;
 
 
     @Override
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        notDao = ((ParseApplication) getApplicationContext()).getDB().notDao();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -75,22 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        ExternalMatch m = new ExternalMatch("SKillous vs Serral", "April 08, 2021 - 22:12 EDT", 3);
-        ExternalMatchNotification not = new ExternalMatchNotification(m);
 
-        final NotificationDao userDao = ((ParseApplication) getApplicationContext()).getDB().notDao();
-
-        Thread t = new Thread(() -> {
-            ((ParseApplication) getApplicationContext()).getDB().runInTransaction(new Runnable() {
-                @Override
-                public void run() {
-                    //userDao.insertNotification(not);
-                    ExternalMatchNotification x = userDao.selectUpcoming("2021-04-10 12:12 EDT");
-                    Log.i("ATG", "got some data!");
-                }
-            });
-        });
-        t.start();
 
         //bottomNavigationView.setSelectedItemId(R.id.action_home);
     }

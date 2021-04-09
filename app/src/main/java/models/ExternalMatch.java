@@ -1,5 +1,9 @@
 package models;
 
+import android.util.Log;
+
+import com.example.sc2infoapp.MainActivity;
+import com.example.sc2infoapp.ParseApplication;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
@@ -10,6 +14,7 @@ import java.util.ArrayList;
 
 import interfaces.IFollowable;
 import interfaces.IMatch;
+import interfaces.NotificationDao;
 
 import static com.parse.ParseUser.getCurrentUser;
 
@@ -19,8 +24,8 @@ public class ExternalMatch implements IMatch, IFollowable {
     private String time;
     private Integer bo;
     private String tournament;
-    protected static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
-    protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
+    public static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
+    public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
 
     public ExternalMatch()
     {}
@@ -75,14 +80,12 @@ public class ExternalMatch implements IMatch, IFollowable {
 
     @Override
     public boolean setFollow() {
-        ParseUser user = getCurrentUser();
-        if (this.getFollow()) {
-            return false;
-        } else {
-            user.add("follows", String.format("External: " + opponent));
-            user.saveInBackground();
-            return true;
-        }
+        Thread t = new Thread(() ->
+        {
+            MainActivity.notDao.insertNotification(new ExternalMatchNotification(this));
+        });
+        t.start();
+        return true;
     }
 
     @Override

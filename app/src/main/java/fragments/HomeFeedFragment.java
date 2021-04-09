@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,15 +21,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import interfaces.IPublished;
+import models.ExternalMatch;
+import models.ExternalMatchNotification;
 import models.Match;
 import models.Player;
 import models.Post;
 
+import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.MatchDetailActivity;
 import models.Notification;
+
+import com.example.sc2infoapp.PlayerActivity;
 import com.example.sc2infoapp.PostComposeActivity;
 import com.example.sc2infoapp.R;
 
+import models.TaskRunner;
 import models.Team;
 import models.TeamMatch;
 import adapters.UserFeedAdapter;
@@ -42,13 +49,16 @@ import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class HomeFeedFragment extends Fragment {
     private static final String TAG = "HOME_FEED";
@@ -164,7 +174,7 @@ public class HomeFeedFragment extends Fragment {
                     {
                         published.add(new Notification("Player has matches updates", String.format("Player update: %s", p.getName()), p.getUpdatedAt(), "", () ->
                         {
-                            Intent i = new Intent(a, TeamActivity.class);
+                            Intent i = new Intent(a, PlayerActivity.class);
                             i.putExtra("playerName", p.getName());
                             startActivity(i);
                         }, R.drawable.noun_team));
@@ -203,6 +213,28 @@ public class HomeFeedFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+
+        Thread t = new Thread(() ->
+        {
+            List<ExternalMatchNotification> x = MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
+            Log.i("xx","xx");
+        });
+        t.start();
+
+        TaskRunner taskRunner = new TaskRunner();
+        taskRunner.executeAsync(new MatchRequestTask(), (data) ->
+        {
+            published.addAll(data);
+            adapter.notifyDataSetChanged();
+        });
+    }
+
+    class MatchRequestTask implements Callable<List<ExternalMatchNotification>> {
+        @Override
+        public List<ExternalMatchNotification> call() throws IOException, JSONException {
+            // Some long running task
+            return MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
+        }
     }
 
     private void getTournamentUpdate(ArrayList<String> tournId)
