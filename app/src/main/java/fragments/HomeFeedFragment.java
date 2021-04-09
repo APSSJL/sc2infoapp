@@ -168,7 +168,7 @@ public class HomeFeedFragment extends Fragment {
                         Intent i = new Intent(a, MatchDetailActivity.class);
                         i.putExtra("match", Parcels.wrap(m));
                         startActivity(i);
-                    }
+                    }, R.drawable.noun_versus
                     ));
                 }
                 adapter.notifyDataSetChanged();
@@ -197,7 +197,7 @@ public class HomeFeedFragment extends Fragment {
                         Intent i = new Intent(a, MatchDetailActivity.class);
                         i.putExtra("match", Parcels.wrap(m));
                         startActivity(i);
-                    }
+                    },R.drawable.noun_versus
                     ));
                 }
                 adapter.notifyDataSetChanged();

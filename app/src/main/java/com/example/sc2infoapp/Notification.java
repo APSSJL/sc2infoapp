@@ -1,6 +1,7 @@
 package com.example.sc2infoapp;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 
 import java.io.File;
 import java.util.Date;
@@ -19,13 +20,15 @@ public class Notification implements IPublished {
     private Date date;
    private String author;
    private Runnable callback;
+   private int image;
 
-    public Notification(String content, String title, Date date, String author, Runnable callback) {
+    public Notification(String content, String title, Date date, String author, Runnable callback, int d) {
         this.content = content;
         this.title = title;
         this.date = date;
         this.author = author;
         this.callback = callback;
+        image = d;
     }
 
     public void Enforce()
@@ -55,6 +58,11 @@ public class Notification implements IPublished {
     @Override
     public String getAuthor() {
         return author;
+    }
+
+    public int getResource()
+    {
+        return image;
     }
 
     @Override

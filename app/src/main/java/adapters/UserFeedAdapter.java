@@ -145,7 +145,9 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
             if (p != null) {
                 Glide.with(context).load(p).transform(new CircleCrop()).into(ivLogo);
             } else {
-                Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
+                if(published.getPublishedType() == IPublished.NOTIFICATION)
+                    ivLogo.setBackgroundResource(((Notification)published).getResource());
+                else Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
             }
 
             tvTitle.setOnClickListener(new View.OnClickListener() {
