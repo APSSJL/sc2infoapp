@@ -1,12 +1,10 @@
 package fragments;
 
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,13 +25,12 @@ import models.Player;
 import models.Post;
 
 import com.example.sc2infoapp.MatchDetailActivity;
-import com.example.sc2infoapp.Notification;
+import models.Notification;
 import com.example.sc2infoapp.PostComposeActivity;
 import com.example.sc2infoapp.R;
 
 import models.Team;
 import models.TeamMatch;
-import models.Tournament;
 import adapters.UserFeedAdapter;
 import models.UserTournament;
 
@@ -49,12 +46,9 @@ import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Queue;
 
 public class HomeFeedFragment extends Fragment {
     private static final String TAG = "HOME_FEED";

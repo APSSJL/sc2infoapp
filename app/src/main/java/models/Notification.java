@@ -1,7 +1,12 @@
-package com.example.sc2infoapp;
+package models;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.io.File;
 import java.util.Date;
@@ -9,18 +14,32 @@ import java.util.concurrent.Callable;
 
 import interfaces.IPublished;
 
+@Entity
 public class Notification implements IPublished {
+
+    public Notification(){}
+
     @Override
     public int getPublishedType() {
         return NOTIFICATION;
     }
 
-    private String content;
-    private String title;
-    private Date date;
-   private String author;
-   private Runnable callback;
-   private int image;
+    @ColumnInfo
+    @PrimaryKey(autoGenerate=true)
+    public Long id;
+
+    @ColumnInfo
+    public String content;
+    @ColumnInfo
+    public String title;
+    @ColumnInfo
+    public Date date;
+    @ColumnInfo
+    public String author;
+    @Ignore
+    public Runnable callback;
+    @ColumnInfo
+    public int image;
 
     public Notification(String content, String title, Date date, String author, Runnable callback, int d) {
         this.content = content;

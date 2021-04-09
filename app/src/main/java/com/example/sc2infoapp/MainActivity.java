@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -21,11 +22,15 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import fragments.HomeFeedFragment;
 import fragments.MatchFeedFragment;
 import fragments.UserProfileFragment;
-
+import interfaces.NotificationDao;
+import models.ExternalMatch;
+import models.ExternalMatchNotification;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -70,7 +75,23 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        ExternalMatch m = new ExternalMatch("SKillous vs Serral", "April 08, 2021 - 22:12 EDT", 3);
+        ExternalMatchNotification not = new ExternalMatchNotification(m);
 
-        bottomNavigationView.setSelectedItemId(R.id.action_home);
+        final NotificationDao userDao = ((ParseApplication) getApplicationContext()).getDB().notDao();
+
+        Thread t = new Thread(() -> {
+            ((ParseApplication) getApplicationContext()).getDB().runInTransaction(new Runnable() {
+                @Override
+                public void run() {
+                    //userDao.insertNotification(not);
+                    ExternalMatchNotification x = userDao.selectUpcoming("2021-04-10 12:12 EDT");
+                    Log.i("ATG", "got some data!");
+                }
+            });
+        });
+        t.start();
+
+        //bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 }

@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,16 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 
-import fragments.HomeFeedFragment;
-import fragments.MatchFeedFragment;
-import fragments.UserProfileFragment;
 import interfaces.IMatch;
 import interfaces.IPublished;
 import models.Post;
 
-import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.MatchDetailActivity;
-import com.example.sc2infoapp.Notification;
+import models.Notification;
 import com.example.sc2infoapp.PlayerActivity;
 import com.example.sc2infoapp.R;
 

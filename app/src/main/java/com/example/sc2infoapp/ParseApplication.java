@@ -2,11 +2,14 @@ package com.example.sc2infoapp;
 
 import android.app.Application;
 
+import androidx.room.Room;
+
 import com.parse.Parse;
 import com.parse.ParseObject;
 
 import models.Comment;
 import models.Match;
+import models.MatchesDatabase;
 import models.Player;
 import models.Post;
 import models.Team;
@@ -16,6 +19,9 @@ import models.UserInfo;
 import models.UserTournament;
 
 public class ParseApplication extends Application {
+
+    MatchesDatabase database;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -37,5 +43,12 @@ public class ParseApplication extends Application {
                 .server("https://parseapi.back4app.com")
                 .build()
         );
+
+        database = Room.databaseBuilder(this, MatchesDatabase.class, database.NAME).fallbackToDestructiveMigration().build();
+    }
+
+    public MatchesDatabase getDB()
+    {
+        return database;
     }
 }
