@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import interfaces.IPublished;
 import models.Match;
+import models.Player;
 import models.Post;
 
 import com.example.sc2infoapp.MatchDetailActivity;
@@ -149,7 +150,35 @@ public class HomeFeedFragment extends Fragment {
         getTeamMatchUpdate(hm.get("TeamMatch"));
         getTournamentUpdate(hm.get("Tourn"));
         TeamUpdates(hm.get("Team"));
+        PlayerUpdates(hm.get("Player"));
         Log.i(TAG, "Why the hell I can't set breakpoint at end statement?");
+    }
+
+    private void PlayerUpdates(ArrayList<String> playerId) {
+        ParseQuery<Player> query = ParseQuery.getQuery(Player.class);
+        query.addDescendingOrder(Player.KEY_UPDATED_AT);
+        query.include("user");
+        query.whereContainedIn("objectId", playerId);
+
+        query.findInBackground(new FindCallback<Player>() {
+            @Override
+            public void done(List<Player> objects, ParseException e) {
+                for(Player p : objects)
+                {
+                    Activity a = getActivity();
+                    CheckMatches(p.getParseUser("user"), () ->
+                    {
+                        published.add(new Notification("Player has matches updates", String.format("Player update: %s", p.getName()), p.getUpdatedAt(), "", () ->
+                        {
+                            Intent i = new Intent(a, TeamActivity.class);
+                            i.putExtra("playerName", p.getName());
+                            startActivity(i);
+                        }, R.drawable.noun_team));
+                        adapter.notifyDataSetChanged();
+                    });
+                }
+            }
+        });
     }
 
     private void getMatchUpdate(ArrayList<String> matchId)
@@ -250,6 +279,29 @@ public class HomeFeedFragment extends Fragment {
         ParseQuery.or(x).findInBackground(new FindCallback<TeamMatch>() {
             @Override
             public void done(List<TeamMatch> objects, ParseException e) {
+                if(objects.size() == 0)
+                    return;
+                callback.run();
+            }
+        });
+
+    }
+    public void CheckMatches(ParseUser p, Runnable callback)
+    {
+        ParseQuery<Match> query1 = ParseQuery.getQuery(Match.class);
+        query1.whereLessThan("time", lastUpdated);
+        query1.whereEqualTo("Player1", p);
+
+
+        ParseQuery<Match> query2 = ParseQuery.getQuery(Match.class);
+        query2.whereLessThan("time", lastUpdated);
+        query2.whereEqualTo("Player2", p);
+        ArrayList<ParseQuery<Match>> x = new ArrayList<ParseQuery<Match>>();
+        x.add(query1);
+        x.add(query2);
+        ParseQuery.or(x).findInBackground(new FindCallback<Match>() {
+            @Override
+            public void done(List<Match> objects, ParseException e) {
                 if(objects.size() == 0)
                     return;
                 callback.run();
