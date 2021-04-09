@@ -30,10 +30,13 @@ import com.example.sc2infoapp.Notification;
 import com.example.sc2infoapp.PostComposeActivity;
 import com.example.sc2infoapp.R;
 
+import models.Team;
 import models.TeamMatch;
 import models.Tournament;
 import adapters.UserFeedAdapter;
+import models.UserTournament;
 
+import com.example.sc2infoapp.TeamActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -144,6 +147,8 @@ public class HomeFeedFragment extends Fragment {
         getUserUpdate(hm.get("User"));
         getMatchUpdate(hm.get("Match"));
         getTeamMatchUpdate(hm.get("TeamMatch"));
+        getTournamentUpdate(hm.get("Tourn"));
+        TeamUpdates(hm.get("Team"));
         Log.i(TAG, "Why the hell I can't set breakpoint at end statement?");
     }
 
@@ -155,6 +160,7 @@ public class HomeFeedFragment extends Fragment {
         query.setLimit(5);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
         query.whereLessThan("time", lastUpdated);
+        query.whereContainedIn("objectId", matchId);
 
         query.findInBackground(new FindCallback<Match>() {
             @Override
@@ -176,6 +182,108 @@ public class HomeFeedFragment extends Fragment {
         });
     }
 
+    private void getTournamentUpdate(ArrayList<String> tournId)
+    {
+        ParseQuery<UserTournament> query = ParseQuery.getQuery(UserTournament.class);
+        query.addDescendingOrder(Match.KEY_UPDATED_AT);
+        query.whereContainedIn("objectId", tournId);
+
+        query.findInBackground(new FindCallback<UserTournament>() {
+            @Override
+            public void done(List<UserTournament> objects, ParseException e) {
+                for(UserTournament t : objects)
+                {
+                    ArrayList<String> matchList = t.getMatches();
+                    CheckMatches(matchList, () ->
+                    {
+                        published.add(new Notification("Tournament you follow was updated", String.format("Tournament update: %s", t.get("name")), t.getUpdatedAt(), "", () ->
+                        {
+                            //TODO: Navigate tournament details screen
+                        }, R.drawable.noun_tournament));
+                        adapter.notifyDataSetChanged();
+                    });
+                }
+            }
+        });
+    }
+
+    private void TeamUpdates(ArrayList<String> teamId)
+    {
+        ParseQuery<Team> query = ParseQuery.getQuery(Team.class);
+        query.addDescendingOrder(Match.KEY_UPDATED_AT);
+        query.whereContainedIn("objectId", teamId);
+
+        query.findInBackground(new FindCallback<Team>() {
+            @Override
+            public void done(List<Team> objects, ParseException e) {
+                for(Team t : objects)
+                {
+                    Activity a = getActivity();
+                    CheckTeamMatches(t, () ->
+                    {
+                        published.add(new Notification("Team has matches updates", String.format("Team update: %s", t.getTeamName()), t.getUpdatedAt(), "", () ->
+                        {
+                            Intent i = new Intent(a, TeamActivity.class);
+                            i.putExtra("teamName", t.getTeamName());
+                            startActivity(i);
+                        }, R.drawable.noun_team));
+                        adapter.notifyDataSetChanged();
+                    });
+                }
+            }
+        });
+    }
+
+    public void CheckTeamMatches(Team t, Runnable callback)
+    {
+        ParseQuery<TeamMatch> query1 = ParseQuery.getQuery(TeamMatch.class);
+        query1.whereLessThan("time", lastUpdated);
+        query1.whereEqualTo("Team1", t);
+
+
+        ParseQuery<TeamMatch> query2 = ParseQuery.getQuery(TeamMatch.class);
+        query2.whereLessThan("time", lastUpdated);
+        query2.whereEqualTo("Team2", t);
+        ArrayList<ParseQuery<TeamMatch>> x = new ArrayList<ParseQuery<TeamMatch>>();
+        x.add(query1);
+        x.add(query2);
+        ParseQuery.or(x).findInBackground(new FindCallback<TeamMatch>() {
+            @Override
+            public void done(List<TeamMatch> objects, ParseException e) {
+                if(objects.size() == 0)
+                    return;
+                callback.run();
+            }
+        });
+    }
+
+    public void CheckMatches(ArrayList<String> matchList, Runnable callback)
+    {
+        ParseQuery<TeamMatch> query = ParseQuery.getQuery(TeamMatch.class);
+        query.whereLessThan("time", lastUpdated);
+        query.whereContainedIn("objectId", matchList);
+        query.findInBackground(new FindCallback<TeamMatch>() {
+            @Override
+            public void done(List<TeamMatch> objects, ParseException e) {
+                if(objects.size() == 0)
+                    return;
+                callback.run();
+            }
+        });
+
+        ParseQuery<Match> query1 = ParseQuery.getQuery(Match.class);
+        query1.whereLessThan("time", lastUpdated);
+        query1.whereContainedIn("objectId", matchList);
+        query1.findInBackground(new FindCallback<Match>() {
+            @Override
+            public void done(List<Match> entries, ParseException e) {
+                if(entries.size() == 0)
+                    return;
+                callback.run();
+            }
+        });
+    }
+
     private void getTeamMatchUpdate(ArrayList<String> matchId)
     {
         if(matchId == null)
@@ -184,6 +292,7 @@ public class HomeFeedFragment extends Fragment {
         query.setLimit(5);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
         query.whereLessThan("time", lastUpdated);
+        query.whereContainedIn("objectId", matchId);
 
         query.findInBackground(new FindCallback<TeamMatch>() {
             @Override
