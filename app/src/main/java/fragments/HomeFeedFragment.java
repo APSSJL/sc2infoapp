@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import interfaces.IPublished;
 import models.ExternalMatch;
+import models.ExternalMatch$$Parcelable;
 import models.ExternalMatchNotification;
 import models.Match;
 import models.Player;
@@ -224,7 +225,18 @@ public class HomeFeedFragment extends Fragment {
         TaskRunner taskRunner = new TaskRunner();
         taskRunner.executeAsync(new MatchRequestTask(), (data) ->
         {
-            published.addAll(data);
+            for(ExternalMatchNotification not : data)
+            {
+                Activity a = getActivity();
+                not.setContent("There is an external match update!");
+                not.setCallback(() ->
+                {
+                    Intent i = new Intent(a, MatchDetailActivity.class);
+                    i.putExtra("match", Parcels.wrap(new ExternalMatch(not.opponents, ExternalMatch.DATE_FORMATTER.format(not.date), not.bo)));
+                    startActivity(i);
+                });
+                published.add(not);
+            }
             adapter.notifyDataSetChanged();
         });
     }
