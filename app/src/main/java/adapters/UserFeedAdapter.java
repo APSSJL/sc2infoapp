@@ -105,6 +105,14 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
         @SuppressLint("NewApi")
         public void bind(final IPublished published) {
             Post post = (Post) published;
+            tvTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(activity, ViewProfileActivity.class);
+                    i.putExtra("user", post.getUser());
+                    activity.startActivity(i);
+                }
+            });
             tvTitle.setText(post.getTitle());
             tvcategory.setText(post.getCategory());
             tvAuthor.setText(post.getAuthor());

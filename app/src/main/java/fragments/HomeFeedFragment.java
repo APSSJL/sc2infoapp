@@ -28,8 +28,10 @@ import models.Match;
 import models.Player;
 import models.Post;
 
+import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.MatchDetailActivity;
+
 import models.Notification;
 
 import com.example.sc2infoapp.PlayerActivity;
@@ -42,6 +44,7 @@ import models.TeamMatch;
 import adapters.UserFeedAdapter;
 import models.UserTournament;
 
+import com.example.sc2infoapp.SearchActivity;
 import com.example.sc2infoapp.TeamActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -51,6 +54,7 @@ import com.parse.ParseUser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 import org.parceler.Parcels;
 
 import java.io.IOException;
@@ -68,6 +72,7 @@ public class HomeFeedFragment extends Fragment {
     UserFeedAdapter adapter;
     List<IPublished> published;
     Date lastUpdated;
+    Button btnSearch;
 
 
     @Override
@@ -87,8 +92,18 @@ public class HomeFeedFragment extends Fragment {
         btnCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG,getContext().toString());
+                Log.i(TAG, getContext().toString());
                 Intent i = new Intent(getContext(), PostComposeActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnSearch = view.findViewById(R.id.btnSearch);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), SearchActivity.class);
                 startActivity(i);
             }
         });
@@ -102,12 +117,11 @@ public class HomeFeedFragment extends Fragment {
         populateUserFeed();
     }
 
-    private void getLastUpdate()
-    {
+    private void getLastUpdate() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String date = pref.getString("lastUpdate", "");
-        if(date.equals(""))
+        if (date.equals(""))
             lastUpdated = new Date(System.currentTimeMillis());
         else {
             try {
@@ -132,16 +146,14 @@ public class HomeFeedFragment extends Fragment {
             e.printStackTrace();
         }
         JSONArray follows = user.getJSONArray("follows");
-        Log.i("asd","asd");
+        Log.i("asd", "asd");
         getLastUpdate();
 
         HashMap<String, ArrayList<String>> hm = new HashMap<>();
-        for(int i = 0; i < follows.length(); i++)
-        {
+        for (int i = 0; i < follows.length(); i++) {
             try {
                 String[] follow = follows.getString(i).split(":");
-                if(!hm.containsKey(follow[0]))
-                {
+                if (!hm.containsKey(follow[0])) {
                     hm.put(follow[0], new ArrayList<>());
                 }
                 hm.get(follow[0]).add(follow[1]);
@@ -155,11 +167,39 @@ public class HomeFeedFragment extends Fragment {
         getTeamMatchUpdate(hm.get("TeamMatch"));
         getTournamentUpdate(hm.get("Tourn"));
         TeamUpdates(hm.get("Team"));
+        ExternalTeamUpdates(hm.get("ExternalTeam"));
         PlayerUpdates(hm.get("Player"));
         Log.i(TAG, "Why the hell I can't set breakpoint at end statement?");
     }
 
+    private void ExternalTeamUpdates(ArrayList<String> names)
+    {
+        final int[] c = {0};
+        Activity a = getActivity();
+        for(String name : names) {
+            if(c[0] > 5)
+                return;
+            TaskRunner taskRunner = new TaskRunner();
+            taskRunner.executeAsync(new MatchTask(name), (data) ->
+            {
+                if (data.size() > 0) {
+                    c[0]++;
+                    published.add(new Notification("Team has matches updates", String.format("Team update: %s", name), new Date(System.currentTimeMillis()), "", () ->
+                    {
+                        Intent i = new Intent(a, TeamActivity.class);
+                        i.putExtra("teamName", name);
+                        startActivity(i);
+                    }, R.drawable.noun_team));
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+        }
+    }
+
     private void PlayerUpdates(ArrayList<String> playerId) {
+        if (playerId == null)
+            return;
         ParseQuery<Player> query = ParseQuery.getQuery(Player.class);
         query.addDescendingOrder(Player.KEY_UPDATED_AT);
         query.include("user");
@@ -168,11 +208,14 @@ public class HomeFeedFragment extends Fragment {
         query.findInBackground(new FindCallback<Player>() {
             @Override
             public void done(List<Player> objects, ParseException e) {
-                for(Player p : objects)
-                {
+                final int[] c = {0};
+                for (Player p : objects) {
+                    if (c[0] > 5)
+                        break;
                     Activity a = getActivity();
-                    CheckMatches(p.getParseUser("user"), () ->
+                    CheckMatches(p.getParseUser("user"), p.getName(), () ->
                     {
+                        c[0]++;
                         published.add(new Notification("Player has matches updates", String.format("Player update: %s", p.getName()), p.getUpdatedAt(), "", () ->
                         {
                             Intent i = new Intent(a, PlayerActivity.class);
@@ -186,10 +229,10 @@ public class HomeFeedFragment extends Fragment {
         });
     }
 
-    private void getMatchUpdate(ArrayList<String> matchId)
-    {
-        if(matchId == null)
-            return;;
+    private void getMatchUpdate(ArrayList<String> matchId) {
+        if (matchId == null)
+            return;
+        ;
         ParseQuery<Match> query = ParseQuery.getQuery(Match.class);
         query.setLimit(5);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
@@ -199,10 +242,9 @@ public class HomeFeedFragment extends Fragment {
         query.findInBackground(new FindCallback<Match>() {
             @Override
             public void done(List<Match> objects, ParseException e) {
-                for(Match m : objects)
-                {
+                for (Match m : objects) {
                     Activity a = getActivity();
-                    String content = (m.getWinner() != null) ? "Match you were following has ended. Tap to see the winner."  : "Match you're following have started!";
+                    String content = (m.getWinner() != null) ? "Match you were following has ended. Tap to see the winner." : "Match you're following have started!";
                     published.add(new Notification(content, String.format("Match update: %s", m.getOpponent()), m.getDate("time"), "", () ->
                     {
                         Intent i = new Intent(a, MatchDetailActivity.class);
@@ -218,15 +260,14 @@ public class HomeFeedFragment extends Fragment {
         Thread t = new Thread(() ->
         {
             List<ExternalMatchNotification> x = MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
-            Log.i("xx","xx");
+            Log.i("xx", "xx");
         });
         t.start();
 
         TaskRunner taskRunner = new TaskRunner();
         taskRunner.executeAsync(new MatchRequestTask(), (data) ->
         {
-            for(ExternalMatchNotification not : data)
-            {
+            for (ExternalMatchNotification not : data) {
                 Activity a = getActivity();
                 not.setContent("There is an external match update!");
                 not.setCallback(() ->
@@ -249,8 +290,9 @@ public class HomeFeedFragment extends Fragment {
         }
     }
 
-    private void getTournamentUpdate(ArrayList<String> tournId)
-    {
+    private void getTournamentUpdate(ArrayList<String> tournId) {
+        if (tournId == null)
+            return;
         ParseQuery<UserTournament> query = ParseQuery.getQuery(UserTournament.class);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
         query.whereContainedIn("objectId", tournId);
@@ -258,8 +300,7 @@ public class HomeFeedFragment extends Fragment {
         query.findInBackground(new FindCallback<UserTournament>() {
             @Override
             public void done(List<UserTournament> objects, ParseException e) {
-                for(UserTournament t : objects)
-                {
+                for (UserTournament t : objects) {
                     ArrayList<String> matchList = t.getMatches();
                     CheckMatches(matchList, () ->
                     {
@@ -274,8 +315,9 @@ public class HomeFeedFragment extends Fragment {
         });
     }
 
-    private void TeamUpdates(ArrayList<String> teamId)
-    {
+    private void TeamUpdates(ArrayList<String> teamId) {
+        if (teamId == null)
+            return;
         ParseQuery<Team> query = ParseQuery.getQuery(Team.class);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
         query.whereContainedIn("objectId", teamId);
@@ -283,11 +325,14 @@ public class HomeFeedFragment extends Fragment {
         query.findInBackground(new FindCallback<Team>() {
             @Override
             public void done(List<Team> objects, ParseException e) {
-                for(Team t : objects)
-                {
+                final Integer[] c = {0};
+                for (Team t : objects) {
+                    if (c[0] > 5)
+                        break;
                     Activity a = getActivity();
-                    CheckTeamMatches(t, () ->
+                    CheckTeamMatches(t, t.getTeamName(),() ->
                     {
+                        c[0] += 1;
                         published.add(new Notification("Team has matches updates", String.format("Team update: %s", t.getTeamName()), t.getUpdatedAt(), "", () ->
                         {
                             Intent i = new Intent(a, TeamActivity.class);
@@ -301,8 +346,7 @@ public class HomeFeedFragment extends Fragment {
         });
     }
 
-    public void CheckTeamMatches(Team t, Runnable callback)
-    {
+    public void CheckTeamMatches(Team t, String name,Runnable callback) {
         ParseQuery<TeamMatch> query1 = ParseQuery.getQuery(TeamMatch.class);
         query1.whereLessThan("time", lastUpdated);
         query1.whereEqualTo("Team1", t);
@@ -317,15 +361,25 @@ public class HomeFeedFragment extends Fragment {
         ParseQuery.or(x).findInBackground(new FindCallback<TeamMatch>() {
             @Override
             public void done(List<TeamMatch> objects, ParseException e) {
-                if(objects.size() == 0)
+                if (objects.size() == 0) {
+                    TaskRunner taskRunner = new TaskRunner();
+                    taskRunner.executeAsync(new MatchTask(name), (data) ->
+                    {
+                        if (data.size() > 0) {
+                            callback.run();
+                            return;
+                        }
+                    });
+
                     return;
+                }
                 callback.run();
             }
         });
 
     }
-    public void CheckMatches(ParseUser p, Runnable callback)
-    {
+
+    public void CheckMatches(ParseUser p, String name, Runnable callback) {
         ParseQuery<Match> query1 = ParseQuery.getQuery(Match.class);
         query1.whereLessThan("time", lastUpdated);
         query1.whereEqualTo("Player1", p);
@@ -340,22 +394,47 @@ public class HomeFeedFragment extends Fragment {
         ParseQuery.or(x).findInBackground(new FindCallback<Match>() {
             @Override
             public void done(List<Match> objects, ParseException e) {
-                if(objects.size() == 0)
+                if (objects.size() == 0) {
+
+                    TaskRunner taskRunner = new TaskRunner();
+                    taskRunner.executeAsync(new MatchTask(name), (data) ->
+                    {
+                        if (data.size() > 0) {
+                            callback.run();
+                            return;
+                        }
+                    });
+
                     return;
+                }
                 callback.run();
             }
         });
     }
 
-    public void CheckMatches(ArrayList<String> matchList, Runnable callback)
-    {
+    class MatchTask implements Callable<ArrayList<ExternalMatch>> {
+        public MatchTask(String input) {
+            this.input = input;
+        }
+
+        final String input;
+
+        @Override
+        public ArrayList<ExternalMatch> call() throws IOException, JSONException {
+            // Some long running task
+            LiquipediaParser parse = new LiquipediaParser();
+            return parse.getRecentMatches(Jsoup.parse(MainActivity.client.getPageByName(input)), input);
+        }
+    }
+
+    public void CheckMatches(ArrayList<String> matchList, Runnable callback) {
         ParseQuery<TeamMatch> query = ParseQuery.getQuery(TeamMatch.class);
         query.whereLessThan("time", lastUpdated);
         query.whereContainedIn("objectId", matchList);
         query.findInBackground(new FindCallback<TeamMatch>() {
             @Override
             public void done(List<TeamMatch> objects, ParseException e) {
-                if(objects.size() == 0)
+                if (objects.size() == 0)
                     return;
                 callback.run();
             }
@@ -367,17 +446,17 @@ public class HomeFeedFragment extends Fragment {
         query1.findInBackground(new FindCallback<Match>() {
             @Override
             public void done(List<Match> entries, ParseException e) {
-                if(entries.size() == 0)
+                if (entries.size() == 0)
                     return;
                 callback.run();
             }
         });
     }
 
-    private void getTeamMatchUpdate(ArrayList<String> matchId)
-    {
-        if(matchId == null)
-            return;;
+    private void getTeamMatchUpdate(ArrayList<String> matchId) {
+        if (matchId == null)
+            return;
+        ;
         ParseQuery<TeamMatch> query = ParseQuery.getQuery(TeamMatch.class);
         query.setLimit(5);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
@@ -387,16 +466,15 @@ public class HomeFeedFragment extends Fragment {
         query.findInBackground(new FindCallback<TeamMatch>() {
             @Override
             public void done(List<TeamMatch> objects, ParseException e) {
-                for(TeamMatch m : objects)
-                {
+                for (TeamMatch m : objects) {
                     Activity a = getActivity();
-                    String content = (m.getWinner() != null) ? "Team Match you were following has ended. Tap to see the winner."  : "Match you're following have started!";
+                    String content = (m.getWinner() != null) ? "Team Match you were following has ended. Tap to see the winner." : "Match you're following have started!";
                     published.add(new Notification(content, String.format("Team Match update: %s", m.getOpponent()), m.getDate("time"), "", () ->
                     {
                         Intent i = new Intent(a, MatchDetailActivity.class);
                         i.putExtra("match", Parcels.wrap(m));
                         startActivity(i);
-                    },R.drawable.noun_versus
+                    }, R.drawable.noun_versus
                     ));
                 }
                 adapter.notifyDataSetChanged();
@@ -404,9 +482,8 @@ public class HomeFeedFragment extends Fragment {
         });
     }
 
-    private void getUserUpdate(ArrayList<String> userId)
-    {
-        if(userId == null)
+    private void getUserUpdate(ArrayList<String> userId) {
+        if (userId == null)
             return;
         List<ParseUser> user = null;
         ParseQuery<ParseUser> userQuery = ParseUser.getQuery();

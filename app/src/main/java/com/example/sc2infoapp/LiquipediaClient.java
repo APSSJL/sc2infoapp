@@ -46,6 +46,7 @@ public class LiquipediaClient {
         return  getPageByName("Liquipedia:Upcoming_and_ongoing_matches");
     }
 
+
     public boolean checkIfPageExists(String title) throws JSONException, IOException
     {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL).newBuilder();
