@@ -63,6 +63,7 @@ public class TeamActivity extends AppCompatActivity {
     ArrayList<ExternalMatch> externalMatches;
     MatchesAdapter matchAdapter;
     Button btnFollow;
+    Button btnComment;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -80,7 +81,7 @@ public class TeamActivity extends AppCompatActivity {
         rb = findViewById(R.id.ratingBar);
         rvMatches = findViewById(R.id.rvTeamMatches);
         btnFollow = findViewById(R.id.btnTeamFollow);
-
+        btnComment = findViewById(R.id.btnTeamComment);
 
         matches = new ArrayList<>();
         externalMatches = new ArrayList<>();
@@ -110,9 +111,17 @@ public class TeamActivity extends AppCompatActivity {
                     }
                 });
             }
+            btnComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(TeamActivity.this, BaseCommentActivity.class);
+                    startActivity(i);
+                }
+            });
         }
         else
         {
+            btnComment.setVisibility(View.GONE);
             rb.setVisibility(View.GONE);
         }
 
@@ -130,6 +139,7 @@ public class TeamActivity extends AppCompatActivity {
             }
 
         });
+
 
         getLiquipediaMatches();
 
