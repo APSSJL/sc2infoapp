@@ -78,4 +78,6 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.View
             rvMatches.setLayoutManager(new LinearLayoutManager(context));
         }
     }
+
+
 }

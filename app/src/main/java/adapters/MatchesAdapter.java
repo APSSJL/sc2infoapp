@@ -182,6 +182,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
         }
 
         public void bind(IMatch match) {
+            tvName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, MatchDetailActivity.class);
+                    i.putExtra("match", Parcels.wrap(match));
+                    ((Activity)context).startActivity(i);
+                }
+            });
             tvName.setText(match.getOpponent());
             tvTime.setText(match.getTime());
             IPredictable m = (IPredictable) match;

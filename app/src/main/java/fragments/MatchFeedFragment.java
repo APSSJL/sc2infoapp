@@ -23,6 +23,9 @@ import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.R;
 import com.example.sc2infoapp.TeamActivity;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,10 +46,13 @@ import adapters.UserFeedAdapter;
 import interfaces.IMatch;
 import models.ExternalMatch;
 import models.Match;
+import models.Notification;
 import models.TaskRunner;
 import models.Team;
+import models.TeamMatch;
 import models.Tournament;
 import models.TournamentMatches;
+import models.UserTournament;
 
 public class MatchFeedFragment extends Fragment {
     public static final String TAG = "MATCH_FEED_FRAG";
@@ -79,9 +85,10 @@ public class MatchFeedFragment extends Fragment {
 
         TaskRunner taskRunner = new TaskRunner();
         taskRunner.executeAsync(new GetTournamentTask(), (data) -> {
-            tmatches.addAll(data);
+        tmatches.addAll(data);
             adapter.notifyDataSetChanged();
         });
+        getTournamentUpdate();
     }
 
 
@@ -110,6 +117,43 @@ public class MatchFeedFragment extends Fragment {
             }
             return res;
         }
+    }
+
+    private void getTournamentUpdate() {
+        ParseQuery<UserTournament> query = ParseQuery.getQuery(UserTournament.class);
+        query.addDescendingOrder(Match.KEY_UPDATED_AT);
+
+        query.findInBackground(new FindCallback<UserTournament>() {
+            @Override
+            public void done(List<UserTournament> objects, ParseException e) {
+                for (UserTournament t : objects) {
+                    ParseQuery<Match> qmatches = ParseQuery.getQuery(Match.class);
+                    qmatches.whereContainedIn("objectId",t.getMatches());
+                    ParseQuery<TeamMatch> qtmatches = ParseQuery.getQuery(TeamMatch.class);
+                    qtmatches.whereContainedIn("objectId",t.getMatches());
+
+                    qmatches.findInBackground(new FindCallback<Match>() {
+                        @Override
+                        public void done(List<Match> objects, ParseException e) {
+                            if(objects.size() == 0)
+                                return;
+                            tmatches.add(new TournamentMatches(t.getString("name"), new ArrayList<>(objects)));
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                    qtmatches.findInBackground(new FindCallback<TeamMatch>() {
+                        @Override
+                        public void done(List<TeamMatch> objects, ParseException e) {
+                            if(objects.size() == 0)
+                                return;
+                            tmatches.add(new TournamentMatches(t.getString("name"), new ArrayList<>(objects)));
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
 }
