@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -90,7 +91,11 @@ public class PlayerActivity extends AppCompatActivity {
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : navigate to comment section
+                Intent i = new Intent(PlayerActivity.this, PlayerCommentActivity.class);
+                i.putExtra("name", tvName.getText().toString());
+                i.putExtra("race", tvRace.getText().toString());
+                i.putExtra("rating", tvRating.getText().toString());
+                startActivity(i);
             }
         });
 
