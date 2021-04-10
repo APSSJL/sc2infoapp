@@ -16,6 +16,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import fragments.HomeFeedFragment;
 import models.Player;
 
 public class LoginActivity extends AppCompatActivity {
@@ -74,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        Intent i = new Intent(this, SearchActivity.class);
+        Intent i = new Intent(this, HomeFilterActivity.class);
         //i.putExtra("playerName", "Vanya");
         startActivity(i);
         finish();

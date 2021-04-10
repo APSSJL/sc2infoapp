@@ -17,6 +17,7 @@
         <item>"Stream"</item>
         <item>"Terran"</item>
         <item>"Zerg"</item>
+        <item>"Protoss"</item>
     </string-array>
 
     <string-array name="allCategory">
@@ -30,5 +31,6 @@
         <item>"Stream"</item>
         <item>"Terran"</item>
         <item>"Zerg"</item>
+        <item>"Protoss"</item>
     </string-array>
 </resources>
