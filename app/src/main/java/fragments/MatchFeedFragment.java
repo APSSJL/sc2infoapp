@@ -1,6 +1,7 @@
 package fragments;
 
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +32,9 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import adapters.MatchFeedAdapter;
@@ -41,12 +45,14 @@ import models.ExternalMatch;
 import models.Match;
 import models.TaskRunner;
 import models.Team;
+import models.Tournament;
+import models.TournamentMatches;
 
 public class MatchFeedFragment extends Fragment {
     public static final String TAG = "MATCH_FEED_FRAG";
     MatchFeedAdapter adapter;
     RecyclerView rvMatchFeed;
-    List<ExternalMatch> externalMatches;
+    ArrayList<TournamentMatches> tmatches;
 
     @Nullable
     @Override
@@ -61,28 +67,49 @@ public class MatchFeedFragment extends Fragment {
         //find recycler view
         rvMatchFeed = view.findViewById(R.id.rvMatches);
         //Initialize matches and adapter
-        externalMatches = new ArrayList<>();
-        adapter = new MatchFeedAdapter(getContext(), externalMatches);
+        tmatches = new ArrayList<>();
+
+        adapter = new MatchFeedAdapter(getContext(), tmatches);
 
         //Recycler view setup
         rvMatchFeed.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMatchFeed.setAdapter(adapter);
 
-        getUpcomingMatches();
         super.onViewCreated(view, savedInstanceState);
+
+        TaskRunner taskRunner = new TaskRunner();
+        taskRunner.executeAsync(new GetTournamentTask(), (data) -> {
+            tmatches.addAll(data);
+            adapter.notifyDataSetChanged();
+        });
     }
 
-    private void getUpcomingMatches(){
-        Log.i("tester2", "in");
-//        JSONObject cur = null;
-        try {
-            LiquipediaParser parser = new LiquipediaParser();
-            externalMatches.addAll(parser.parseUpcomingMatches(Jsoup.parse(MainActivity.client.getMatches())));
-            adapter.notifyDataSetChanged();
-            Log.i("tester2", externalMatches.get(1).getTournament());
 
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
+    class GetTournamentTask implements Callable<ArrayList<TournamentMatches>> {
+
+        @SuppressLint("NewApi")
+        @Override
+        public ArrayList<TournamentMatches> call() throws IOException, JSONException {
+            // Some long running task
+            LiquipediaParser parser = new LiquipediaParser();
+            ArrayList<ExternalMatch> matches = parser.parseUpcomingMatches(Jsoup.parse(MainActivity.client.getMatches()));
+
+            HashMap<String, ArrayList<IMatch>> groupedMatches = new HashMap<>();
+            for(ExternalMatch m : matches)
+            {
+                if(!groupedMatches.containsKey(m.getTournament()))
+                {
+                    groupedMatches.put(m.getTournament(), new ArrayList<>());
+                }
+                groupedMatches.get(m.getTournament()).add(m);
+            }
+
+            ArrayList<TournamentMatches> res = new ArrayList<>();
+            for (Map.Entry<String, ArrayList<IMatch>> entry : groupedMatches.entrySet()) {
+                res.add(new TournamentMatches(entry.getKey(), entry.getValue()));
+            }
+            return res;
         }
     }
+
 }

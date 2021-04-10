@@ -1,6 +1,8 @@
 package adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -24,12 +26,14 @@ import interfaces.IPublished;
 import models.ExternalMatch;
 import models.Match;
 
+import com.example.sc2infoapp.MatchDetailActivity;
 import com.example.sc2infoapp.R;
 import models.TaskRunner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,6 +100,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
         public void bind(IMatch match)
         {
+            tvName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent((Activity)context, MatchDetailActivity.class);
+                    i.putExtra("match", Parcels.wrap(match));
+                    ((Activity)context).startActivity(i);
+                }
+            });
             tvName.setText(match.getOpponent());
             tvTime.setText(match.getTime());
             if(((ExternalMatch)match).getBo() == -1)

@@ -76,8 +76,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        Intent i = new Intent(this, TeamActivity.class);
-        i.putExtra("teamName", "Test Team");
+        Intent i = new Intent(this, MainActivity.class);
+        //i.putExtra("teamName", "Test Team");
         //i.putExtra("playerName", "Vanya");
         startActivity(i);
         finish();
