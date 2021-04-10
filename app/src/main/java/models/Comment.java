@@ -9,6 +9,7 @@ import com.parse.ParseUser;
 public class Comment extends ParseObject {
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_CONTENT = "content";
+    public static final String KEY_COMMENT_TO = "commentTo";
 
 
 
@@ -28,6 +29,9 @@ public class Comment extends ParseObject {
 
     public void setContent(String content){
         put(KEY_CONTENT, content);
+    }
+    public void setCommentTo(String id){
+        put(KEY_COMMENT_TO, id);
     }
 
 

@@ -37,6 +37,7 @@ public class BaseCommentActivity extends AppCompatActivity {
     //TextView tvCommentType;
     RecyclerView rvComments;
     EditText etComment;
+    String sourceId;
     Button btnPostComment;
 
     List<Comment> allComments;
@@ -81,6 +82,7 @@ public class BaseCommentActivity extends AppCompatActivity {
                     Comment comment = new Comment();
                     Log.i(TAG, content);
                     comment.setAuthor(user);
+                    comment.setCommentTo(sourceId);
                     comment.setContent(content);
 
                     comment.saveInBackground(new SaveCallback() {
@@ -105,7 +107,7 @@ public class BaseCommentActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void queryComments() {
+    protected void queryComments() {
         ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
         query.include("author");
         query.setLimit(5);

@@ -51,8 +51,8 @@
                 app:srcCompat="@drawable/appiconmin" />
         </RelativeLayout>
 
-        <EditText
-            android:id="@+id/etSearch"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rlTop"
@@ -64,7 +64,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/etSearch"
+            android:layout_below="@+id/btnSearch"
             android:layout_marginTop="0dp"
             android:orientation="vertical">
 

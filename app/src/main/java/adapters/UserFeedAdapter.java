@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,15 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 
-import fragments.HomeFeedFragment;
-import fragments.MatchFeedFragment;
-import fragments.UserProfileFragment;
 import interfaces.IMatch;
 import interfaces.IPublished;
 import models.Post;
 
-import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.MatchDetailActivity;
+import models.Notification;
 import com.example.sc2infoapp.PlayerActivity;
 import com.example.sc2infoapp.R;
 
@@ -110,6 +105,14 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
         @SuppressLint("NewApi")
         public void bind(final IPublished published) {
             Post post = (Post) published;
+            tvTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(activity, ViewProfileActivity.class);
+                    i.putExtra("user", post.getUser());
+                    activity.startActivity(i);
+                }
+            });
             tvTitle.setText(post.getTitle());
             tvcategory.setText(post.getCategory());
             tvAuthor.setText(post.getAuthor());
@@ -144,7 +147,9 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
             if (p != null) {
                 Glide.with(context).load(p).transform(new CircleCrop()).into(ivLogo);
             } else {
-                Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
+                if(published.getPublishedType() == IPublished.NOTIFICATION)
+                    ivLogo.setBackgroundResource(((Notification)published).getResource());
+                else Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
             }
 
             tvTitle.setOnClickListener(new View.OnClickListener() {
@@ -168,10 +173,13 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
                             activity.startActivity(i);
                             break;
                         case IPublished.MATCH_SUMMARY:
-                        default:
                             i = new Intent(activity, MatchDetailActivity.class);
                             i.putExtra("match", Parcels.wrap((IMatch)published));
                             activity.startActivity(i);
+                            break;
+                        case IPublished.NOTIFICATION:
+                            ((Notification)published).Enforce();
+                        default:
                             break;
                     }
                 }
