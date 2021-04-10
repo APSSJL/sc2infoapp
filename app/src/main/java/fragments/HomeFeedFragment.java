@@ -175,6 +175,7 @@ public class HomeFeedFragment extends Fragment {
         }
         getUserUpdate(hm.get("User"));
         getMatchUpdate(hm.get("Match"));
+        getExternalMatchesNotification();
         getTeamMatchUpdate(hm.get("TeamMatch"));
         getTournamentUpdate(hm.get("Tourn"));
         TeamUpdates(hm.get("Team"));
@@ -245,7 +246,6 @@ public class HomeFeedFragment extends Fragment {
     private void getMatchUpdate(ArrayList<String> matchId) {
         if (matchId == null)
             return;
-        ;
         ParseQuery<Match> query = ParseQuery.getQuery(Match.class);
         query.setLimit(5);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
@@ -270,6 +270,9 @@ public class HomeFeedFragment extends Fragment {
             }
         });
 
+    }
+
+    private void getExternalMatchesNotification() {
         Thread t = new Thread(() ->
         {
             List<ExternalMatchNotification> x = MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
