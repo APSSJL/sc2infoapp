@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -51,6 +52,7 @@ public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SEARCH ACTIVITY";
     ChipGroup cg;
     Chip all;
+    Chip chipTags;
     EditText edSearch;
     CheckBox isHiring;
     ImageView ivProfilePicture;
@@ -58,6 +60,7 @@ public class SearchActivity extends AppCompatActivity {
     RecyclerView rvResults;
     ArrayList<IPublished> searchResults;
     UserFeedAdapter adapter;
+    Spinner spCategories;
 
 
     @Override
@@ -69,6 +72,8 @@ public class SearchActivity extends AppCompatActivity {
         ivProfilePicture = findViewById(R.id.ivProfileImage);
         btnSearch = findViewById(R.id.btnSearch);
         rvResults = findViewById(R.id.rvResults);
+        spCategories = findViewById(R.id.spCategories);
+
 
         if(getIntent().getBooleanExtra("teamSearch", false))
         {
@@ -94,6 +99,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         try {
             ParseFile p = (ParseUser.getCurrentUser().getParseFile("pic"));
@@ -121,6 +127,8 @@ public class SearchActivity extends AppCompatActivity {
                 searchResults.clear();
                 adapter.notifyDataSetChanged();
                 List<Integer> x = cg.getCheckedChipIds();
+                if(x.contains(R.id.chipTags))
+                    SearchPosts(true);
                 if(x.size() == 0 || x.contains(R.id.chipPlayers))
                     SearchPlayers();
                 if(x.size() == 0 || x.contains(R.id.chipMatches))
@@ -130,7 +138,7 @@ public class SearchActivity extends AppCompatActivity {
                 if(x.size() == 0 || x.contains(R.id.chipUsers))
                     SearchUsers();
                 if(x.size() == 0 || x.contains(R.id.chipPosts))
-                    SearchPosts();
+                    SearchPosts(false);
                 if(x.size() == 0 || x.contains(R.id.chipTournaments))
                     SearchTournaments();
 
@@ -255,11 +263,22 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    public void SearchPosts() {
+    public void SearchPosts(boolean tags) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.setLimit(5);
-        query.whereContains(Post.KEY_TITLE, edSearch.getText().toString());
+        if(!spCategories.getSelectedItem().toString().equals("All"))
+        {
+            query.whereEqualTo(Post.KEY_CATEGORY, spCategories.getSelectedItem().toString());
+        }
+        if(!tags)
+        {
+            query.whereContains(Post.KEY_TITLE, edSearch.getText().toString());
+        }
+        else
+        {
+            query.whereContains(Post.KEY_TAGS, edSearch.getText().toString());
+        }
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
             @Override

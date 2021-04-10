@@ -89,6 +89,13 @@
             android:checkable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTags"
+            android:text="Tags"
+            android:checkable="true"
+            android:layout_width="wrap_content"
+            android:backgroundTint="@color/accent_color"
+            android:layout_height="wrap_content" />
     </com.google.android.material.chip.ChipGroup>
     <CheckBox
         android:layout_width="wrap_content"
@@ -98,6 +105,13 @@
         android:layout_below="@+id/cgCategories"
         android:textColor="@color/secondary_text"
         />
+    <Spinner
+        android:id="@+id/spCategories"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_height="45dp"
+        android:layout_below="@id/cgCategories"
+        android:entries="@array/allCategory" />
 
     <View
         android:layout_below="@id/checkboxIsHiring"
