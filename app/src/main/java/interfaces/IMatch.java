@@ -11,4 +11,6 @@ public interface IMatch {
     public String getOpponent();
     public String getTime();
     public int getMatchType();
+    public int getResult1();
+    public int getResult2();
 }

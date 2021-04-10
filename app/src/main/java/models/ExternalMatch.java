@@ -1,7 +1,11 @@
 package models;
 
+import android.util.Pair;
+
 import com.parse.ParseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcel;
 
 import java.text.ParseException;
@@ -15,9 +19,11 @@ import static com.parse.ParseUser.getCurrentUser;
 
 @Parcel
 public class ExternalMatch implements IMatch, IFollowable {
+    private Integer bo;
+    private int result1;
+    private int result2;
     private String opponent;
     private String time;
-    private Integer bo;
     private String tournament;
     protected static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
     protected static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
@@ -46,6 +52,18 @@ public class ExternalMatch implements IMatch, IFollowable {
             e.printStackTrace();
         }
         this.tournament = tournament;
+    }
+
+    public ExternalMatch(JSONObject match) {
+        try {
+            this.result1 = match.getInt("sca");
+            this.result2 = match.getInt("scb");
+            this.opponent = String.format("%s vs %s", match.getJSONObject("pla").getString("tag"), match.getJSONObject("plb").getString("tag"));
+            this.time = match.getString("date");
+            this.tournament = match.getJSONObject("eventobj").getString("fullname");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getTournament()
@@ -91,5 +109,15 @@ public class ExternalMatch implements IMatch, IFollowable {
         if(a == null)
             return false;
         return ((ArrayList)a).contains(String.format("External: "+ opponent));
+    }
+
+    @Override
+    public int getResult1() {
+        return result1;
+    }
+
+    @Override
+    public int getResult2() {
+        return result2;
     }
 }

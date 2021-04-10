@@ -253,6 +253,8 @@ Model: PlayerMatch [this entity for internal/user tournaments only, for other to
 | details       | String   | match rules and desciption
 | time          | DateTime | planned match time
 | winner        | Pointer to user | who won this match
+| P1Score       | Number   | Score that Player1 get |
+| P2Score       | Number   | Score that Player2 get |
 | ratingSum     | Number   | average match rating |
 | ratingVotes   | Number   | votes for rating |
 | rating        | Number   | rating[need for queries] |
@@ -275,6 +277,8 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 | details       | String   | match rules and desciption |
 | time          | DateTime | planned match time |
 | winner        | String | who won this match |
+| P1Score       | Number   | Score that Player1 get |
+| P2Score       | Number   | Score that Player2 get |
 | t1PredictionVotes | Number | predictions for the team 1 |
 | t2PredictionVotes | Number | predictions for the team 2 |
 | predicted     | Array    | Shows if user added prediciton for this match|

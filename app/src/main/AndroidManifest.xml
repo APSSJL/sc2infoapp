@@ -13,9 +13,9 @@
     <application
         android:name=".ParseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/appiconmin"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/appiconmin"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sc2InfoApp"
         android:usesCleartextTraffic="true">
@@ -28,7 +28,6 @@
         <activity android:name=".CreateTeamActivity" />
         <activity android:name=".TeamActivity" />
         <activity android:name=".BaseCommentActivity" />
-        <activity android:name=".UpdateProfileActivity" />
         <activity android:name=".PostComposeActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity">

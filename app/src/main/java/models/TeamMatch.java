@@ -44,6 +44,16 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
         return TEAM;
     }
 
+    @Override
+    public int getResult1() {
+        return getInt("T1Score");
+    }
+
+    @Override
+    public int getResult2() {
+        return getInt("T2Score");
+    }
+
     public Pair<Integer, Integer> getDistribution()
     {
         return new Pair<>(getInt("t1PredictionVotes"), getInt("t2PredictionVotes"));
