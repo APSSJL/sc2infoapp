@@ -27,7 +27,6 @@ public class ExternalMatch implements IMatch, IFollowable {
     private int result2;
     private String opponent;
     private String time;
-    private Integer bo;
     private String tournament;
     public static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
     public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");

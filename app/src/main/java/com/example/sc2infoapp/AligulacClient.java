@@ -31,7 +31,7 @@ public class AligulacClient {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
         urlBuilder.addQueryParameter("tag", name);
         urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
-        urlBuilder.addQueryParameter("order_by", "-rating");
+        urlBuilder.addQueryParameter("order_by", "-current_rating__rating");
         String url = urlBuilder.build().toString();
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();

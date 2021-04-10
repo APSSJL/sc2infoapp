@@ -25,9 +25,12 @@ import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.parceler.Parcels;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -59,6 +62,7 @@ public class MatchDetailActivity extends AppCompatActivity {
     TextView tvOpponentLeft;
     TextView tvOpponentRight;
     TabLayout tlMatchTab;
+    List<String> country;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,8 @@ public class MatchDetailActivity extends AppCompatActivity {
 
         String opponentLeft = match.getOpponent().split(" vs ")[0];
         String opponentRight = match.getOpponent().split(" vs ")[1];
+        country = new ArrayList<>();
+
         tvOpponentLeft.setText(opponentLeft);
         tvOpponentRight.setText(opponentRight);
 
@@ -173,8 +179,10 @@ public class MatchDetailActivity extends AppCompatActivity {
         {
             try {
                 Thread.sleep(3000);
+                Document doc = Jsoup.parse(data.getString("text"));
                 LiquipediaParser parser = new LiquipediaParser();
                 String link = parser.getPhotoLink(data);
+                country.add(parser.getCountry(doc));
                 Glide.with(MatchDetailActivity.this).load(link).transform(new CircleCrop()).into(target);
                 Log.i(TAG, link);
             } catch (JSONException | InterruptedException e) {
