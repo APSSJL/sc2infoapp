@@ -19,8 +19,15 @@ android {
 
         buildConfigField("String", "CLIENT_KEY", apikeyProperties['CLIENT_KEY'])
         buildConfigField("String", "ALIGULAC_KEY", apikeyProperties['ALIGULAC_KEY'])
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -33,6 +40,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+ext {
+    roomVersion = "2.1.0"
 }
 
 dependencies {
@@ -48,6 +59,8 @@ dependencies {
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.25.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1' // for logging API calls to LogCat
 
+    implementation "androidx.room:room-runtime:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

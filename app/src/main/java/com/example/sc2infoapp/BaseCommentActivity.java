@@ -34,9 +34,10 @@ import static com.parse.ParseUser.getCurrentUser;
 public class BaseCommentActivity extends AppCompatActivity {
 
     public static final String TAG = "BASE_COMMENT_ACTIVITY";
-    TextView tvCommentType;
+    //TextView tvCommentType;
     RecyclerView rvComments;
     EditText etComment;
+    String sourceId;
     Button btnPostComment;
 
     List<Comment> allComments;
@@ -48,16 +49,16 @@ public class BaseCommentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_comments);
+        //setContentView(R.layout.activity_base_comments);
 
         user = getCurrentUser();
 
-        tvCommentType = findViewById(R.id.tvCommentType);
+        //tvCommentType = findViewById(R.id.tvCommentType);
         rvComments = findViewById(R.id.rvComments);
         etComment = findViewById(R.id.etComment);
         btnPostComment = findViewById(R.id.btnPostComment);
 
-        tvCommentType.setText(getIntent().getStringExtra("CommentType"));
+        //tvCommentType.setText(getIntent().getStringExtra("CommentType"));
 
         allComments = new ArrayList<>();
         adapter = new BaseCommentAdapter(this, allComments);
@@ -77,24 +78,28 @@ public class BaseCommentActivity extends AppCompatActivity {
                 if (content.isEmpty()){
                     Toast.makeText(BaseCommentActivity.this,"Comment cannot be empty",Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    Comment comment = new Comment();
+                    Log.i(TAG, content);
+                    comment.setAuthor(user);
+                    comment.setCommentTo(sourceId);
+                    comment.setContent(content);
 
-                Comment comment = new Comment();
-                Log.i(TAG,content);
-                comment.setAuthor(user);
-                comment.setContent(content);
+                    comment.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "Error while posting", e);
+                                Toast.makeText(BaseCommentActivity.this, "Error while commenting", Toast.LENGTH_SHORT).show();
+                            }
+                            allComments.add(0, comment);
+                            adapter.notifyItemInserted(0);
+                            etComment.setText("");
 
-                comment.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.e(TAG, "Error while posting", e);
-                            Toast.makeText(BaseCommentActivity.this, "Error while commenting", Toast.LENGTH_SHORT).show();
+                            Log.i(TAG, "commented successfully");
                         }
-                        Log.i(TAG, "commented successfully");
-                        finish();
-                    }
-                });
-
+                    });
+                }
 
             }
         });
@@ -102,7 +107,7 @@ public class BaseCommentActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void queryComments() {
+    protected void queryComments() {
         ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
         query.include("author");
         query.setLimit(5);

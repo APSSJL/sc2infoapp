@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -19,11 +22,15 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import fragments.HomeFeedFragment;
 import fragments.MatchFeedFragment;
 import fragments.UserProfileFragment;
-
+import interfaces.NotificationDao;
+import models.ExternalMatch;
+import models.ExternalMatchNotification;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,12 +39,15 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     public static LiquipediaClient client = new LiquipediaClient();
     public static AligulacClient aligulacClient = new AligulacClient();
+    public static NotificationDao notDao;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        notDao = ((ParseApplication) getApplicationContext()).getDB().notDao();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -67,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
 
         bottomNavigationView.setSelectedItemId(R.id.action_home);
     }

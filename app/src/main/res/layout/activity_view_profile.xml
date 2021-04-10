@@ -31,6 +31,15 @@
         android:text="in-game race"
         android:textColor="@color/black" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Follow"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/btnFollow"
+        android:padding="5dp"
+        />
 
     <ImageView
 

@@ -121,7 +121,7 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
         Object a = getCurrentUser().get("follows");
         if(a == null)
             return false;
-        return ((ArrayList)a).contains(getString("objectID"));
+        return ((ArrayList)a).contains(getString("objectId"));
     }
 
     @Override
@@ -147,5 +147,9 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
     @Override
     public File getImage() {
         return null;
+    }
+
+    public ParseUser getWinner() {
+        return getParseUser("winner");
     }
 }

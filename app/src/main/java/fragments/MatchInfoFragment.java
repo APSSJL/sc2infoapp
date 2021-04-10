@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sc2infoapp.MainActivity;
+import com.example.sc2infoapp.ParseApplication;
 import com.example.sc2infoapp.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import interfaces.IFollowable;
 import interfaces.IMatch;
+import interfaces.NotificationDao;
 import models.Match;
 import models.Team;
 import models.TeamMatch;

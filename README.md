@@ -31,7 +31,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 - [x] User can create an account and login
 - [x] User can use bottom navigation view to switch between fragments
     - [x] Home feed fragment
-        - [ ] Homefeed showing recent activity based on user follows
+        - [x] Homefeed showing recent activity based on user follows
     - [x] Profile fragment
     - [x] Match feed fragment
         - [x] Shows all recent tournaments and matches  
@@ -68,13 +68,13 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] Players
     - [x] Matches
     - [ ] Tournaments
-    - [ ] Teams
+    - [x] Teams
     - [ ] Posts
 - [ ] User can follow:
-    - [ ] Players
-    - [ ] Other users
+    - [x] Players
+    - [x] Other users
     - [ ] Tournaments
-    - [ ] Teams 
+    - [x] Teams 
     - [x] Match
 - [ ] User can view tournament detailed screen
     - [ ] User can create and edit new tournaments

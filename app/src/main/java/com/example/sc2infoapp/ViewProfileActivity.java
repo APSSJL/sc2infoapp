@@ -45,6 +45,7 @@ public class ViewProfileActivity extends AppCompatActivity {
     TextView tvBio;
     RecyclerView rvItems;
     TextView tvTeam;
+    Button btnFollow;
 
     ParseUser user;
     UserFeedAdapter adapter;
@@ -65,6 +66,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         tvBio = findViewById(R.id.tvBio);
         rvItems = findViewById(R.id.rvItems);
         tvTeam = findViewById(R.id.tvTeam);
+        btnFollow = findViewById(R.id.btnFollow);
         adapter = new UserFeedAdapter(this, published);
 
         user = getIntent().getParcelableExtra("user");
@@ -124,6 +126,15 @@ public class ViewProfileActivity extends AppCompatActivity {
         {
             tvTeam.setText("No team");
         }
+
+        btnFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser cur = ParseUser.getCurrentUser();
+                cur.add("follows", "User:"+user.getObjectId());
+                cur.saveInBackground();
+            }
+        });
 
         UserProfileFragment.populateUserFeed(user, published, adapter);
     }
