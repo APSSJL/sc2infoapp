@@ -2,13 +2,17 @@ package fragments;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sc2infoapp.AligulacClient;
+import com.example.sc2infoapp.HomeFilterActivity;
 import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.R;
@@ -59,6 +64,8 @@ public class MatchFeedFragment extends Fragment {
     MatchFeedAdapter adapter;
     RecyclerView rvMatchFeed;
     ArrayList<TournamentMatches> tmatches;
+    Button btnFilter;
+    SharedPreferences pref ;
 
     @Nullable
     @Override
@@ -74,20 +81,29 @@ public class MatchFeedFragment extends Fragment {
         rvMatchFeed = view.findViewById(R.id.rvMatches);
         //Initialize matches and adapter
         tmatches = new ArrayList<>();
-
+        btnFilter = view.findViewById(R.id.btnFilter);
         adapter = new MatchFeedAdapter(getContext(), tmatches);
+        pref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         //Recycler view setup
         rvMatchFeed.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMatchFeed.setAdapter(adapter);
 
-        super.onViewCreated(view, savedInstanceState);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), HomeFilterActivity.class);
+                startActivity(i);
+            }
+        });
 
+        super.onViewCreated(view, savedInstanceState);
         TaskRunner taskRunner = new TaskRunner();
         taskRunner.executeAsync(new GetTournamentTask(), (data) -> {
-        tmatches.addAll(data);
+            tmatches.addAll(data);
             adapter.notifyDataSetChanged();
         });
+
         getTournamentUpdate();
     }
 
@@ -131,6 +147,8 @@ public class MatchFeedFragment extends Fragment {
                     qmatches.whereContainedIn("objectId",t.getMatches());
                     ParseQuery<TeamMatch> qtmatches = ParseQuery.getQuery(TeamMatch.class);
                     qtmatches.whereContainedIn("objectId",t.getMatches());
+                    qmatches.whereGreaterThanOrEqualTo("rating", pref.getInt("rating", 0));
+                    qtmatches.whereGreaterThanOrEqualTo("rating", pref.getInt("rating", 0));
 
                     qmatches.findInBackground(new FindCallback<Match>() {
                         @Override
