@@ -161,8 +161,7 @@ public class PlayerActivity extends AppCompatActivity {
             btnFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ParseUser user = ParseUser.getCurrentUser();
-                    user.add("follows", p.getObjectId());
+                    p.setFollow();
                 }
             });
 

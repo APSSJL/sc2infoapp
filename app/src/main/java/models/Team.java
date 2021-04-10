@@ -14,10 +14,13 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import interfaces.IFollowable;
 import interfaces.IPublished;
 
+import static com.parse.ParseUser.getCurrentUser;
+
 @ParseClassName("Team")
-public class Team extends ParseObject implements IPublished {
+public class Team extends ParseObject implements IPublished, IFollowable {
     public Team(){};
     public static final String KEY_NAME = "teamName";
     public static final String KEY_OWNER = "owner";
@@ -132,5 +135,25 @@ public class Team extends ParseObject implements IPublished {
     @Override
     public File getImage() {
         return null;
+    }
+
+    @Override
+    public boolean setFollow() {
+        ParseUser user = getCurrentUser();
+        if (this.getFollow()) {
+            return false;
+        } else {
+            user.add("follows", "Team:"+getObjectId());
+            user.saveInBackground();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean getFollow() {
+        Object a = getCurrentUser().get("follows");
+        if(a == null)
+            return false;
+        return ((ArrayList)a).contains("Team:"+getObjectId());
     }
 }
