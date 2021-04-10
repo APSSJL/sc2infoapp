@@ -44,6 +44,8 @@ import models.Team;
 import models.TeamMatch;
 import models.UserInfo;
 
+import static com.parse.ParseUser.getCurrentUser;
+
 public class TeamActivity extends AppCompatActivity {
 
     private static final String TAG = "TEAM ACTIVITY";
@@ -52,6 +54,7 @@ public class TeamActivity extends AppCompatActivity {
     TextView tvHiring;
     Button btnJoin;
     Button btnManage;
+
     RecyclerView rvRoster;
     String teamName;
     RatingBar rb;
@@ -59,6 +62,8 @@ public class TeamActivity extends AppCompatActivity {
     ArrayList<IMatch> matches;
     ArrayList<ExternalMatch> externalMatches;
     MatchesAdapter matchAdapter;
+    Button btnFollow;
+    Button btnComment;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -75,9 +80,8 @@ public class TeamActivity extends AppCompatActivity {
         rvRoster = findViewById(R.id.rvRoster);
         rb = findViewById(R.id.ratingBar);
         rvMatches = findViewById(R.id.rvTeamMatches);
-
-
-
+        btnFollow = findViewById(R.id.btnTeamFollow);
+        btnComment = findViewById(R.id.btnTeamComment);
 
         matches = new ArrayList<>();
         externalMatches = new ArrayList<>();
@@ -107,11 +111,35 @@ public class TeamActivity extends AppCompatActivity {
                     }
                 });
             }
+            btnComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(TeamActivity.this, BaseCommentActivity.class);
+                    startActivity(i);
+                }
+            });
         }
         else
         {
+            btnComment.setVisibility(View.GONE);
             rb.setVisibility(View.GONE);
         }
+
+        btnFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(t != null)
+                {
+                    t.setFollow();
+                }
+                else
+                {
+                    addExternalFollow(teamName);
+                }
+            }
+
+        });
+
 
         getLiquipediaMatches();
 
@@ -143,6 +171,17 @@ public class TeamActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void addExternalFollow(String name)
+    {
+        Log.i("Team activity", "in add mathod");
+        Object a = getCurrentUser().get("follows");
+        if(a != null && ((ArrayList)a).contains("ExternalTeam:"+name))
+            return;
+        ParseUser user = getCurrentUser();
+        user.add("follows", "ExternalTeam:"+name);
+        user.saveInBackground();
     }
 
 
@@ -195,6 +234,8 @@ public class TeamActivity extends AppCompatActivity {
                 break;
             }
         }
+        if(res == null)
+            return;
         Elements x = res.select("tr");
         int size = x.size();
         for(int i = 2; i < size; i++)

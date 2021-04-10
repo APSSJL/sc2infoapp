@@ -110,7 +110,7 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
         if (this.getFollow()) {
             return false;
         } else {
-            user.add("follows", getString("objectId"));
+            user.add("follows", "TeamMatch:"+getString("objectId"));
             user.saveInBackground();
             return true;
         }
@@ -121,7 +121,7 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
         Object a = getCurrentUser().get("follows");
         if(a == null)
             return false;
-        return ((ArrayList)a).contains(getString("objectId"));
+        return ((ArrayList)a).contains("TeamMatch:"+getString("objectId"));
     }
 
     @Override

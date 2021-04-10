@@ -65,6 +65,18 @@ public class LiquipediaParser {
         return name;
     }
 
+    public String getCountry(Document doc)
+    {
+        String name = "";
+        Elements d1 = doc.selectFirst("div.fo-nttax-infobox-wrapper").child(0).children();
+        for(Element e : d1)
+        {
+            if(e.child(0).text().contains("Country:"))
+                return  e.child(1).text();
+        }
+        return name;
+    }
+
     public ArrayList<ExternalMatch> getRecentMatches(Document doc, String playerName)
     {
         ArrayList<ExternalMatch> opponents = new ArrayList<>();

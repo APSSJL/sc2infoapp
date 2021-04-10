@@ -11,10 +11,13 @@ import com.parse.ParseUser;
 import java.io.File;
 import java.util.ArrayList;
 
+import interfaces.IFollowable;
 import interfaces.IPublished;
 
+import static com.parse.ParseUser.getCurrentUser;
+
 @ParseClassName("Player")
-public class Player extends ParseObject implements IPublished {
+public class Player extends ParseObject implements IPublished , IFollowable {
     private static final String KEY_RATING = "rating";
 
     public  String getName()
@@ -71,5 +74,25 @@ public class Player extends ParseObject implements IPublished {
         } catch (ParseException e) {
             return null;
         }
+    }
+
+    @Override
+    public boolean setFollow() {
+        ParseUser user = getCurrentUser();
+        if (this.getFollow()) {
+            return false;
+        } else {
+            user.add("follows", "Player:"+getObjectId());
+            user.saveInBackground();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean getFollow() {
+        Object a = getCurrentUser().get("follows");
+        if(a == null)
+            return false;
+        return ((ArrayList)a).contains("Player:"+getObjectId());
     }
 }

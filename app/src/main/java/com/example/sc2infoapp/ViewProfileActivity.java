@@ -35,6 +35,8 @@ import interfaces.IPublished;
 import models.Team;
 import models.UserInfo;
 
+import static com.parse.ParseUser.getCurrentUser;
+
 public class ViewProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "User profile";
@@ -130,7 +132,11 @@ public class ViewProfileActivity extends AppCompatActivity {
         btnFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Object a = getCurrentUser().get("follows");
                 ParseUser cur = ParseUser.getCurrentUser();
+                if(a != null && ((ArrayList)a).contains("User:"+cur.getObjectId()))
+                    return;;
+
                 cur.add("follows", "User:"+user.getObjectId());
                 cur.saveInBackground();
             }
