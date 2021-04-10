@@ -30,6 +30,16 @@
         android:background="@drawable/layout_bg"
 
         />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edRating"
+        android:layout_toStartOf="@+id/spCategories"
+        android:layout_below="@+id/cgCategories"
+        android:hint="Rating"
+        android:inputType="number"
+        android:layout_toEndOf="@+id/checkboxIsHiring"
+        />
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

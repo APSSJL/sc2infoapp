@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class HomeFilterActivity extends AppCompatActivity {
     TextView tvBannedTags;
     EditText edRating;
     Button btnSave;
+    Button btnBack;
     Button btnBanTag;
     Button btnUnbanTag;
     EditText edBan;
@@ -51,6 +53,7 @@ public class HomeFilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_filter);
 
         edRating = findViewById(R.id.edRating);
+        btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
         player = findViewById(R.id.checkboxPlayer);
         team = findViewById(R.id.checkBoxTeam);
@@ -72,6 +75,14 @@ public class HomeFilterActivity extends AppCompatActivity {
         setFilteredTypes();
         setHiddenCategories();
         setBannedTags();
+        
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeFilterActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
 
 
         edRating.setText(String.valueOf(pref.getInt("rating", 0)));
@@ -92,6 +103,8 @@ public class HomeFilterActivity extends AppCompatActivity {
         banButtonsSetup();
 
     }
+    
+    
 
     private void banButtonsSetup() {
         btnBanTag.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +146,7 @@ public class HomeFilterActivity extends AppCompatActivity {
         });
 
         btnUnbanCategory.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onClick(View v) {
                 String category = spCategories.getSelectedItem().toString();
