@@ -5,13 +5,10 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,21 +31,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import fragments.MatchH2HFragment;
 import fragments.MatchInfoFragment;
 import fragments.MatchRankingFragment;
 import interfaces.IFollowable;
 import interfaces.IMatch;
-import models.ExternalMatch;
-import models.Match;
 import models.Player;
 import models.TaskRunner;
 import models.Team;
-import models.TeamMatch;
 
 public class MatchDetailActivity extends AppCompatActivity {
 

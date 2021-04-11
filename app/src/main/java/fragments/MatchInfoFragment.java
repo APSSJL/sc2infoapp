@@ -4,19 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.sc2infoapp.MainActivity;
-import com.example.sc2infoapp.ParseApplication;
 import com.example.sc2infoapp.R;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -24,9 +19,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.IFollowable;
 import interfaces.IMatch;
-import interfaces.NotificationDao;
 import models.Match;
 import models.Team;
 import models.TeamMatch;
@@ -59,7 +52,7 @@ public class MatchInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_match_info, container, false);
 
-        btnComment = view.findViewById(R.id.btnMatchFollow);
+        btnComment = view.findViewById(R.id.btnTornFollow);
         tvMatchDetailList = view.findViewById(R.id.tvMatchDetailList);
         tvTeamLeft = view.findViewById(R.id.tvLineupLeft);
         tvTeamRight = view.findViewById(R.id.tvLineupRight);
