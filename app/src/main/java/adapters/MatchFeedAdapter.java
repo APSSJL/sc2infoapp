@@ -71,6 +71,7 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.View
         }
 
         public void bind(TournamentMatches tournamentMatches) {
+            // TODO: Launch tournament info screen
             tvTournament.setText(tournamentMatches.getName());
             adapter = new MatchesAdapter(tournamentMatches.getMatches(), context);
 
