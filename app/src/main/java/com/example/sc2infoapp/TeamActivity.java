@@ -114,7 +114,7 @@ public class TeamActivity extends AppCompatActivity {
             btnComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(TeamActivity.this, BaseCommentActivity.class);
+                    Intent i = new Intent(TeamActivity.this, TeamCommentActivity.class);
                     i.putExtra("id", t.getObjectId());
                     startActivity(i);
                 }

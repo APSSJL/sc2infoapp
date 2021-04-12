@@ -79,6 +79,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        bottomNavigationView.setSelectedItemId(R.id.action_matches);
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 }

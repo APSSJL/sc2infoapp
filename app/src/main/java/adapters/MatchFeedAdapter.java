@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sc2infoapp.MatchDetailActivity;
 import com.example.sc2infoapp.R;
+import com.example.sc2infoapp.TournamentInfoActivity;
 
 import org.parceler.Parcels;
 
@@ -71,8 +72,25 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.View
         }
 
         public void bind(TournamentMatches tournamentMatches) {
-            // TODO: Launch tournament info screen
             tvTournament.setText(tournamentMatches.getName());
+
+            tvTournament.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent((Activity)context, TournamentInfoActivity.class);
+                    i.putExtra("userCreated", tournamentMatches.isUserCreated());
+                    if(tournamentMatches.isUserCreated())
+                    {
+                        i.putExtra("tournament", Parcels.wrap(tournamentMatches.getParseTournament()));
+                    }
+                    else
+                    {
+                        i.putExtra("tournament", tournamentMatches.getName());
+                    }
+                    ((Activity)context).startActivity(i);
+                }
+            });
+
             adapter = new MatchesAdapter(tournamentMatches.getMatches(), context);
 
             rvMatches.setAdapter(adapter);
