@@ -42,10 +42,15 @@ public class HomeFilterActivity extends AppCompatActivity {
     Button btnBack;
     Button btnBanTag;
     Button btnUnbanTag;
+    Button btnBanTourn;
+    Button btnUnbanTourn;
     EditText edBan;
     EditText edUnban;
+    EditText edTourn;
+    TextView tvBannedTourns;
     ArrayList<String> hiddenCategories;
     ArrayList<String> bannedTags;
+    ArrayList<String> bannedTourns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +73,17 @@ public class HomeFilterActivity extends AppCompatActivity {
         btnUnbanTag = findViewById(R.id.btnUnban);
         edBan = findViewById(R.id.edBan);
         edUnban = findViewById(R.id.edUnban);
+        btnBanTourn = findViewById(R.id.btnBanTourn);
+        btnUnbanTourn = findViewById(R.id.btnUnbanTourn);
+        edTourn = findViewById(R.id.edTourn);
+        tvBannedTourns = findViewById(R.id.tvBannedTourns);
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         edit = pref.edit();
 
         setFilteredTypes();
         setHiddenCategories();
+        setBannedTourns();
         setBannedTags();
         
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +105,7 @@ public class HomeFilterActivity extends AppCompatActivity {
                 edit.putInt("rating", Integer.parseInt(edRating.getText().toString()));
                 edit.putString("hidcat", String.join(",", hiddenCategories));
                 edit.putString("bantag", String.join(",", bannedTags));
+                edit.putString("bantor", String.join(",", bannedTourns));
                 edit.commit();
                 Toast.makeText(HomeFilterActivity.this, "Preferences saved", Toast.LENGTH_SHORT).show();
             }
@@ -156,6 +167,31 @@ public class HomeFilterActivity extends AppCompatActivity {
                 tvHiddenCat.setText(String.format("Hidden categories: %s", String.join(",", hiddenCategories)));
             }
         });
+
+        btnBanTourn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                String tourn = edTourn.getText().toString();
+                if(!bannedTourns.contains(tourn))
+                {
+                    bannedTourns.add(tourn);
+                    tvBannedTourns.setText(String.format("Banned tournaments: %s", String.join(",", bannedTourns)));
+                }
+            }
+        });
+
+        btnUnbanTourn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onClick(View v) {
+                String tourn = edTourn.getText().toString();
+                if(!bannedTourns.contains(tourn))
+                    return;
+                bannedTourns.remove(tourn);
+                tvBannedTourns.setText(String.format("Banned tournaments: %s", String.join(",", bannedTourns)));
+            }
+        });
     }
 
     protected void setHiddenCategories()
@@ -167,6 +203,15 @@ public class HomeFilterActivity extends AppCompatActivity {
         tvHiddenCat = findViewById(R.id.tvCat);
 
         tvHiddenCat.setText(String.format("Hidden categories: %s", hidcat));
+    }
+    protected void setBannedTourns()
+    {
+        String bantor = pref.getString("bantor", "");
+        bannedTourns = new ArrayList<>();
+        if(!bantor.equals(""))
+            Collections.addAll(bannedTourns, bantor.split(","));
+
+        tvBannedTourns.setText(String.format("Banned tournaments: %s", bantor));
     }
 
     protected void setBannedTags()

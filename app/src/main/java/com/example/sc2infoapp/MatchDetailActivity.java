@@ -255,8 +255,9 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (t1.getParseFile("picture"));
-                file.getFile();
+
                 if (t1 != null && file != null) {
+                    file.getFile();
                     Log.i(TAG, "loaded");
                     //Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentLeft);
                 } else {
@@ -269,8 +270,9 @@ public class MatchDetailActivity extends AppCompatActivity {
 
             try {
                 ParseFile file = (t2.getParseFile("picture"));
-                file.getFile();
+
                 if (t2 != null  && file != null) {
+                    file.getFile();
                     Log.i(TAG, "loaded");
                     //Glide.with(this).load(file.getFile()).transform(new CircleCrop()).into(ivOpponentRight);
                 } else {

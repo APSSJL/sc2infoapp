@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ParseClassName("userTournament")
-public class UserTournament extends ParseObject {
+public class UserTournament extends Tournament {
     public static final String KEY_AUTHOR = "organizer";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_ISTEAM = "isTeam";

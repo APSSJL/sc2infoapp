@@ -1,13 +1,19 @@
 package fragments;
 
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,10 +23,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sc2infoapp.AligulacClient;
+import com.example.sc2infoapp.HomeFilterActivity;
 import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.R;
 import com.example.sc2infoapp.TeamActivity;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +40,9 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import adapters.MatchFeedAdapter;
@@ -39,14 +51,21 @@ import adapters.UserFeedAdapter;
 import interfaces.IMatch;
 import models.ExternalMatch;
 import models.Match;
+import models.Notification;
 import models.TaskRunner;
 import models.Team;
+import models.TeamMatch;
+import models.Tournament;
+import models.TournamentMatches;
+import models.UserTournament;
 
 public class MatchFeedFragment extends Fragment {
     public static final String TAG = "MATCH_FEED_FRAG";
     MatchFeedAdapter adapter;
     RecyclerView rvMatchFeed;
-    List<ExternalMatch> externalMatches;
+    ArrayList<TournamentMatches> tmatches;
+    Button btnFilter;
+    SharedPreferences pref ;
 
     @Nullable
     @Override
@@ -61,29 +80,104 @@ public class MatchFeedFragment extends Fragment {
         //find recycler view
         rvMatchFeed = view.findViewById(R.id.rvMatches);
         //Initialize matches and adapter
-        externalMatches = new ArrayList<>();
-        adapter = new MatchFeedAdapter(getContext(), externalMatches);
+        tmatches = new ArrayList<>();
+        btnFilter = view.findViewById(R.id.btnFilter);
+        adapter = new MatchFeedAdapter(getContext(), tmatches);
+        pref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         //Recycler view setup
         rvMatchFeed.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMatchFeed.setAdapter(adapter);
 
-        getUpcomingMatches();
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), HomeFilterActivity.class);
+                startActivity(i);
+            }
+        });
+
         super.onViewCreated(view, savedInstanceState);
+        TaskRunner taskRunner = new TaskRunner();
+        taskRunner.executeAsync(new GetTournamentTask(), (data) -> {
+            tmatches.addAll(data);
+            adapter.notifyDataSetChanged();
+        });
+
+        getTournamentUpdate();
     }
 
-    private void getUpcomingMatches(){
-        Log.i("tester2", "in");
-//        JSONObject cur = null;
-        try {
-            LiquipediaParser parser = new LiquipediaParser();
-            externalMatches.addAll(parser.parseUpcomingMatches(Jsoup.parse(MainActivity.client.getMatches())));
-            adapter.notifyDataSetChanged();
-            Log.i("tester2", externalMatches.get(1).getTournament());
-            Log.i("tester3", MainActivity.aligulacClient.getTournamentId(externalMatches.get(1).getTournament()));
 
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
+    class GetTournamentTask implements Callable<ArrayList<TournamentMatches>> {
+
+        @SuppressLint("NewApi")
+        @Override
+        public ArrayList<TournamentMatches> call() throws IOException, JSONException {
+            // Some long running task
+            LiquipediaParser parser = new LiquipediaParser();
+            ArrayList<ExternalMatch> matches = parser.parseUpcomingMatches(Jsoup.parse(MainActivity.client.getMatches()));
+
+            HashMap<String, ArrayList<IMatch>> groupedMatches = new HashMap<>();
+            for(ExternalMatch m : matches)
+            {
+                if(!groupedMatches.containsKey(m.getTournament()))
+                {
+                    groupedMatches.put(m.getTournament(), new ArrayList<>());
+                }
+                groupedMatches.get(m.getTournament()).add(m);
+            }
+
+            ArrayList<TournamentMatches> res = new ArrayList<>();
+            for (Map.Entry<String, ArrayList<IMatch>> entry : groupedMatches.entrySet()) {
+                res.add(new TournamentMatches(entry.getKey(), entry.getValue()));
+            }
+            return res;
         }
     }
+
+    private void getTournamentUpdate() {
+        ParseQuery<UserTournament> query = ParseQuery.getQuery(UserTournament.class);
+        query.addDescendingOrder(Match.KEY_UPDATED_AT);
+
+        query.findInBackground(new FindCallback<UserTournament>() {
+            @Override
+            public void done(List<UserTournament> objects, ParseException e) {
+                for (UserTournament t : objects) {
+                    ParseQuery<Match> qmatches = ParseQuery.getQuery(Match.class);
+                    qmatches.whereContainedIn("objectId",t.getMatches());
+                    ParseQuery<TeamMatch> qtmatches = ParseQuery.getQuery(TeamMatch.class);
+                    qtmatches.whereContainedIn("objectId",t.getMatches());
+                    qmatches.whereGreaterThanOrEqualTo("rating", pref.getInt("rating", 0));
+                    qtmatches.whereGreaterThanOrEqualTo("rating", pref.getInt("rating", 0));
+
+                    qmatches.findInBackground(new FindCallback<Match>() {
+                        @Override
+                        public void done(List<Match> objects, ParseException e) {
+                            if(objects.size() == 0)
+                                return;
+                            TournamentMatches tuorn = new TournamentMatches(t.getString("name"), new ArrayList<>(objects));
+                            tuorn.setParseTournament(t);
+                            tuorn.setUserCreated(true);
+                            tmatches.add(tuorn);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                    qtmatches.findInBackground(new FindCallback<TeamMatch>() {
+                        @Override
+                        public void done(List<TeamMatch> objects, ParseException e) {
+                            if(objects.size() == 0)
+                                return;
+                            TournamentMatches tuorn = new TournamentMatches(t.getString("name"), new ArrayList<>(objects));
+                            tuorn.setParseTournament(t);
+                            tuorn.setUserCreated(true);
+                            tmatches.add(tuorn);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
 }
