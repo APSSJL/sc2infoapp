@@ -46,6 +46,27 @@ public class LiquipediaClient {
         return  getPageByName("Liquipedia:Upcoming_and_ongoing_matches");
     }
 
+    public String getUnparsed(String name) throws IOException, JSONException {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL).newBuilder();
+        urlBuilder.addQueryParameter("action", "query");
+        urlBuilder.addQueryParameter("format", "json");
+        urlBuilder.addQueryParameter("prop", "revisions");
+        urlBuilder.addQueryParameter("titles", name);
+        urlBuilder.addQueryParameter("formatversion", "2");
+        urlBuilder.addQueryParameter("rvprop", "content");
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+
+        String responseData = response.body().string();
+        JSONObject json = null;
+        json = new JSONObject(responseData);
+        String text = json.getJSONObject("query").getJSONArray("pages").getJSONObject(0).getJSONArray("revisions").getString(0);
+        Log.i("CLIENT", text.substring(0,500));
+        return text;
+    }
+
+
 
     public boolean checkIfPageExists(String title) throws JSONException, IOException
     {
