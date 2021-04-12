@@ -104,7 +104,7 @@ public class MatchFeedFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
 
-        getTournamentUpdate();
+        //getTournamentUpdate();
     }
 
 
