@@ -47,6 +47,13 @@ public class ExternalMatch implements IMatch, IFollowable {
         this.opponent = opponent;
         this.time = time;
     }
+    public ExternalMatch(String opponent, String time, String bo)
+    {
+        this.opponent = opponent;
+        this.bo = Integer.parseInt(bo);
+        this.time = time;
+        this.tournament = "";
+    }
 
     public ExternalMatch(String opponent, String time, int bo, String tournament)
     {

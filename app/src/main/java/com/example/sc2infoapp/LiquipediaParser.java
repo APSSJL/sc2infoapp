@@ -44,8 +44,8 @@ public class LiquipediaParser {
     public ArrayList<ExternalMatch> getTournamentMatches(String tournamentText)
     {
         Pattern groupMatches = Pattern.compile("\\{\\{Match maps.*?date=(.*?) \\{\\{.*?(finished=(true|))\\n?.*?player1=(.*?|)\\\\n.*?player2=(.*?|)\\\\n.*?(winner=(1|2|)).*?\\}\\}", Pattern.MULTILINE);
-        Pattern ro1 = Pattern.compile("R\\d\\d?D\\d\\d?=(.*?) .*?R\\d\\d?D\\d\\d?=(.*?) (.*?)date=(.*?) \\{",Pattern.MULTILINE);
-        Pattern ro = Pattern.compile("R\\d\\d?W\\d\\d?=(.*?) .*?R\\d\\d?W\\d\\d?=(.*?) (.*?)date=(.*?) \\{");
+        Pattern ro1 = Pattern.compile("R\\d\\d?D\\d\\d?=(.*?) .*?R\\d\\d?D\\d\\d?=(.*?) (.*?)date=(.*?) \\{.*?\\}\\}.*?\\}\\}",Pattern.MULTILINE);
+        Pattern ro = Pattern.compile("R\\d\\d?W\\d\\d?=(.*?) .*?R\\d\\d?W\\d\\d?=(.*?) (.*?)date=(.*?) \\{.*?\\}\\}.*?\\}\\}", Pattern.MULTILINE);
         ArrayList<ExternalMatch> res = new ArrayList<>();
         ArrayList<ExternalMatch> matches = new ArrayList<>();
         SimpleDateFormat dateParser = new SimpleDateFormat("MMMM dd, yyyy - HH:mm");
@@ -60,13 +60,22 @@ public class LiquipediaParser {
     }
 
     private void getGroup(ArrayList<ExternalMatch> matches, Matcher matcher, SimpleDateFormat dateParser) {
+        Pattern map = Pattern.compile("map", Pattern.MULTILINE);
         while (matcher.find()) {
+            String t = matcher.group(0);
+            Matcher mapMatcher = map.matcher(t);
             try {
+                String bo = "-1";
+                Pattern p = Pattern.compile(".*map(\\d)");
+                Matcher m = p.matcher(t);
+                if(m.find()) {
+                    bo = (m.group(1));
+                }
                 String date = "";
                 String givenDate = matcher.group(1);
                 if(givenDate != null && dateParser.parse(givenDate) != null)
                     date = ExternalMatch.DATE_FORMATTER.format(dateParser.parse(givenDate));
-                matches.add(new ExternalMatch(matcher.group(4) + " vs " + matcher.group(5), date));
+                matches.add(new ExternalMatch(matcher.group(4) + " vs " + matcher.group(5), date, bo));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -78,12 +87,19 @@ public class LiquipediaParser {
     {
         while (matcher.find())
         {
+            String t = matcher.group(0);
             try {
+                String bo = "-1";
+                Pattern p = Pattern.compile(".*map(\\d)");
+                Matcher m = p.matcher(t);
+                if(m.find()) {
+                    bo = (m.group(1));
+                }
                 String date = "";
                 String givenDate = matcher.group(4);
                 if(givenDate != null && dateParser.parse(givenDate) != null)
                     date = ExternalMatch.DATE_FORMATTER.format(dateParser.parse(givenDate));
-                matches.add(new ExternalMatch(matcher.group(1) + " vs " + matcher.group(2), date));
+                matches.add(new ExternalMatch(matcher.group(1) + " vs " + matcher.group(2), date, bo));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
