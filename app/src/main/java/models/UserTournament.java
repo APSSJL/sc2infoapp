@@ -14,8 +14,10 @@ import java.util.List;
 public class UserTournament extends ParseObject {
     public static final String KEY_AUTHOR = "organizer";
     public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_ISTEAM = "isTeam";
     public static final String KEY_MATCHES = "matches";
 
+    public boolean isTeam() {return getBoolean(KEY_ISTEAM);}
     public ParseUser getOrganizer(){return getParseUser(KEY_AUTHOR);}
     public String getDescription() {return getString(KEY_DESCRIPTION);}
     public ArrayList<String> getMatches()
@@ -25,7 +27,7 @@ public class UserTournament extends ParseObject {
         ArrayList<String> res = new ArrayList<>();
         if(x == null)
             return res;
-            for(int i = 0; i < x.length(); i++)
+        for(int i = 0; i < x.length(); i++)
         {
             try {
                 res.add(x.getString(i));

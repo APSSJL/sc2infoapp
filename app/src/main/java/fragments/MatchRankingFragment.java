@@ -1,10 +1,12 @@
 package fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -22,29 +24,40 @@ import android.widget.Toast;
 import com.example.sc2infoapp.AligulacClient;
 import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
+import com.example.sc2infoapp.MatchCommentActivity;
 import com.example.sc2infoapp.R;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import adapters.BaseCommentAdapter;
 import adapters.MatchesAdapter;
 import interfaces.IMatch;
 import interfaces.IPredictable;
 import interfaces.IRateable;
+import models.Comment;
 import models.ExternalMatch;
 import models.TaskRunner;
 
 public class MatchRankingFragment extends Fragment {
 
-    IMatch match;
+    BaseCommentAdapter adapter;
     double leftDistribution;
+    List<Comment> allComments;
+    IMatch match;
+    String opponentLeft;
+    String opponentRight;
 
     Button btnMatchMakePredict;
     Button btnMatchMakeComment;
@@ -54,8 +67,11 @@ public class MatchRankingFragment extends Fragment {
     RecyclerView rvMatchComment;
     TextView tvPredictionHead;
 
-    public MatchRankingFragment(IMatch match) {
+
+    public MatchRankingFragment(IMatch match, String opponentLeft, String opponentRight) {
         this.match = match;
+        this.opponentLeft = opponentLeft;
+        this.opponentRight = opponentRight;
     }
 
     @Override
@@ -70,16 +86,12 @@ public class MatchRankingFragment extends Fragment {
         rvMatchComment = view.findViewById(R.id.rvMatchComment);
         tvPredictionHead = view.findViewById(R.id.tvPredictionHead);
 
-        String opponentLeft = match.getOpponent().split("vs")[0];
-        String opponentRight = match.getOpponent().split("vs")[1];
-
         if (match.getMatchType() == IMatch.EXTERNAL) {
             rlMatchRanking.setVisibility(View.GONE);
             btnMatchMakePredict.setVisibility(View.GONE);
 
             TaskRunner taskRunner = new TaskRunner();
-            String[] s = match.getOpponent().split(" vs ");
-            taskRunner.executeAsync(new PredicitonTask(s[0], s[1], ((ExternalMatch)match).getBo()), (data) -> {
+            taskRunner.executeAsync(new PredicitonTask(opponentLeft, opponentRight, ((ExternalMatch)match).getBo()), (data) -> {
                 Log.i("PLAYER", data.toString());
                 try {
                     double prob = data.getDouble("proba");
@@ -89,7 +101,7 @@ public class MatchRankingFragment extends Fragment {
                         Toast.makeText(getContext(), data.getJSONObject("plb").getString("tag"), Toast.LENGTH_LONG).show();
                     }
                     leftDistribution = prob * 100;
-                    setProgressBar(opponentLeft, opponentRight);
+                    setProgressBar();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -106,25 +118,32 @@ public class MatchRankingFragment extends Fragment {
 
             Pair<Integer, Integer> distribution = ((IPredictable)match).getDistribution();
             leftDistribution = ((double)distribution.first / (distribution.first + distribution.second)) * 100;
-            setProgressBar(opponentLeft, opponentRight);
-
+            setProgressBar();
         }
-
-
 
         btnMatchMakeComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: send user to new comment screen
+                Intent i = new Intent(getContext(), MatchCommentActivity.class);
+                i.putExtra("opponent", match.getOpponent());
+                i.putExtra("time", match.getTime());
+                i.putExtra("type", match.getMatchType());
+                getActivity().startActivity(i);
             }
         });
 
-        //TODO: Set Recycler View adapter for rvMatchComment
+        allComments = new ArrayList<>();
+        adapter = new BaseCommentAdapter(getContext(), allComments);
+
+        rvMatchComment.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvMatchComment.setAdapter(adapter);
+
+        queryComments();
 
         return view;
     }
 
-    private void setProgressBar(String opponentLeft, String opponentRight) {
+    private void setProgressBar() {
         pbMatchPrediction.setProgress((int) Math.round(leftDistribution));
         if (leftDistribution > 50) {
             tvPredictionHead.setText(opponentLeft + " is predicted as winner!");
@@ -147,6 +166,7 @@ public class MatchRankingFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ((IRateable)match).setRate((float)ratingBar.getRating());
+                        Toast.makeText(getContext(), "Successfully rated match!", Toast.LENGTH_SHORT);
                         dialogInterface.dismiss();
                     }
                 });
@@ -161,6 +181,24 @@ public class MatchRankingFragment extends Fragment {
         popDialog.create();
         popDialog.show();
     }
+
+    protected void queryComments() {
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+        query.include("author");
+        query.setLimit(5);
+        query.whereEqualTo(Comment.KEY_COMMENT_TO, String.format("%s, %s, %d", match.getOpponent(), match.getTime(), match.getMatchType()));
+        query.addDescendingOrder("createdAt");
+
+        try {
+            allComments.addAll(query.find());
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
     public class PredicitonTask implements Callable<JSONObject> {
         private final String input1;
         private final String input2;

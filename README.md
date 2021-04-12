@@ -31,10 +31,10 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 - [x] User can create an account and login
 - [x] User can use bottom navigation view to switch between fragments
     - [x] Home feed fragment
-        - [ ] Homefeed showing recent activity based on user follows
+        - [x] Homefeed showing recent activity based on user follows
     - [x] Profile fragment
-    - [ ] Match feed fragment
-        - [ ] Shows all recent tournaments and matches  
+    - [x] Match feed fragment
+        - [x] Shows all recent tournaments and matches  
 - [x] User can change account preferences
     - [x] User can add user info
     - [x] User can edit username
@@ -51,8 +51,8 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
 - [x] User can create post
     - [ ] By tapping on the post, user can go to the detailed post view
     - [ ] User can rate post in detailed view
-    - [ ] User can view comments in the detailed view
-    - [ ] User can leave comments 
+    - [x] User can view comments in the detailed view
+    - [x] User can leave comments 
  - [x] Users can view match detailed page
     - [x] Users can leave predictions
     - [x] Users can get predictions from aligulac
@@ -65,26 +65,26 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
         - [x] Can view user profile by tapping on the username in requests recycler view
 - [x] User can view player's detailed page
 - [ ] User can rate and leave comments:
-    - [ ] Players
-    - [ ] Matches
+    - [x] Players
+    - [x] Matches
     - [ ] Tournaments
-    - [ ] Teams
+    - [x] Teams
     - [ ] Posts
 - [ ] User can follow:
-    - [ ] Players
-    - [ ] Other users
+    - [x] Players
+    - [x] Other users
     - [ ] Tournaments
-    - [ ] Teams 
+    - [x] Teams 
     - [x] Match
 - [ ] User can view tournament detailed screen
     - [ ] User can create and edit new tournaments
-- [ ] User can search and filter posts, players, teams and tournaments
-    - [ ] by keywords
-    - [ ] by categories
-    - [ ] by tags
-    - [ ] by rating
-    - [ ] by ishiring (for teams)
-    - [ ] by type
+- [x] User can search and filter posts, players, teams and tournaments
+    - [x] by keywords
+    - [x] by categories
+    - [x] by tags
+    - [x] by rating
+    - [x] by ishiring (for teams)
+    - [x] by type
 
 **Optional Nice-to-have Stories**
 - [ ]  User can get latest player updates from twitter
@@ -218,6 +218,7 @@ Model: UserTournament
 | matches       | Array    | matches in the tournament |
 | logo          | file     | Tournament logo |
 | description   | String   | tournament rules and description |
+| isTeam        | Boolean  | True if the tournament is made up with team matches |
 
 Model: Comment
 | Property      | Type     | Description |
@@ -253,6 +254,8 @@ Model: PlayerMatch [this entity for internal/user tournaments only, for other to
 | details       | String   | match rules and desciption
 | time          | DateTime | planned match time
 | winner        | Pointer to user | who won this match
+| P1Score       | Number   | Score that Player1 get |
+| P2Score       | Number   | Score that Player2 get |
 | ratingSum     | Number   | average match rating |
 | ratingVotes   | Number   | votes for rating |
 | rating        | Number   | rating[need for queries] |
@@ -275,6 +278,8 @@ Model: TeamMatch [this entity for internal/user tournaments only, for other tour
 | details       | String   | match rules and desciption |
 | time          | DateTime | planned match time |
 | winner        | String | who won this match |
+| P1Score       | Number   | Score that Player1 get |
+| P2Score       | Number   | Score that Player2 get |
 | t1PredictionVotes | Number | predictions for the team 1 |
 | t2PredictionVotes | Number | predictions for the team 2 |
 | predicted     | Array    | Shows if user added prediciton for this match|
@@ -848,3 +853,11 @@ Aligulac API
 | ```GET```      | /match   | gets match object |
 
 <img src='https://github.com/APSSJL/sc2infoapp/blob/main/gif_1.gif' width='200'  />
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/gif_team.gif' width='200'  />
+User can view and manage team
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/matches.gif' width='200'  />
+User can view matches
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/player_act.gif' width='200'  />
+Players info uploaded from external api
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/team_ext.gif' width='200'  />
+Team also could be uploaded from external api

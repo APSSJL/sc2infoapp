@@ -95,6 +95,19 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnMatchFollow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/transparent"
+            android:text="Follow"
+            android:textAllCaps="false"
+            android:textColor="@color/blue" />
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tlMatchTab"
             android:layout_width="match_parent"
@@ -126,6 +139,8 @@
             android:layout_below="@+id/ivOpponentRight"
             android:layout_alignParentStart="true"
             android:layout_margin="15dp"
-            android:layout_marginTop="15dp"></FrameLayout>
+            android:layout_marginTop="15dp">
+
+        </FrameLayout>
     </RelativeLayout>
 </ScrollView>

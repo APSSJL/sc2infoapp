@@ -39,7 +39,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etUserInfo"
-        android:layout_marginTop="10dp"
         android:text="update" />
 
     <Button
@@ -47,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnProfileUpdate"
-        android:layout_marginTop="10dp"
         android:text="@android:string/cancel" />
 
     <Button
@@ -55,7 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfileImage"
-        android:layout_marginTop="10dp"
         android:text="Upload Image" />
 
     <Spinner

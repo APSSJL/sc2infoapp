@@ -41,18 +41,18 @@ import models.TaskRunner;
 public class PlayerActivity extends AppCompatActivity {
 
     private static final String TAG = "PLAYER ACTIVITY";
+    Button btnFollow;
+    Button btnComment;
+    ImageView ivPicture;
+    TextView tvBio;
+    RatingBar ratingBar;
+    RecyclerView rvMatches;
     TextView tvName;
     TextView tvRace;
     TextView tvRating;
-    ImageView ivPicture;
-    TextView tvBio;
-    RecyclerView rvMatches;
-    RatingBar ratingBar;
-    Button btnFollow;
-    Button btnComment;
-    MatchesAdapter adapter;
-    ArrayList<IMatch> opponents;
 
+    ArrayList<IMatch> opponents;
+    MatchesAdapter adapter;
     String playerName;
     Player player;
 
@@ -75,7 +75,6 @@ public class PlayerActivity extends AppCompatActivity {
         btnComment = findViewById(R.id.btnComment);
 
         opponents = new ArrayList<>();
-
         adapter = new MatchesAdapter(opponents, this);
 
         rvMatches.setAdapter(adapter);
