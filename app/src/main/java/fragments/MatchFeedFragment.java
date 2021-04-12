@@ -155,7 +155,10 @@ public class MatchFeedFragment extends Fragment {
                         public void done(List<Match> objects, ParseException e) {
                             if(objects.size() == 0)
                                 return;
-                            tmatches.add(new TournamentMatches(t.getString("name"), new ArrayList<>(objects)));
+                            TournamentMatches tuorn = new TournamentMatches(t.getString("name"), new ArrayList<>(objects));
+                            tuorn.setParseTournament(t);
+                            tuorn.setUserCreated(true);
+                            tmatches.add(tuorn);
                             adapter.notifyDataSetChanged();
                         }
                     });

@@ -78,7 +78,7 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.View
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent((Activity)context, TournamentInfoActivity.class);
-                    i.putExtra("userCreated", tournamentMatches.isUserCreated());
+                    i.putExtra("userCreated", Parcels.wrap(tournamentMatches.isUserCreated()));
                     if(tournamentMatches.isUserCreated())
                     {
                         i.putExtra("tournament", Parcels.wrap(tournamentMatches.getParseTournament()));
