@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sc2InfoApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PlayerCommentActivity"></activity>
+        <activity android:name=".HomeFilterActivity"></activity>
+        <activity android:name=".PlayerCommentActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".MatchDetailActivity" />
         <activity android:name=".UpdateProfileActivity" />

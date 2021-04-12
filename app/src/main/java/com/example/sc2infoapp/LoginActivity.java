@@ -16,7 +16,9 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import fragments.HomeFeedFragment;
 import models.Player;
+import models.Team;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -74,7 +76,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, TeamActivity.class);
+        i.putExtra("teamName", "Test Team");
         //i.putExtra("playerName", "Vanya");
         startActivity(i);
         finish();
