@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.media.Rating;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -51,6 +53,7 @@ public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SEARCH ACTIVITY";
     ChipGroup cg;
     Chip all;
+    Chip chipTags;
     EditText edSearch;
     CheckBox isHiring;
     ImageView ivProfilePicture;
@@ -58,6 +61,9 @@ public class SearchActivity extends AppCompatActivity {
     RecyclerView rvResults;
     ArrayList<IPublished> searchResults;
     UserFeedAdapter adapter;
+    Spinner spCategories;
+    EditText edRating;
+    Integer rating = 0;
 
 
     @Override
@@ -69,6 +75,10 @@ public class SearchActivity extends AppCompatActivity {
         ivProfilePicture = findViewById(R.id.ivProfileImage);
         btnSearch = findViewById(R.id.btnSearch);
         rvResults = findViewById(R.id.rvResults);
+        spCategories = findViewById(R.id.spCategories);
+        edRating = findViewById(R.id.edRating);
+        edRating.setText("0");
+
 
         if(getIntent().getBooleanExtra("teamSearch", false))
         {
@@ -95,6 +105,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+
         try {
             ParseFile p = (ParseUser.getCurrentUser().getParseFile("pic"));
             if (p != null) {
@@ -119,8 +130,11 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchResults.clear();
+                rating = Integer.parseInt(edRating.getText().toString());
                 adapter.notifyDataSetChanged();
                 List<Integer> x = cg.getCheckedChipIds();
+                if(x.contains(R.id.chipTags))
+                    SearchPosts(true);
                 if(x.size() == 0 || x.contains(R.id.chipPlayers))
                     SearchPlayers();
                 if(x.size() == 0 || x.contains(R.id.chipMatches))
@@ -130,7 +144,7 @@ public class SearchActivity extends AppCompatActivity {
                 if(x.size() == 0 || x.contains(R.id.chipUsers))
                     SearchUsers();
                 if(x.size() == 0 || x.contains(R.id.chipPosts))
-                    SearchPosts();
+                    SearchPosts(false);
                 if(x.size() == 0 || x.contains(R.id.chipTournaments))
                     SearchTournaments();
 
@@ -162,6 +176,7 @@ public class SearchActivity extends AppCompatActivity {
         queryPlayer.setLimit(5);
         queryPlayer.whereContains("details", edSearch.getText().toString());
         queryPlayer.addDescendingOrder("createdAt");
+        queryPlayer.whereGreaterThanOrEqualTo("rating", rating);
         queryPlayer.findInBackground(new FindCallback<Match>() {
             @Override
             public void done(List<Match> objects, ParseException e) {
@@ -172,6 +187,7 @@ public class SearchActivity extends AppCompatActivity {
 
         ParseQuery<TeamMatch> queryTeam = ParseQuery.getQuery(TeamMatch.class);
         queryTeam.setLimit(5);
+        queryPlayer.whereGreaterThanOrEqualTo("rating", rating);
         queryTeam.whereContains("details", edSearch.getText().toString());
         queryTeam.addDescendingOrder("createdAt");
         queryTeam.findInBackground(new FindCallback<TeamMatch>() {
@@ -189,6 +205,7 @@ public class SearchActivity extends AppCompatActivity {
         if(isHiring.isChecked())
             query.whereEqualTo("isHiring", true);
         query.whereContains("teamName", edSearch.getText().toString());
+        query.whereGreaterThanOrEqualTo("rating", rating);
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Team>() {
             @Override
@@ -227,6 +244,7 @@ public class SearchActivity extends AppCompatActivity {
     public void SearchTournaments() {
         ParseQuery<Tournament> query = ParseQuery.getQuery(Tournament.class);
         query.setLimit(5);
+        query.whereGreaterThanOrEqualTo("rating", rating);
         query.include("userCreated");
         query.include("userCreated.organizer");
         query.whereContains("name", edSearch.getText().toString());
@@ -243,6 +261,7 @@ public class SearchActivity extends AppCompatActivity {
     public void SearchPlayers() {
         ParseQuery<Player> query = ParseQuery.getQuery(Player.class);
         query.setLimit(5);
+        query.whereGreaterThanOrEqualTo("rating", rating);
         query.whereContains("name", edSearch.getText().toString());
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Player>() {
@@ -255,11 +274,23 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    public void SearchPosts() {
+    public void SearchPosts(boolean tags) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.setLimit(5);
-        query.whereContains(Post.KEY_TITLE, edSearch.getText().toString());
+        query.whereGreaterThanOrEqualTo("rating", rating);
+        if(!spCategories.getSelectedItem().toString().equals("All"))
+        {
+            query.whereEqualTo(Post.KEY_CATEGORY, spCategories.getSelectedItem().toString());
+        }
+        if(!tags)
+        {
+            query.whereContains(Post.KEY_TITLE, edSearch.getText().toString());
+        }
+        else
+        {
+            query.whereContains(Post.KEY_TAGS, edSearch.getText().toString());
+        }
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
             @Override

@@ -23,6 +23,7 @@
         <activity android:name=".EditTournamentActivity" />
         <activity android:name=".TournamentInfoActivity" />
         <activity android:name=".MatchCommentActivity" />
+        <activity android:name=".HomeFilterActivity"></activity>
         <activity android:name=".PlayerCommentActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".MatchDetailActivity" />

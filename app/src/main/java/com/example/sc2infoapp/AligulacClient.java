@@ -43,6 +43,23 @@ public class AligulacClient {
         return player;
     }
 
+    public JSONObject getPlayer(String name, String country) throws IOException, JSONException {
+        String apiUrl = getApiUrl("/player/?");
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
+        urlBuilder.addQueryParameter("tag", name);
+        urlBuilder.addQueryParameter("country", country);
+        urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+        String responseData = response.body().string();
+        JSONObject json = null;
+        json = new JSONObject(responseData);
+        JSONObject player = json.getJSONArray("objects").getJSONObject(0);
+        Log.i(TAG, player.toString());
+        return player;
+    }
+
     public JSONArray getTopRating() throws IOException, JSONException {
         String apiUrl = getApiUrl("/rating/?");
         HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();

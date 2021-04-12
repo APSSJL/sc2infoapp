@@ -39,6 +39,7 @@ public class BaseCommentActivity extends AppCompatActivity {
     EditText etComment;
     String sourceId;
     Button btnPostComment;
+    int layoutId = R.layout.activity_base_comments;
 
     List<Comment> allComments;
     BaseCommentAdapter adapter;
@@ -49,7 +50,7 @@ public class BaseCommentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_base_comments);
+        setContentView(layoutId);
 
         user = getCurrentUser();
 
@@ -57,6 +58,7 @@ public class BaseCommentActivity extends AppCompatActivity {
         rvComments = findViewById(R.id.rvComments);
         etComment = findViewById(R.id.etComment);
         btnPostComment = findViewById(R.id.btnPostComment);
+        sourceId = getIntent().getStringExtra("id");
 
         //tvCommentType.setText(getIntent().getStringExtra("CommentType"));
 
@@ -112,7 +114,7 @@ public class BaseCommentActivity extends AppCompatActivity {
         query.include("author");
         query.setLimit(5);
         query.addDescendingOrder("createdAt");
-
+        query.whereEqualTo(Comment.KEY_COMMENT_TO, sourceId);
 
         try {
             allComments.addAll(query.find());
@@ -121,7 +123,7 @@ public class BaseCommentActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.i(TAG, allComments.get(1).getContent());
+        //Log.i(TAG, allComments.get(1).getContent());
         adapter.notifyDataSetChanged();
     }
 
