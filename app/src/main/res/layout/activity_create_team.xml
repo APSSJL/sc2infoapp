@@ -64,7 +64,8 @@
         android:layout_alignParentBottom="true"
         android:background="@color/themeColor"
         android:text="Create team!"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
 
     <View
         android:id="@+id/dvCreateTeamLabel"

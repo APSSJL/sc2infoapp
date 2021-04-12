@@ -35,7 +35,7 @@
         android:id="@+id/tvPlayerRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divider2"
+        android:layout_below="@+id/dvPlayerNameLabel"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
@@ -54,7 +54,7 @@
         android:id="@+id/tvPlayerBio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divider3"
+        android:layout_below="@+id/dvPlayerInfoLabel"
         android:layout_marginTop="5dp"
         android:text="text\n\n\n\nMore text"
         android:textColor="@color/black" />
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tvMatches"
-        android:layout_below="@+id/divider4"
+        android:layout_below="@+id/dvPlayerRecentMatchesLabel"
         android:layout_marginTop="5dp" />
 
     <RatingBar
@@ -109,21 +109,21 @@
         android:textColor="@color/white" />
 
     <View
-        android:id="@+id/divider2"
+        android:id="@+id/dvPlayerNameLabel"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/tvPlayerName"
         android:background="?android:attr/listDivider" />
 
     <View
-        android:id="@+id/divider3"
+        android:id="@+id/dvPlayerInfoLabel"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/tvPlayerInfoLabel"
         android:background="?android:attr/listDivider" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvPlayerInfoLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivPlayerPhoto"
@@ -134,14 +134,14 @@
         android:textStyle="bold" />
 
     <View
-        android:id="@+id/divider4"
+        android:id="@+id/dvPlayerRecentMatchesLabel"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/tvPlayerRecentMatchesLabel"
         android:background="?android:attr/listDivider" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvPlayerRecentMatchesLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvPlayerBio"

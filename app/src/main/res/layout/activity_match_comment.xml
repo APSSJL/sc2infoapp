@@ -14,7 +14,7 @@
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"
-        tools:text="Category" />
+        tools:text="Match Comment" />
 
     <RelativeLayout
         android:id="@+id/rlCommentsSection"
