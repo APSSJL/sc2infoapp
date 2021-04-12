@@ -79,6 +79,16 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
     }
 
     @Override
+    public int getResult1() {
+        return getInt("P1Score");
+    }
+
+    @Override
+    public int getResult2() {
+        return getInt("P2Score");
+    }
+
+    @Override
     public void setRate(double rate) {
         increment("ratingSum", rate);
         increment("ratingVotes", 1);

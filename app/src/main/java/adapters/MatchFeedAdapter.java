@@ -59,17 +59,19 @@ public class MatchFeedAdapter extends RecyclerView.Adapter<MatchFeedAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvVersus;
         TextView tvTime;
+        RelativeLayout rvMatchItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvVersus = itemView.findViewById(R.id.tvVersus);
             tvTime = itemView.findViewById(R.id.tvTime);
+            rvMatchItem = itemView.findViewById(R.id.rvMatchItem);
         }
 
         public void bind(ExternalMatch match) {
             tvVersus.setText(match.getOpponent());
             tvTime.setText(match.getTime());
-            tvVersus.setOnClickListener(new View.OnClickListener() {
+            rvMatchItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent((Activity)context, MatchDetailActivity.class);

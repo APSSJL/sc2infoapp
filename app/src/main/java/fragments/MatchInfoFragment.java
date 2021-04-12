@@ -4,19 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.sc2infoapp.MainActivity;
-import com.example.sc2infoapp.ParseApplication;
 import com.example.sc2infoapp.R;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -24,9 +19,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.IFollowable;
 import interfaces.IMatch;
-import interfaces.NotificationDao;
 import models.Match;
 import models.Team;
 import models.TeamMatch;
@@ -36,11 +29,12 @@ public class MatchInfoFragment extends Fragment {
     public static final String TAG = "MatchInfoFragment";
 
     IMatch match;
+    String opponentLeft;
+    String opponentRight;
     Team left;
     Team right;
 
     Button btnComment;
-    Button btnFollow;
     TextView tvMatchDetailList;
     TextView tvTeamLeft;
     TextView tvTeamRight;
@@ -48,16 +42,17 @@ public class MatchInfoFragment extends Fragment {
     TextView tvLineupRight;
     RelativeLayout rlLineup;
 
-    public MatchInfoFragment(IMatch match) {
+    public MatchInfoFragment(IMatch match, String opponentLeft, String opponentRight) {
         this.match = match;
+        this.opponentLeft = opponentLeft;
+        this.opponentRight = opponentRight;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_match_info, container, false);
 
-        btnComment = view.findViewById(R.id.btnMatchComment);
-        btnFollow = view.findViewById(R.id.btnMatchFollow);
+        btnComment = view.findViewById(R.id.btnTornFollow);
         tvMatchDetailList = view.findViewById(R.id.tvMatchDetailList);
         tvTeamLeft = view.findViewById(R.id.tvLineupLeft);
         tvTeamRight = view.findViewById(R.id.tvLineupRight);
@@ -65,9 +60,9 @@ public class MatchInfoFragment extends Fragment {
         tvLineupRight = view.findViewById(R.id.tvLineupListRight);
         rlLineup =  view.findViewById(R.id.rlLineup);
 
-        if (match.getMatchType() == 2) {
-            left = findTeam(match.getOpponent().split(" vs ")[0]);
-            right = findTeam(match.getOpponent().split(" vs ")[1]);
+        if (match.getMatchType() == IMatch.TEAM) {
+            left = findTeam(opponentLeft);
+            right = findTeam(opponentRight);
 
             tvTeamLeft.setText(left.getTeamName());
             tvTeamRight.setText(right.getTeamName());
@@ -78,28 +73,6 @@ public class MatchInfoFragment extends Fragment {
         }
 
         tvMatchDetailList.setText(setMatchDetail());
-
-        btnComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Send user to comment detail activity
-            }
-        });
-
-        btnFollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (((IFollowable) match).setFollow()) {
-                    Log.i(TAG, "Follow successfully: " + match.getOpponent());
-                    Toast.makeText(getActivity(), String.format("Successfully followed: " + match.getOpponent()), Toast.LENGTH_SHORT);
-                } else {
-                    Log.i(TAG, "Already followed: " + match.getOpponent());
-                    Toast.makeText(getActivity(), String.format("Already followed: " + match.getOpponent()), Toast.LENGTH_SHORT);
-                }
-            }
-        });
-
         return view;
     }
 

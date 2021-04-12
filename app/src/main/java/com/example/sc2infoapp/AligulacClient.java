@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -30,6 +31,7 @@ public class AligulacClient {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
         urlBuilder.addQueryParameter("tag", name);
         urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
+        urlBuilder.addQueryParameter("order_by", "-current_rating__rating");
         String url = urlBuilder.build().toString();
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
@@ -105,6 +107,66 @@ public class AligulacClient {
         json = new JSONObject(responseData);
         Log.i(TAG,json.toString());
         return json;
+
+    }
+
+    public String getTournamentId(String tournament) throws IOException, JSONException{
+        String apiUrl = getApiUrl("/match/?");
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
+        urlBuilder.addQueryParameter("fullname", tournament);
+        urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
+
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+        String responseData = response.body().string();
+        Log.i(TAG,responseData);
+        JSONObject json = null;
+        json = new JSONObject(responseData);
+        Log.i(TAG,json.toString());
+        return String.valueOf(json.getInt("id"));
+
+    }
+
+    public JSONArray getMatchesHistory(int player1Id, int player2Id) throws IOException, JSONException{
+        String ids = String.format("%d,%d", player1Id, player2Id);
+
+        String apiUrl = getApiUrl("/match/?");
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
+        urlBuilder.addQueryParameter("pla__in", ids);
+        urlBuilder.addQueryParameter("plb__in", ids);
+        urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
+
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+        String responseData = response.body().string();
+        Log.i(TAG,responseData);
+        JSONObject json = null;
+        json = new JSONObject(responseData);
+        JSONArray H2H = json.getJSONArray("objects");
+        Log.i(TAG,json.toString());
+        return H2H;
+
+    }
+
+    public JSONArray getTournamentResults(String id) throws IOException, JSONException{
+
+        String apiUrl = getApiUrl("/match/?");
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
+        urlBuilder.addQueryParameter("eventobj__uplink__parent",  id);
+        urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
+
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+        String responseData = response.body().string();
+        Log.i(TAG,responseData);
+        JSONObject json = null;
+        json = new JSONObject(responseData);
+        JSONArray H2H = json.getJSONArray("objects");
+        Log.i(TAG,json.toString());
+        return H2H;
 
     }
 

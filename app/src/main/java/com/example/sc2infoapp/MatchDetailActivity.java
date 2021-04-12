@@ -5,12 +5,10 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,44 +22,45 @@ import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.parceler.Parcels;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import fragments.MatchH2HFragment;
 import fragments.MatchInfoFragment;
 import fragments.MatchRankingFragment;
+import interfaces.IFollowable;
 import interfaces.IMatch;
-import models.ExternalMatch;
-import models.Match;
 import models.Player;
 import models.TaskRunner;
 import models.Team;
-import models.TeamMatch;
 
 public class MatchDetailActivity extends AppCompatActivity {
 
     public static final String TAG = "MatchDetailActivity";
     public static final String IMAGE_BASE_URL = "https://liquipedia.net";
 
+    Button btnFollow;
     ImageView ivProfileImage;
     ImageView ivOpponentLeft;
     ImageView ivOpponentRight;
     TextView tvOpponentLeft;
     TextView tvOpponentRight;
     TabLayout tlMatchTab;
+    List<String> country;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_detail);
 
+        btnFollow = findViewById(R.id.btnMatchFollow);
         ivProfileImage = findViewById(R.id.ivProfileSmall);
         ivOpponentLeft = findViewById(R.id.ivOpponentLeft);
         ivOpponentRight = findViewById(R.id.ivOpponentRight);
@@ -83,10 +82,11 @@ public class MatchDetailActivity extends AppCompatActivity {
         }
 
         IMatch match = Parcels.unwrap(getIntent().getParcelableExtra("match"));
-        //TODO: Match should be passed as an extra from previous screen
 
         String opponentLeft = match.getOpponent().split(" vs ")[0];
         String opponentRight = match.getOpponent().split(" vs ")[1];
+        country = new ArrayList<>();
+
         tvOpponentLeft.setText(opponentLeft);
         tvOpponentRight.setText(opponentRight);
 
@@ -117,24 +117,39 @@ public class MatchDetailActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.flMatchFragment, new MatchInfoFragment(match)).commit();
+        btnFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((IFollowable) match).setFollow()) {
+                    Log.i(TAG, "Follow successfully: " + match.getOpponent());
+                    Toast.makeText(MatchDetailActivity.this, "Successfully followed: " + match.getOpponent(), Toast.LENGTH_SHORT);
+                } else {
+                    Log.i(TAG, "Already followed: " + match.getOpponent());
+                    Toast.makeText(MatchDetailActivity.this, "Already followed: " + match.getOpponent(), Toast.LENGTH_SHORT);
+                }
+            }
+        });
 
+        MatchInfoFragment matchInfoFragment = new MatchInfoFragment(match, opponentLeft, opponentRight);
+        MatchRankingFragment matchRankingFragment = new MatchRankingFragment(match, opponentLeft, opponentRight);
+        MatchH2HFragment matchH2HFragment = new MatchH2HFragment(match, opponentLeft, opponentRight);
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMatchFragment, matchInfoFragment).commit();
         tlMatchTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Fragment selected;
                 switch (tab.getPosition()) {
                     case 0:
-                        selected = new MatchInfoFragment(match);
+                        selected = matchInfoFragment;
                         break;
                     case 1:
-                        selected = new MatchRankingFragment(match);
+                            selected = matchRankingFragment;
                         break;
                     case 2:
-                        selected = new MatchH2HFragment();
+                        selected = matchH2HFragment;
                         break;
                     default:
-                        selected = new MatchInfoFragment(match);
+                        selected = matchInfoFragment;
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.flMatchFragment, selected).commit();
@@ -155,8 +170,10 @@ public class MatchDetailActivity extends AppCompatActivity {
         {
             try {
                 Thread.sleep(3000);
+                Document doc = Jsoup.parse(data.getString("text"));
                 LiquipediaParser parser = new LiquipediaParser();
                 String link = parser.getPhotoLink(data);
+                country.add(parser.getCountry(doc));
                 Glide.with(MatchDetailActivity.this).load(link).transform(new CircleCrop()).into(target);
                 Log.i(TAG, link);
             } catch (JSONException | InterruptedException e) {
