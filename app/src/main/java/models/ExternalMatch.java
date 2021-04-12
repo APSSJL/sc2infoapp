@@ -22,6 +22,7 @@ import static com.parse.ParseUser.getCurrentUser;
 
 @Parcel
 public class ExternalMatch implements IMatch, IFollowable {
+    private  boolean treated;
     private Integer bo;
     private int result1;
     private int result2;
@@ -64,9 +65,14 @@ public class ExternalMatch implements IMatch, IFollowable {
             this.opponent = String.format("%s vs %s", match.getJSONObject("pla").getString("tag"), match.getJSONObject("plb").getString("tag"));
             this.time = match.getString("date");
             this.tournament = match.getJSONObject("eventobj").getString("fullname");
+            this.treated = match.getBoolean("treated");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isTreated() {
+        return treated;
     }
 
     public String getTournament()
@@ -121,4 +127,5 @@ public class ExternalMatch implements IMatch, IFollowable {
     public int getResult2() {
         return result2;
     }
+
 }

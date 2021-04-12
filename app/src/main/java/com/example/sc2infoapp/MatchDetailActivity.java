@@ -122,10 +122,10 @@ public class MatchDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (((IFollowable) match).setFollow()) {
                     Log.i(TAG, "Follow successfully: " + match.getOpponent());
-                    Toast.makeText(MatchDetailActivity.this, String.format("Successfully followed: " + match.getOpponent()), Toast.LENGTH_SHORT);
+                    Toast.makeText(MatchDetailActivity.this, "Successfully followed: " + match.getOpponent(), Toast.LENGTH_SHORT);
                 } else {
                     Log.i(TAG, "Already followed: " + match.getOpponent());
-                    Toast.makeText(MatchDetailActivity.this, String.format("Already followed: " + match.getOpponent()), Toast.LENGTH_SHORT);
+                    Toast.makeText(MatchDetailActivity.this, "Already followed: " + match.getOpponent(), Toast.LENGTH_SHORT);
                 }
             }
         });

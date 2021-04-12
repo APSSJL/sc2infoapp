@@ -1,11 +1,14 @@
 package com.example.sc2infoapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,17 +24,30 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.jsoup.Jsoup;
 import org.parceler.Parcels;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+
+import adapters.TournamentMatchAdapter;
 import interfaces.IFollowable;
 import interfaces.IMatch;
 import interfaces.IRateable;
+import models.TaskRunner;
 import models.Tournament;
 
+
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class TournamentInfoActivity extends AppCompatActivity {
 
     public static final String TAG = "TournamentInfoActivity";
     Tournament tournament;
+    ArrayList<IMatch> playoffs;
+    TournamentMatchAdapter adapter;
 
     Button btnTornComment;
     Button btnTornEdit;
@@ -88,7 +104,7 @@ public class TournamentInfoActivity extends AppCompatActivity {
             }
         });
 
-        if(ParseUser.getCurrentUser() != tournament.getUserCreated().getOrganizer()) {
+        if (tournament.getUserCreated() == null || ParseUser.getCurrentUser() != tournament.getUserCreated().getOrganizer()) {
             btnTornEdit.setVisibility(View.GONE);
         } else {
             btnTornEdit.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +114,7 @@ public class TournamentInfoActivity extends AppCompatActivity {
                 }
             });
         }
+
 
         btnTornFollow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +144,34 @@ public class TournamentInfoActivity extends AppCompatActivity {
             }
         });
 
+        playoffs = new ArrayList<>();
+        adapter = new TournamentMatchAdapter(playoffs, this);
 
+        rvTornMatches.setAdapter(adapter);
+        rvTornMatches.setLayoutManager(new LinearLayoutManager(this));
+
+        if(tournament.getUserCreated() == null) {
+            getUpcomingMatches();
+            TaskRunner taskRunner = new TaskRunner();
+            taskRunner.executeAsync(new TournamentInfoActivity.matchTask(tournament.getName()), (data) -> {
+                Log.i("Tournament Matches:", data.toString());
+                try {
+                    playoffs.addAll(TournamentMatchAdapter.fromJSONArray(data));
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        } else {
+            if(tournament.getUserCreated().isTeam()) {
+                playoffs.addAll(TournamentMatchAdapter.fromParsePlayerMatch(tournament.getUserCreated().getMatches()));
+                adapter.notifyDataSetChanged();
+            } else {
+                playoffs.addAll(TournamentMatchAdapter.fromParsePlayerMatch(tournament.getUserCreated().getMatches()));
+                adapter.notifyDataSetChanged();
+            }
+        }
 
     }
 
@@ -157,5 +201,33 @@ public class TournamentInfoActivity extends AppCompatActivity {
 
         popDialog.create();
         popDialog.show();
+    }
+
+    private void getUpcomingMatches(){
+        Log.i(TAG, "Upcoming tournament matches received");
+        try {
+            LiquipediaParser parser = new LiquipediaParser();
+            playoffs.addAll(parser.parseUpcomingTournamentMatches(Jsoup.parse(MainActivity.client.getMatches()), tournament.getName()));
+            adapter.notifyDataSetChanged();
+
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class matchTask implements Callable<JSONArray> {
+        private final String input1;
+
+        public matchTask(String input1) {
+            this.input1 = input1;
+        }
+
+        @Override
+        public JSONArray call() throws IOException, JSONException {
+            // Some long running task
+            String id = MainActivity.aligulacClient.getTournamentId(input1);
+            Log.i(TAG, id);
+            return MainActivity.aligulacClient.getTournamentResults(id);
+        }
     }
 }

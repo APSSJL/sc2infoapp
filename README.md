@@ -218,6 +218,7 @@ Model: UserTournament
 | matches       | Array    | matches in the tournament |
 | logo          | file     | Tournament logo |
 | description   | String   | tournament rules and description |
+| isTeam        | Boolean  | True if the tournament is made up with team matches |
 
 Model: Comment
 | Property      | Type     | Description |
