@@ -45,6 +45,7 @@ import models.UserTournament;
 
 import com.example.sc2infoapp.SearchActivity;
 import com.example.sc2infoapp.TeamActivity;
+import com.example.sc2infoapp.TournamentInfoActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -322,7 +323,10 @@ public class HomeFeedFragment extends Fragment {
                     {
                         published.add(new Notification("Tournament you follow was updated", String.format("Tournament update: %s", t.get("name")), t.getUpdatedAt(), "", () ->
                         {
-                            //TODO: Navigate tournament details screen
+                            Intent i = new Intent(getContext(), TournamentInfoActivity.class);
+                            i.putExtra("userCreated ", true);
+                            i.putExtra("tournament", Parcels.wrap(t));
+                            startActivity(i);
                         }, R.drawable.noun_tournament));
                         adapter.notifyDataSetChanged();
                     });

@@ -210,6 +210,40 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@id/btnBan"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvBannedTourns"
+        android:text="Banned tournaments: "
+        android:layout_below="@id/btnUnban"
+        android:layout_marginStart="10dp"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBannedTourns"
+        android:hint="Tournament"
+        android:layout_toLeftOf="@+id/btnUnbanTourn"
+        android:layout_alignParentStart="true"
+        android:id="@+id/edTourn"
+        android:textSize="12sp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unban"
+        android:id="@+id/btnUnbanTourn"
+        android:layout_toLeftOf="@id/btnBanTourn"
+        android:layout_below="@id/tvBannedTourns"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ban"
+        android:id="@+id/btnBanTourn"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/tvBannedTourns"/>
+
+
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
