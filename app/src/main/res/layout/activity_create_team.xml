@@ -5,22 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreateTeamActivity">
+
     <EditText
+        android:id="@+id/edTeamName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Team name"
-        android:id="@+id/edTeamName"
-        android:inputType="text"
+        android:layout_below="@+id/dvCreateTeamLabel"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
         android:layout_toLeftOf="@+id/tvCharCount"
-        />
+        android:hint="Team name"
+        android:inputType="text" />
+
     <EditText
+        android:id="@+id/edTeamInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edTeamName"
-        android:id="@+id/edTeamInfo"
-        android:inputType="textMultiLine"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:hint="Team info"
-        />
+        android:inputType="textMultiLine"
+        android:lines="10" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,32 +35,59 @@
         android:layout_toLeftOf="@+id/checkboxIsHiring"
         android:layout_below="@+id/edTeamInfo"
         />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0/50"
         android:id="@+id/tvCharCount"
-        android:layout_alignParentEnd="true"
-        android:textSize="15sp"
-        android:layout_margin="10dp"
-        />
-    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/edTeamInfo"
         android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="0/50"
+        android:textSize="15sp" />
+
+    <CheckBox
         android:id="@+id/checkboxIsHiring"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/edTeamInfo"
-        android:checked="true"
-        />
+        android:layout_alignParentEnd="true"
+        android:buttonTint="@color/themeColor"
+        android:checked="true" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/primary_color"
-        android:id="@+id/btnCreate"
+        android:background="@color/themeColor"
         android:text="Create team!"
-        android:textAllCaps="false"
-        />
+        android:textAllCaps="false" />
+
+    <View
+        android:id="@+id/dvCreateTeamLabel"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tvCreateTeamLabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/tvCreateTeamLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="Create Team"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

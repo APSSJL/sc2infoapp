@@ -1,99 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="15dp"
     tools:context=".PlayerActivity">
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/tvPlayerName"
-        android:text="BlyOnFire"
-        android:layout_margin="10dp"
-        android:layout_alignParentStart="true"
-        />
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="BlyOnFire"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/tvPlayerRace"
-        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
         android:layout_toEndOf="@+id/tvPlayerName"
         android:text="Zerg"
-        />
+        android:textColor="@color/black" />
+
     <TextView
+        android:id="@+id/tvPlayerRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:id="@+id/tvPlayerRating"
-        android:text="#1"
-        android:layout_below="@+id/tvPlayerName"
+        android:layout_below="@+id/divider2"
         android:layout_alignParentStart="true"
-        />
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="#1"
+        android:textColor="@color/black" />
 
     <ImageView
+        android:id="@+id/ivPlayerPhoto"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/ivPlayerPhoto"
         android:layout_below="@+id/tvPlayerRating"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_centerHorizontal="true" />
+
     <TextView
+        android:id="@+id/tvPlayerBio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvPlayerBio"
-        android:layout_below="@+id/ivPlayerPhoto"
+        android:layout_below="@+id/divider3"
+        android:layout_marginTop="5dp"
         android:text="text\n\n\n\nMore text"
-        />
+        android:textColor="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMatches"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPlayerBio"
         android:layout_above="@+id/tvMatches"
-        android:id="@+id/rvMatches"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvMatches"
-        android:text="Matches"
-        android:layout_above="@+id/ratingBar"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/divider4"
+        android:layout_marginTop="5dp" />
 
     <RatingBar
         android:id="@+id/ratingBar"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnFollow"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
-        style="@style/Widget.AppCompat.RatingBar.Indicator"
         android:layout_marginEnd="20dp"
-        android:numStars="10"
         android:isIndicator="false"
-        />
+        android:numStars="10" />
+
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="190dp"
-        android:layout_margin="10dp"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
         android:id="@+id/btnFollow"
-        android:layout_alignParentBottom="true"
-        android:text="Follow"
-        />
-    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="180dp"
-        android:layout_margin="10dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/themeColor"
+        android:text="Follow"
         android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnComment"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/themeColor"
         android:text="Comment"
-        />
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvPlayerName"
+        android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textView"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivPlayerPhoto"
+        android:layout_marginTop="5dp"
+        android:text="Player Info"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textView2"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPlayerBio"
+        android:layout_marginTop="15dp"
+        android:text="Recent Matches"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

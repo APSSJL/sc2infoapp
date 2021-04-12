@@ -47,6 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnLogin"
-        android:text="Create an account."
+        android:text="Create an account"
         android:textAllCaps="false" />
 </RelativeLayout>
