@@ -80,6 +80,7 @@ public class MatchFeedFragment extends Fragment {
             externalMatches.addAll(parser.parseUpcomingMatches(Jsoup.parse(MainActivity.client.getMatches())));
             adapter.notifyDataSetChanged();
             Log.i("tester2", externalMatches.get(1).getTournament());
+            Log.i("tester3", MainActivity.aligulacClient.getTournamentId(externalMatches.get(1).getTournament()));
 
         } catch (JSONException | IOException e) {
             e.printStackTrace();

@@ -94,7 +94,7 @@ public class AligulacClient {
     }
 
     public String getTournamentId(String tournament) throws IOException, JSONException{
-        String apiUrl = getApiUrl("/match/?");
+        String apiUrl = getApiUrl("/event/?");
         HttpUrl.Builder urlBuilder = HttpUrl.parse(apiUrl).newBuilder();
         urlBuilder.addQueryParameter("fullname", tournament);
         urlBuilder.addQueryParameter("apikey", BuildConfig.ALIGULAC_KEY);
@@ -107,7 +107,7 @@ public class AligulacClient {
         JSONObject json = null;
         json = new JSONObject(responseData);
         Log.i(TAG,json.toString());
-        return String.valueOf(json.getInt("id"));
+        return String.valueOf(json.getJSONArray("objects").getJSONObject(0).getInt("id"));
 
     }
 
@@ -127,9 +127,8 @@ public class AligulacClient {
         Log.i(TAG,responseData);
         JSONObject json = null;
         json = new JSONObject(responseData);
-        JSONArray H2H = json.getJSONArray("objects");
         Log.i(TAG,json.toString());
-        return H2H;
+        return json.getJSONArray("objects");
 
     }
 
