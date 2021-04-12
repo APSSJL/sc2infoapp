@@ -123,7 +123,7 @@ public class LiquipediaParser {
             String player2 = rows.get(2).select("a").last().text();
             String bo = rows.get(1).select("abbr").attr("title");
             String time = rows.get(3).child(0).child(0).text();
-            String tournament = rows.get(3).selectFirst("div").selectFirst("div").text();
+            String tournament = rows.get(3).selectFirst("div").selectFirst("a").attr("href").replace("/starcraft2/", "");
 
             String[] x = bo.split(" ");
             Integer boInt = 1;
