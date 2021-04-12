@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,12 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import interfaces.IPublished;
 import models.ExternalMatch;
-import models.ExternalMatch$$Parcelable;
 import models.ExternalMatchNotification;
 import models.Match;
 import models.Player;
 import models.Post;
 
+import com.example.sc2infoapp.HomeFilterActivity;
 import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.MatchDetailActivity;
@@ -53,13 +52,13 @@ import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +72,8 @@ public class HomeFeedFragment extends Fragment {
     List<IPublished> published;
     Date lastUpdated;
     Button btnSearch;
+    Button btnHomeFilter;
+    SharedPreferences pref;
 
 
     @Override
@@ -86,8 +87,10 @@ public class HomeFeedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         btnCreatePost = view.findViewById(R.id.btnCreatePost);
+        btnHomeFilter = view.findViewById(R.id.btnHomeFilter);
         rvFeed = view.findViewById(R.id.rvFeed);
         published = new ArrayList<>();
+        pref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         btnCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +107,14 @@ public class HomeFeedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), SearchActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnHomeFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), HomeFilterActivity.class);
                 startActivity(i);
             }
         });
@@ -164,6 +175,7 @@ public class HomeFeedFragment extends Fragment {
         }
         getUserUpdate(hm.get("User"));
         getMatchUpdate(hm.get("Match"));
+        getExternalMatchesNotification();
         getTeamMatchUpdate(hm.get("TeamMatch"));
         getTournamentUpdate(hm.get("Tourn"));
         TeamUpdates(hm.get("Team"));
@@ -234,7 +246,6 @@ public class HomeFeedFragment extends Fragment {
     private void getMatchUpdate(ArrayList<String> matchId) {
         if (matchId == null)
             return;
-        ;
         ParseQuery<Match> query = ParseQuery.getQuery(Match.class);
         query.setLimit(5);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
@@ -259,6 +270,9 @@ public class HomeFeedFragment extends Fragment {
             }
         });
 
+    }
+
+    private void getExternalMatchesNotification() {
         Thread t = new Thread(() ->
         {
             List<ExternalMatchNotification> x = MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
@@ -499,7 +513,10 @@ public class HomeFeedFragment extends Fragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.setLimit(5);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.whereNotContainedIn(Post.KEY_CATEGORY, getArrayFromPrefs("hidcat"));
+        query.whereNotContainedIn(Post.KEY_TAGS, getArrayFromPrefs("bantag"));
         query.include("author");
+        query.whereGreaterThanOrEqualTo("rating", pref.getInt("rating", 5));
         query.whereContainedIn("author", user);
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -508,6 +525,15 @@ public class HomeFeedFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private ArrayList<String> getArrayFromPrefs(String key)
+    {
+        String res = pref.getString(key, "");
+        ArrayList<String> arr = new ArrayList<>();
+        if(!res.equals(""))
+            Collections.addAll(arr, res.split(","));
+        return arr;
     }
 
     //@Override
