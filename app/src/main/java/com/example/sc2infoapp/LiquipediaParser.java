@@ -82,14 +82,16 @@ public class LiquipediaParser {
                 String bo = "-1";
                 Pattern p = Pattern.compile(".*map(\\d)");
                 Matcher m = p.matcher(t);
+
                 if(m.find()) {
                     bo = (m.group(1));
                 }
+                Pattern dateP = Pattern.compile("date=(.*?) \\{\\{");
+                m = dateP.matcher(t);
                 String date = "";
-                String givenDate = matcher.group(1);
-                if(givenDate != null && dateParser.parse(givenDate) != null)
-                    date = ExternalMatch.DATE_FORMATTER.format(dateParser.parse(givenDate));
-                matches.add(new ExternalMatch(matcher.group(4) + " vs " + matcher.group(5), date, bo));
+                if(m.find() && m.group(1) != null && dateParser.parse(m.group(1)) != null)
+                    date = ExternalMatch.DATE_FORMATTER.format(dateParser.parse(m.group(1)));
+                matches.add(new ExternalMatch(matcher.group(5) + " vs " + matcher.group(6), date, bo));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
