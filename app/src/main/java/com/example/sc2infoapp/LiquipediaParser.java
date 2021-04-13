@@ -46,7 +46,7 @@ public class LiquipediaParser {
     {
         // This method accept unparsed tournament text. Make sure to call getUnparsed().
         // Returns list of tournament matches
-        Pattern groupMatches = Pattern.compile("\\{\\{Match maps.*?date=(.*?) \\{\\{.*?(finished=(true|))\\n?.*?player1=(.*?|)\\\\n.*?player2=(.*?|)\\\\n.*?(winner=(1|2|)).*?\\}\\}", Pattern.MULTILINE);
+        Pattern groupMatches = Pattern.compile("\\{\\{Match maps.*?(date=(.*?) \\{\\{.*?(finished=(true|))\\n){0,1}?.*?player1=(.*?|)\\\\n.*?player2=(.*?|)\\\\n.*?(winner=(1|2|)).*?\\}\\}", Pattern.MULTILINE);
         Pattern ro1 = Pattern.compile("R\\d\\d?D\\d\\d?=(.*?) .*?R\\d\\d?D\\d\\d?=(.*?) (.*?)date=(.*?) \\{.*?\\}\\}.*?\\}\\}",Pattern.MULTILINE);
         Pattern ro = Pattern.compile("R\\d\\d?W\\d\\d?=(.*?) .*?R\\d\\d?W\\d\\d?=(.*?) (.*?)date=(.*?) \\{.*?\\}\\}.*?\\}\\}", Pattern.MULTILINE);
         ArrayList<ExternalMatch> res = new ArrayList<>();
