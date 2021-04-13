@@ -26,6 +26,7 @@ import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.MatchCommentActivity;
 import com.example.sc2infoapp.R;
+import com.example.sc2infoapp.TournamentInfoActivity;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
@@ -61,6 +62,7 @@ public class MatchRankingFragment extends Fragment {
 
     Button btnMatchMakePredict;
     Button btnMatchMakeComment;
+    Button btnMatchRate;
     ProgressBar pbMatchPrediction;
     RatingBar rbMatchRanking;
     RelativeLayout rlMatchRanking;
@@ -80,6 +82,7 @@ public class MatchRankingFragment extends Fragment {
 
         btnMatchMakePredict = view.findViewById(R.id.btnMatchMakePredict);
         btnMatchMakeComment = view.findViewById(R.id.btnMatchMakeComment);
+        btnMatchRate = view.findViewById(R.id.btnMatchRate);
         pbMatchPrediction = view.findViewById(R.id.pbMatchPrediction);
         rbMatchRanking = view.findViewById(R.id.rbMatchRanking);
         rlMatchRanking = view.findViewById(R.id.rlMatchRanking);
@@ -109,10 +112,18 @@ public class MatchRankingFragment extends Fragment {
 
         } else {
             rbMatchRanking.setRating((float) (((IRateable)match).getRatingSum()/((IRateable)match).getRatingVotes()));
-            btnMatchMakePredict.setOnClickListener(new View.OnClickListener() {
+
+            btnMatchRate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showDialog();
+                }
+            });
+
+            btnMatchMakePredict.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
                 }
             });
 
@@ -156,12 +167,24 @@ public class MatchRankingFragment extends Fragment {
     }
 
     public void showDialog() {
-        final AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
-        final RatingBar ratingBar = new RatingBar(getActivity());
+        AlertDialog.Builder popDialog = new AlertDialog.Builder(getContext());
+        RatingBar ratingBar = new RatingBar(getContext());
+        RelativeLayout relativeLayout = new RelativeLayout(getContext());
+
+        ratingBar.setNumStars(5);
+        ratingBar.setStepSize(0.5f);
         ratingBar.setMax(5);
 
-        popDialog.setTitle("Rate this match!");
-        popDialog.setView(ratingBar);
+        RelativeLayout.LayoutParams ratingBarParam = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        ratingBarParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        ratingBar.setLayoutParams(ratingBarParam);
+        relativeLayout.addView(ratingBar);
+
+        popDialog.setTitle("Rate this tournament!");
+        popDialog.setView(relativeLayout);
 
         popDialog.setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener() {
                     @Override
