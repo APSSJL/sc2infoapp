@@ -21,11 +21,17 @@ public class Tournament extends ParseObject implements IPublished, IFollowable, 
     public static final String KEY_NAME = "name";
     public static final String KEY_INTERNAL = "userCreated";
 
-    public int getRating(){return getInt(KEY_RATING) ;}
     public String getName(){return getString(KEY_NAME);}
     public UserTournament getUserCreated(){return (UserTournament) getParseObject(KEY_INTERNAL) ;}
 
-
+    public int getRating(){
+        Integer i = getInt(KEY_RATING);
+        if(i == null) {
+            return 0;
+        } else {
+            return getInt(KEY_RATING);
+        }
+    }
 
     @Override
     public int getPublishedType() {
@@ -96,6 +102,9 @@ public class Tournament extends ParseObject implements IPublished, IFollowable, 
         saveInBackground();
     }
 
+    public void setUserCreated(UserTournament userTournament){put(KEY_INTERNAL,userTournament);}
+    public void setTournName(String tournName){put(KEY_NAME,tournName);}
+
     @Override
     public double getRatingSum() {
         return getDouble("ratingSum");
@@ -105,4 +114,7 @@ public class Tournament extends ParseObject implements IPublished, IFollowable, 
     public double getRatingVotes() {
         return getDouble("ratingVotes");
     }
+
+    public void setTitle(String title) { put(KEY_NAME, title);}
+
 }

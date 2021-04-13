@@ -51,13 +51,13 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
 
     @NonNull
     @Override
-    public TournamentMatchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View tournamentView = LayoutInflater.from(context).inflate(R.layout.item_tournament_match,parent,false);
-        return new TournamentMatchAdapter.ViewHolder(tournamentView);
+        return new ViewHolder(tournamentView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TournamentMatchAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IMatch match = matches.get(position);
         holder.bind(match);
     }
@@ -76,39 +76,8 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
         return matches;
     }
 
-    public static List<Match> fromParsePlayerMatch(ArrayList<String> matchNames){
-        List<Match> matches = new ArrayList<>();
-        for (String name : matchNames) {
-            ParseQuery<Match> q2 = ParseQuery.getQuery(Match.class);
-            q2.include("objectId");
-            q2.whereEqualTo("objectId", matchNames.get(0));
-            q2.findInBackground(new FindCallback<Match>() {
-                @Override
-                public void done(List<Match> objects, ParseException e) {
-                    matches.addAll(objects);
-                }
-            });
-        }
-        return matches;
-    }
-
-    public static List<TeamMatch> fromParseTeamMatch(ArrayList<String> matchNames){
-        List<TeamMatch> matches = new ArrayList<>();
-        for (String name : matchNames) {
-            ParseQuery<TeamMatch> q2 = ParseQuery.getQuery(TeamMatch.class);
-            q2.include("objectId");
-            q2.whereEqualTo("objectId", matchNames.get(0));
-            q2.findInBackground(new FindCallback<TeamMatch>() {
-                @Override
-                public void done(List<TeamMatch> objects, ParseException e) {
-                    matches.addAll(objects);
-                }
-            });
-        }
-        return matches;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
+        View dvH2HEventName2;
         TextView tvTournTime;
         TextView tvTournScoreLeft;
         TextView tvTournScoreRight;
@@ -117,6 +86,7 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            dvH2HEventName2 = itemView.findViewById(R.id.dvH2HEventName2);
             tvTournTime = itemView.findViewById(R.id.tvTournTime);
             tvTournScoreLeft = itemView.findViewById(R.id.tvTournScoreLeft);
             tvTournScoreRight = itemView.findViewById(R.id.tvTournScoreRight);
@@ -125,11 +95,32 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
         }
 
         public void bind(IMatch match) {
-            tvTournTime.setText(match.getTime());
-            tvTournLeft.setText(match.getOpponent().split(" vs ")[0]);
-            tvTournRight.setText(match.getOpponent().split(" vs ")[1]);
-            tvTournScoreLeft.setText(match.getResult1());
-            tvTournScoreRight.setText(match.getResult2());
+            if (match.getTime().isEmpty()) {
+                tvTournTime.setVisibility(View.GONE);
+                dvH2HEventName2.setVisibility(View.GONE);
+            } else {
+                tvTournTime.setText(match.getTime());
+            }
+
+            try {
+                tvTournScoreLeft.setText(String.valueOf(match.getResult1()));
+                tvTournScoreRight.setText(String.valueOf(match.getResult2()));
+                try {
+                    tvTournLeft.setText(match.getOpponent().split(" vs ")[0].split(" | player")[0]);
+                    tvTournRight.setText(match.getOpponent().split(" vs ")[1].split(" | player")[0]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    tvTournLeft.setText(match.getOpponent().split(" vs ")[0]);
+                    tvTournRight.setText(match.getOpponent().split(" vs ")[1]);
+                }
+
+            } catch(ArrayIndexOutOfBoundsException e) {
+                tvTournTime.setText(match.getTime());
+                tvTournScoreLeft.setText("0");
+                tvTournScoreRight.setText("0");
+                tvTournLeft.setText("TBD");
+                tvTournRight.setText("TBD");
+            }
+
         }
     }
 

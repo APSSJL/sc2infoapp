@@ -12,41 +12,49 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.jsoup.Jsoup;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import adapters.TournamentMatchAdapter;
 import interfaces.IFollowable;
 import interfaces.IMatch;
 import interfaces.IRateable;
+import models.Match;
 import models.TaskRunner;
+import models.TeamMatch;
 import models.Tournament;
+import models.UserTournament;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class TournamentInfoActivity extends AppCompatActivity {
 
     public static final String TAG = "TournamentInfoActivity";
-    Tournament tournament;
     ArrayList<IMatch> playoffs;
+    Tournament tournament;
+    UserTournament userTournament;
     TournamentMatchAdapter adapter;
 
     Button btnTornComment;
@@ -65,15 +73,13 @@ public class TournamentInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tournament_info);
 
-        tournament = Parcels.unwrap(getIntent().getParcelableExtra("tournament"));
-
         btnTornComment = findViewById(R.id.btnTornComment);
         btnTornEdit = findViewById(R.id.btnTornEdit);
         btnTornFollow = findViewById(R.id.btnTornFollow);
         btnTornRate = findViewById(R.id.btnTornRate);
         ivProfileImage = findViewById(R.id.ivProfileSmall);
         ivTornPicture = findViewById(R.id.ivTornPicture);
-        rbTournament = findViewById(R.id.rbTournament);
+        rbTournament = findViewById(R.id.rbTournamentRate);
         rvTornMatches = findViewById(R.id.rvTornMatches);
         tvTornName = findViewById(R.id.tvTornName);
         tvTornRules = findViewById(R.id.tvTornRules);
@@ -91,9 +97,75 @@ public class TournamentInfoActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        rbTournament.setRating(tournament.getRating());
-        tvTornName.setText(tournament.getTitle());
-        tvTornRules.setText(tournament.getContent());
+        btnTornEdit.setVisibility(View.GONE);
+
+        playoffs = new ArrayList<>();
+        adapter = new TournamentMatchAdapter(playoffs, this);
+
+        rvTornMatches.setAdapter(adapter);
+        rvTornMatches.setLayoutManager(new LinearLayoutManager(this));
+
+        if(Parcels.unwrap(getIntent().getParcelableExtra("userCreated"))) {
+            userTournament = Parcels.unwrap(getIntent().getParcelableExtra("tournament"));
+
+            ParseQuery<Tournament> query = ParseQuery.getQuery(Tournament.class);
+            query.whereEqualTo("userCreated", userTournament);
+            query.findInBackground(new FindCallback<Tournament>() {
+                @Override
+                public void done(List<Tournament> objects, ParseException e) {
+                    tournament = objects.get(0);
+                    Log.i(TAG, "userTournament Received: "+ objects.get(0).getName());
+
+                    rbTournament.setRating(tournament.getRating());
+                    tvTornName.setText(tournament.getTitle());
+                    tvTornRules.setText(userTournament.getDescription());
+
+                    if (ParseUser.getCurrentUser() == userTournament.getOrganizer()) {
+                        btnTornEdit.setVisibility(View.VISIBLE);
+                        btnTornEdit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //Todo: Edit Tournament Screen
+                            }
+                        });
+                    }
+                }
+            });
+
+            if(userTournament.isTeam()) {
+                for (String id : userTournament.getMatches()) {
+                    ParseQuery<TeamMatch> q2 = ParseQuery.getQuery(TeamMatch.class);
+                    q2.include("objectId");
+                    q2.whereEqualTo("objectId", id);
+                    q2.findInBackground(new FindCallback<TeamMatch>() {
+                        @Override
+                        public void done(List<TeamMatch> objects, ParseException e) {
+                            Log.i(TAG, objects.get(0).getOpponent());
+                            playoffs.addAll(objects);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            } else {
+                for (String id : userTournament.getMatches()) {
+                    ParseQuery<Match> q2 = ParseQuery.getQuery(Match.class);
+                    q2.include("objectId");
+                    q2.whereEqualTo("objectId", id);
+                    q2.findInBackground(new FindCallback<Match>() {
+                        @Override
+                        public void done(List<Match> objects, ParseException e) {
+                            Log.i(TAG, objects.get(0).getOpponent());
+                            playoffs.addAll(objects);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+
+        } else {
+            getExternalTournament();
+
+        }
 
         btnTornComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,18 +175,6 @@ public class TournamentInfoActivity extends AppCompatActivity {
                 TournamentInfoActivity.this.startActivity(i);
             }
         });
-
-        if (tournament.getUserCreated() == null || ParseUser.getCurrentUser() != tournament.getUserCreated().getOrganizer()) {
-            btnTornEdit.setVisibility(View.GONE);
-        } else {
-            btnTornEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Todo: Edit Tournament Screen
-                }
-            });
-        }
-
 
         btnTornFollow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,44 +204,27 @@ public class TournamentInfoActivity extends AppCompatActivity {
             }
         });
 
-        playoffs = new ArrayList<>();
-        adapter = new TournamentMatchAdapter(playoffs, this);
-
-        rvTornMatches.setAdapter(adapter);
-        rvTornMatches.setLayoutManager(new LinearLayoutManager(this));
-
-        if(tournament.getUserCreated() == null) {
-            getUpcomingMatches();
-            TaskRunner taskRunner = new TaskRunner();
-            taskRunner.executeAsync(new TournamentInfoActivity.matchTask(tournament.getName()), (data) -> {
-                Log.i("Tournament Matches:", data.toString());
-                try {
-                    playoffs.addAll(TournamentMatchAdapter.fromJSONArray(data));
-                    adapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            });
-
-        } else {
-            if(tournament.getUserCreated().isTeam()) {
-                playoffs.addAll(TournamentMatchAdapter.fromParsePlayerMatch(tournament.getUserCreated().getMatches()));
-                adapter.notifyDataSetChanged();
-            } else {
-                playoffs.addAll(TournamentMatchAdapter.fromParsePlayerMatch(tournament.getUserCreated().getMatches()));
-                adapter.notifyDataSetChanged();
-            }
-        }
-
     }
 
     public void showDialog() {
-        final AlertDialog.Builder popDialog = new AlertDialog.Builder(this);
-        final RatingBar ratingBar = new RatingBar(this);
+        AlertDialog.Builder popDialog = new AlertDialog.Builder(this);
+        RatingBar ratingBar = new RatingBar(this);
+        RelativeLayout relativeLayout = new RelativeLayout(TournamentInfoActivity.this);
+
+        ratingBar.setNumStars(5);
+        ratingBar.setStepSize(0.5f);
         ratingBar.setMax(5);
 
-        popDialog.setTitle("Rate this match!");
-        popDialog.setView(ratingBar);
+        RelativeLayout.LayoutParams ratingBarParam = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        ratingBarParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        ratingBar.setLayoutParams(ratingBarParam);
+        relativeLayout.addView(ratingBar);
+
+        popDialog.setTitle("Rate this tournament!");
+        popDialog.setView(relativeLayout);
 
         popDialog.setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener() {
             @Override
@@ -203,31 +246,87 @@ public class TournamentInfoActivity extends AppCompatActivity {
         popDialog.show();
     }
 
-    private void getUpcomingMatches(){
-        Log.i(TAG, "Upcoming tournament matches received");
-        try {
-            LiquipediaParser parser = new LiquipediaParser();
-            playoffs.addAll(parser.parseUpcomingTournamentMatches(Jsoup.parse(MainActivity.client.getMatches()), tournament.getName()));
+
+    public void getExternalTournament(){
+        String title = getIntent().getStringExtra("tournament");
+
+        TaskRunner taskRunner = new TaskRunner();
+        LiquipediaParser parser = new LiquipediaParser();
+
+        taskRunner.executeAsync(new getMatches(title), (data) -> {
+
+            tournament = new Tournament();
+            tournament.setTitle(title);
+            tvTornRules.setText(String.format(parser.getTournamentRules(data).replaceAll("abbr\\\\/", "").replaceAll("\\\\n ", "%n").replaceAll("\\\\n", "%n")));
+
+            playoffs.addAll(parser.getTournamentMatches(data));
+            ArrayList<IMatch> toRemove = new ArrayList<>();
+            for (IMatch iMatch : playoffs){
+                try {
+                    String test = iMatch.getOpponent().split(" vs ")[1];
+                } catch(ArrayIndexOutOfBoundsException e) {
+                    toRemove.add(iMatch);
+                }
+            }
+            playoffs.removeAll(toRemove);
             adapter.notifyDataSetChanged();
 
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+            rbTournament.setRating(tournament.getRating());
+            tvTornName.setText(tournament.getTitle());
+
+            ParseQuery<Tournament> query = ParseQuery.getQuery(Tournament.class);
+            query.whereEqualTo("name", title);
+            query.findInBackground(new FindCallback<Tournament>() {
+                @Override
+                public void done(List<Tournament> objects, ParseException e) {
+                    if(objects.isEmpty()) {
+                        Log.i(TAG, "New tournament");
+                        tournament.saveInBackground();
+                    } else {
+                        Log.i(TAG, "Tournament already exist");
+                    }
+                }
+            });
+        });
+
+        taskRunner.executeAsync(new getImage(title), (data) -> {
+            try {
+                Thread.sleep(2000);
+                String photoLink = parser.getPhotoLink(data);
+                Glide.with(TournamentInfoActivity.this).load(photoLink).into(ivTornPicture);
+            } catch (InterruptedException | JSONException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
-    public class matchTask implements Callable<JSONArray> {
-        private final String input1;
+    class getMatches implements Callable<String> {
+        private final String input;
 
-        public matchTask(String input1) {
-            this.input1 = input1;
+        public getMatches(String input) {
+            this.input = input;
         }
 
         @Override
-        public JSONArray call() throws IOException, JSONException {
+        public String call() throws IOException, JSONException {
             // Some long running task
-            String id = MainActivity.aligulacClient.getTournamentId(input1);
-            Log.i(TAG, id);
-            return MainActivity.aligulacClient.getTournamentResults(id);
+            return MainActivity.client.getUnparsed(input);
         }
     }
+
+    class getImage implements Callable<JSONObject> {
+        private final String input;
+
+        public getImage(String input) {
+            this.input = input;
+        }
+
+        @Override
+        public JSONObject call() throws IOException, JSONException {
+            // Some long running task
+            return MainActivity.client.getFullPage(input);
+        }
+    }
+
 }

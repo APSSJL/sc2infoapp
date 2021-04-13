@@ -91,8 +91,9 @@
             android:id="@+id/dvTornRules"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/btnTornEdit"
+            android:layout_below="@id/tvTornRulesLabel"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:background="?android:attr/listDivider" />
 
@@ -115,6 +116,7 @@
             android:layout_below="@+id/dvTornRules"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
+            android:inputType="textMultiLine"
             android:text="Tournament information\n.\n.\n.\nMore info"
             android:textColor="@color/black" />
 
@@ -143,7 +145,7 @@
             android:id="@+id/btnTornComment"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rbTournament"
+            android:layout_below="@+id/rbTournamentRate"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
@@ -153,7 +155,7 @@
             android:id="@+id/btnTornRate"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rbTournament"
+            android:layout_below="@+id/rbTournamentRate"
             android:layout_alignParentStart="true"
             android:layout_marginStart="15dp"
             android:layout_weight="1"
@@ -162,7 +164,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTornMatches"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/dvTornMatchesList"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
@@ -171,11 +173,13 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <RatingBar
-            android:id="@+id/rbTournament"
+            android:id="@+id/rbTournamentRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivTornPicture"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="15dp"
+            android:isIndicator="true"
+            android:numStars="5" />
     </RelativeLayout>
 </ScrollView>

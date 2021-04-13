@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15dp"
     tools:context=".MatchCommentActivity">
 
     <TextView
         android:id="@+id/tvMatchCommentTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Category" />
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        tools:text="Match Comment" />
 
     <RelativeLayout
         android:id="@+id/rlCommentsSection"
@@ -25,7 +28,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvComments"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp" />
     </RelativeLayout>
 
     <EditText
@@ -47,4 +54,11 @@
         android:layout_marginEnd="13dp"
         android:text="Comment" />
 
-  </RelativeLayout>
+    <View
+        android:id="@+id/dvMatchCommentDetailLabel"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvMatchCommentTitle"
+        android:background="?android:attr/listDivider" />
+
+</RelativeLayout>
