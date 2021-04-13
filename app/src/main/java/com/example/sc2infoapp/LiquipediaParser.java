@@ -43,6 +43,8 @@ public class LiquipediaParser {
 
     public ArrayList<ExternalMatch> getTournamentMatches(String tournamentText)
     {
+        // This method accept unparsed tournament text. Make sure to call getUnparsed().
+        // Returns list of tournament matches
         Pattern groupMatches = Pattern.compile("\\{\\{Match maps.*?date=(.*?) \\{\\{.*?(finished=(true|))\\n?.*?player1=(.*?|)\\\\n.*?player2=(.*?|)\\\\n.*?(winner=(1|2|)).*?\\}\\}", Pattern.MULTILINE);
         Pattern ro1 = Pattern.compile("R\\d\\d?D\\d\\d?=(.*?) .*?R\\d\\d?D\\d\\d?=(.*?) (.*?)date=(.*?) \\{.*?\\}\\}.*?\\}\\}",Pattern.MULTILINE);
         Pattern ro = Pattern.compile("R\\d\\d?W\\d\\d?=(.*?) .*?R\\d\\d?W\\d\\d?=(.*?) (.*?)date=(.*?) \\{.*?\\}\\}.*?\\}\\}", Pattern.MULTILINE);
@@ -57,6 +59,18 @@ public class LiquipediaParser {
         getRo(matcher2, matches, dateParser);
         Log.i("","");
         return matches;
+    }
+
+    protected String getTournamentRules(String tournamentText)
+    {
+        // This method accept unparsed tournament text. Make sure to call getUnparsed().
+        // Returns tournaments rules
+        Pattern rules = Pattern.compile("==Format==.*?\\\\n\\\\n", Pattern.MULTILINE);
+        Matcher m = rules.matcher(tournamentText);
+        if(m.find())
+            return m.group(0).replaceAll("'|\\*|\\{\\{|\\}\\}|==", "").replace("|", " ");
+        else
+            return "";
     }
 
     private void getGroup(ArrayList<ExternalMatch> matches, Matcher matcher, SimpleDateFormat dateParser) {
