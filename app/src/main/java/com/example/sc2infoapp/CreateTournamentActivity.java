@@ -1,6 +1,7 @@
 package com.example.sc2infoapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -45,7 +46,10 @@ public class CreateTournamentActivity extends AppCompatActivity {
     CheckBox cbIsTeam;
     ImageView ivTournLogo;
 
+    private static int RESULT_LOAD_IMG = 1;
     private Bitmap photoFile;
+    private File result;
+
 
     ParseUser user;
     @Override
@@ -61,6 +65,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
         etTournName = findViewById(R.id.etTournName);
         etTournDescription = findViewById(R.id.etTournDescription);
         cbIsTeam = findViewById(R.id.cbIsTeam);
+        ivTournLogo = findViewById(R.id.ivTournLogo);
 
         btnPostTournLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +92,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
                     Toast.makeText(CreateTournamentActivity.this, "Tournament Name cannot be empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                Log.i(TAG,tournName);
-//                Log.i(TAG,tournDescription);
 
                 UserTournament userTournament = new UserTournament();
                 Tournament tournament = new Tournament();
@@ -102,6 +105,11 @@ public class CreateTournamentActivity extends AppCompatActivity {
                     userTournament.setIsTeam(false);
                     Log.i(TAG,"False");
                 }
+
+                Log.i(TAG,photoFile.toString());
+                userTournament.setLogo(new ParseFile(result));
+
+//                userTournament.setLogo(new ParseFile(photoFile));
 
                 tournament.saveInBackground(new SaveCallback() {
                     @Override
@@ -120,6 +128,56 @@ public class CreateTournamentActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CHOOSE_IMAGE_FROM_GALLERY_REQUEST_CODE) {
+            if(resultCode == RESULT_OK) {
+                try{
+                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    photoFile  = BitmapFactory.decodeStream(in);
+                    in.close();
+                    ivTournLogo.setImageBitmap(photoFile);
+
+                    Uri selectedImageUri = data.getData();
+
+                    File f=new File(this.getCacheDir(),"file name");
+                    try {
+                        f.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //Convert bitmap to byte array
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                    byte[] bitmapdata = bos.toByteArray();
+
+                    //write the bytes in file
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(f);
+                        fos.write(bitmapdata);
+                        fos.flush();
+                        fos.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    result = f;
+                }catch(Exception e) {
+                    Toast.makeText(this, "Error while retrieving picture, try again", Toast.LENGTH_SHORT);
+                }
+            }
+        }
+    }
 
     public void createTourn(UserTournament userTournament, Tournament tournament, String tournName, String tournDescription){
 
