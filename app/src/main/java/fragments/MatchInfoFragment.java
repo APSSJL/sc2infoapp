@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.IMatch;
+import models.ExternalMatch;
 import models.Match;
 import models.Team;
 import models.TeamMatch;
@@ -79,7 +80,7 @@ public class MatchInfoFragment extends Fragment {
     public String setMatchDetail() {
         switch (match.getMatchType()) {
             case IMatch.EXTERNAL:
-                return match.getTime();
+                return String.format(match.getTime() + "\n" + ((ExternalMatch) match).getTournament());
             case IMatch.INTERNAL:
                 return String.format(match.getTime() + "\n" + ((Match) match).getDetails());
             case IMatch.TEAM:

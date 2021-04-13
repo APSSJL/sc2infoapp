@@ -16,4 +16,5 @@
     <color name="accent_color">#FF607D8B</color>
     <color name="primary_dark">#616161</color>
     <color name="divider_color">#FFDBDBDB</color>
+    <color name="themeColor">#FF0080B4</color>
 </resources>

@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import models.ExternalMatch;
 
 public class LiquipediaParser {
+    public static final String TAG = "LiquipediaParser";
     public String getRace(JSONObject json) throws JSONException {
         JSONArray categories = json.getJSONArray("categories");
         for(int i = 0; i < categories.length(); i++)
@@ -55,7 +56,6 @@ public class LiquipediaParser {
         getRo(matcher1, matches, dateParser);
         Matcher matcher2 = ro.matcher(tournamentText);
         getRo(matcher2, matches, dateParser);
-        Log.i("","");
         return matches;
     }
 

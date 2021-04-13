@@ -4,23 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:foregroundTint="@color/themeColor"
     tools:context=".HomeFilterActivity">
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
-        android:background="@color/transparent"
         android:layout_alignParentEnd="true"
-        android:id="@+id/btnBack"
-        />
+        android:background="@color/transparent"
+        android:text="Back"
+        android:textColor="@color/themeColor" />
 
     <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Home filter screen"
-    android:layout_margin="10dp"
-    />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Home filter screen"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
 
     <View
@@ -29,31 +35,30 @@
         android:layout_height="2dp"
         android:layout_below="@+id/btnBack"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="0dp"
         android:background="?android:attr/listDivider" />
 
     <TextView
+        android:id="@+id/tvRating"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:text="Mininum rating:"
-        android:layout_marginTop="10dp"
-        android:id="@+id/tvRating"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/primary_text"
         android:layout_below="@id/divTop"
-        />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Mininum rating:"
+        android:textColor="@color/primary_text" />
+
     <EditText
+        android:id="@+id/edRating"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:id="@+id/edRating"
-        android:textSize="12sp"
-        android:text="45"
+        android:layout_below="@+id/divTop"
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/tvRating"
-        android:layout_below="@+id/divTop"
         android:inputType="number"
-    />
+        android:text="45"
+        android:textSize="12sp" />
 
     <View
         android:id="@+id/divTypes"
@@ -66,97 +71,124 @@
         android:background="?android:attr/listDivider" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hide types:"
         android:id="@+id/tvHide"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/primary_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/divTypes"
-        />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Hide types:"
+        android:textColor="@color/primary_text" />
+
     <CheckBox
+        android:id="@+id/checkboxPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvHide"
-        android:layout_margin="10dp"
-        android:text="Player"
-        android:id="@+id/checkboxPlayer"/>
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:buttonTint="@color/themeColor"
+        android:text="Player" />
+
     <CheckBox
+        android:id="@+id/checkBoxTeam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvHide"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_toEndOf="@id/checkboxPlayer"
-        android:layout_margin="10dp"
-        android:text="Team"
-        android:id="@+id/checkBoxTeam"/>
+        android:buttonTint="@color/themeColor"
+        android:text="Team" />
+
     <CheckBox
+        android:id="@+id/checkBoxPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvHide"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_toEndOf="@id/checkBoxTeam"
-        android:layout_margin="10dp"
-        android:text="Post"
-        android:id="@+id/checkBoxPost"/>
+        android:buttonTint="@color/themeColor"
+        android:text="Post" />
+
     <CheckBox
+        android:id="@+id/checkBoxTournament"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvHide"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_toEndOf="@id/checkBoxPost"
-        android:layout_margin="10dp"
-        android:text="Tournament"
-        android:id="@+id/checkBoxTournament"/>
+        android:buttonTint="@color/themeColor"
+        android:text="Tournament" />
+
     <CheckBox
+        android:id="@+id/checkBoxMatch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/checkboxPlayer"
-        android:text="Match"
         android:layout_marginStart="10dp"
-        android:id="@+id/checkBoxMatch"/>
+        android:buttonTint="@color/themeColor"
+        android:text="Match" />
+
     <View
         android:id="@+id/divCategories"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/checkBoxMatch"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="0dp"
         android:background="?android:attr/listDivider" />
+
     <TextView
+        android:id="@+id/tvCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hide categories:"
-        android:id="@+id/tvCat"
         android:layout_below="@id/divCategories"
-        android:textColor="@color/primary_text"
         android:layout_margin="10dp"
-        />
+        android:text="Hide categories:"
+        android:textColor="@color/primary_text" />
 
 
     <Spinner
         android:id="@+id/spCategories"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
+        android:layout_below="@+id/tvCat"
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/btnUnbanCat"
-        android:layout_below="@+id/tvCat"
         android:entries="@array/category" />
+
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/btnBanCat"
-        android:layout_below="@+id/tvCat"
         android:id="@+id/btnUnbanCat"
-        android:text="Unban"
-        />
-    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/tvCat"
+        android:layout_toLeftOf="@+id/btnBanCat"
+        android:backgroundTint="@color/themeColor"
+        android:text="Unban"
+        android:textColor="@color/white" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnBanCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvCat"
+        android:layout_alignParentEnd="true"
+        android:backgroundTint="@color/themeColor"
         android:text="Ban"
-    />
+        android:textColor="@color/white" />
+
     <View
         android:id="@+id/divTags"
         android:layout_width="match_parent"
@@ -166,49 +198,55 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
         android:background="?android:attr/listDivider" />
+
     <TextView
+        android:id="@+id/tvBannedTags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvBannedTags"
-        android:text="Banned tags: "
         android:layout_below="@id/divTags"
         android:layout_margin="10dp"
-        android:textColor="@color/primary_text"
-        />
+        android:text="Banned tags: "
+        android:textColor="@color/primary_text" />
+
     <EditText
+        android:id="@+id/edBan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvBannedTags"
-        android:hint="TAG"
-        android:layout_toLeftOf="@+id/btnBan"
         android:layout_alignParentStart="true"
-        android:id="@+id/edBan"
-        android:textSize="12sp"
-        />
+        android:layout_toLeftOf="@+id/btnBan"
+        android:hint="TAG"
+        android:textSize="12sp" />
+
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnBan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ban"
-        android:id="@+id/btnBan"
+        android:layout_below="@id/tvBannedTags"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/tvBannedTags"/>
+        android:backgroundTint="@color/themeColor"
+        android:text="ban"
+        android:textColor="@color/white" />
+
     <EditText
+        android:id="@+id/edUnban"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnBan"
-        android:hint="TAG"
-        android:layout_toLeftOf="@+id/btnBan"
         android:layout_alignParentStart="true"
-        android:id="@+id/edUnban"
-        android:textSize="12sp"
-        />
+        android:layout_toLeftOf="@+id/btnBan"
+        android:hint="TAG"
+        android:textSize="12sp" />
+
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnUnban"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Unban"
-        android:id="@+id/btnUnban"
+        android:layout_below="@id/btnBan"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/btnBan"/>
+        android:backgroundTint="@color/themeColor"
+        android:text="Unban"
+        android:textColor="@color/white" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -245,10 +283,11 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSave"
-        android:text="Save"
         android:layout_alignParentBottom="true"
-        />
+        android:backgroundTint="@color/themeColor"
+        android:text="Save"
+        android:textColor="@color/white" />
 </RelativeLayout>
