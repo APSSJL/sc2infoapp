@@ -35,10 +35,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.Match;
-import models.Player;
 import models.Team;
-import models.TeamMatch;
 import models.Tournament;
 import models.UserTournament;
 
@@ -63,8 +60,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
     private String Object1;
     private String Object2;
 
-    private List<Player> players;
-    private Player player;
     private List<Team> teams;
 
     private static int RESULT_LOAD_IMG = 1;
@@ -94,18 +89,22 @@ public class CreateTournamentActivity extends AppCompatActivity {
         etMatchDescription = findViewById(R.id.etMatchDescription);
         btnCreateMatch = findViewById(R.id.btnCreateMatch);
 
-        //Get all players from back4app
-        players = new ArrayList<Player>();
-        ParseQuery<Player> query = ParseQuery.getQuery("Player");
-        query.findInBackground(new FindCallback<Player>() {
+        //Get all users from back4app
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.findInBackground(new FindCallback<ParseUser>() {
             @Override
-            public void done(List<Player> objects, ParseException e) {
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e!=null){
+                    Toast.makeText(CreateTournamentActivity.this,"error while saving",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Toast.makeText(CreateTournamentActivity.this,"loaded",Toast.LENGTH_LONG).show();
                 //Spinner stuff
                 List<String> list = new ArrayList<String>();
 
                 for (int i = 0; i < objects.size(); i++) {
-                    list.add(objects.get(i).getName());
-                    Log.i(TAG,objects.get(i).getName());
+                    list.add(objects.get(i).getUsername());
+                    Log.i(TAG,objects.get(i).getUsername());
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateTournamentActivity.this, android.R.layout.simple_spinner_item,list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -138,8 +137,11 @@ public class CreateTournamentActivity extends AppCompatActivity {
                 }
                 //Create Player Match
                 else{
-                    Match match = new Match();
-
+//                    Match match = new Match();
+//                    ParseQuery
+//
+//                    //Set Match Description
+//                    match.setDetails(etMatchDescription.getText().toString());
                 }
             }
         });
