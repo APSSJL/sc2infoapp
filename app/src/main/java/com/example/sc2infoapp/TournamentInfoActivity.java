@@ -121,8 +121,11 @@ public class TournamentInfoActivity extends AppCompatActivity {
                     rbTournament.setRating(tournament.getRating());
                     tvTornName.setText(tournament.getTitle());
                     tvTornRules.setText(userTournament.getDescription());
+                    Log.i(TAG,ParseUser.getCurrentUser().getUsername());
+                    Log.i(TAG,userTournament.getDescription());
 
                     if (ParseUser.getCurrentUser() == userTournament.getOrganizer()) {
+                        Log.i(TAG,"in");
                         btnTornEdit.setVisibility(View.VISIBLE);
                         btnTornEdit.setOnClickListener(new View.OnClickListener() {
                             @Override

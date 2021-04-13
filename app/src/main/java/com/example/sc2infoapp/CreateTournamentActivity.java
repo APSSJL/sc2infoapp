@@ -86,8 +86,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
                 Boolean isTeam = cbIsTeam.isChecked();
 
 
-
-
                 if (tournName.isEmpty()){
                     Toast.makeText(CreateTournamentActivity.this, "Tournament Name cannot be empty!", Toast.LENGTH_SHORT).show();
                     return;
