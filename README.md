@@ -64,16 +64,16 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
         - [x] Can set ishiring chackbox to find new players
         - [x] Can view user profile by tapping on the username in requests recycler view
 - [x] User can view player's detailed page
-- [ ] User can rate and leave comments:
+- [x] User can rate and leave comments:
     - [x] Players
     - [x] Matches
-    - [ ] Tournaments
+    - [x] Tournaments
     - [x] Teams
     - [x] Posts
-- [ ] User can follow:
+- [x] User can follow:
     - [x] Players
     - [x] Other users
-    - [ ] Tournaments
+    - [x] Tournaments
     - [x] Teams 
     - [x] Match
 - [ ] User can view tournament detailed screen
