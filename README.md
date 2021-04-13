@@ -49,8 +49,8 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] User can see recent posts and tournaments
     - [x] User can logout
 - [x] User can create post
-    - [ ] By tapping on the post, user can go to the detailed post view
-    - [ ] User can rate post in detailed view
+    - [x] By tapping on the post, user can go to the detailed post view
+    - [x] User can rate post in detailed view
     - [x] User can view comments in the detailed view
     - [x] User can leave comments 
  - [x] Users can view match detailed page
@@ -69,7 +69,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] Matches
     - [ ] Tournaments
     - [x] Teams
-    - [ ] Posts
+    - [x] Posts
 - [ ] User can follow:
     - [x] Players
     - [x] Other users
@@ -77,7 +77,8 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] Teams 
     - [x] Match
 - [ ] User can view tournament detailed screen
-    - [ ] User can create and edit new tournaments
+    - [x] User can create new tournaments
+    - [ ] User can edit user tournaments
 - [x] User can search and filter posts, players, teams and tournaments
     - [x] by keywords
     - [x] by categories
