@@ -1,5 +1,6 @@
 package models;
 
+import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @ParseClassName("userTournament")
 public class UserTournament extends ParseObject {
+    public static final String KEY_NAME = "name";
     public static final String KEY_AUTHOR = "organizer";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_ISTEAM = "isTeam";
@@ -37,5 +39,10 @@ public class UserTournament extends ParseObject {
         }
         return  res;
     }
+
+    public void setOrganizer(ParseUser user){ put(KEY_AUTHOR,user); }
+    public void setTournDescription(String description){put(KEY_DESCRIPTION, description);}
+    public void setTournName(String name){put(KEY_NAME,name);}
+    public void setIsTeam(Boolean isTeam){put(KEY_ISTEAM,isTeam);}
 
 }
