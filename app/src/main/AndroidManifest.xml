@@ -21,6 +21,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".TournamentCommentActivity"></activity>
         <activity android:name=".PostDetailActivity"/>
+        <activity android:name=".PostCommentActivity"/>
         <activity android:name=".CreateTournamentActivity"/>
         <activity android:name=".EditTournamentActivity" />
         <activity android:name=".TournamentInfoActivity" />

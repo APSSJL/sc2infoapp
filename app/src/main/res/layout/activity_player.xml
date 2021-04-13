@@ -90,7 +90,7 @@
         android:layout_margin="10dp"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:id="@+id/btnComment"
+        android:id="@+id/btnPostComment"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:text="Comment"

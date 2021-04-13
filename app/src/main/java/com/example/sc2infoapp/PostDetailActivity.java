@@ -1,6 +1,8 @@
 package com.example.sc2infoapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -38,6 +40,15 @@ public class PostDetailActivity extends AppCompatActivity {
         tvPostCategory.setText(post.getCategory());
         tvPostContent.setText(post.getContent());
         tvPostTitle.setText(post.getTitle());
+
+        btnCommentPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(PostDetailActivity.this,PostCommentActivity.class);
+                i.putExtra("Post",post.getTitle());
+                startActivity(i);
+            }
+        });
 
 
     }
