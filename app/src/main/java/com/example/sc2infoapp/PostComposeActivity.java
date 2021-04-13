@@ -75,6 +75,7 @@ public class PostComposeActivity extends AppCompatActivity {
                 post.setCategory(spCategories.getSelectedItem().toString());
                 post.setTags(tags);
 
+
                 //saveInBackground
                 post.saveInBackground(new SaveCallback() {
                     @Override

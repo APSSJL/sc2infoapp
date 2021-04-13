@@ -102,6 +102,9 @@ public class Tournament extends ParseObject implements IPublished, IFollowable, 
         saveInBackground();
     }
 
+    public void setUserCreated(UserTournament userTournament){put(KEY_INTERNAL,userTournament);}
+    public void setTournName(String tournName){put(KEY_NAME,tournName);}
+
     @Override
     public double getRatingSum() {
         return getDouble("ratingSum");

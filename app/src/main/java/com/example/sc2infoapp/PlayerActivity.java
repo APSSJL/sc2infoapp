@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,7 +32,6 @@ import java.util.concurrent.Callable;
 
 import adapters.MatchesAdapter;
 import interfaces.IMatch;
-import models.ExternalMatch;
 import models.Match;
 import models.Player;
 import models.TaskRunner;
@@ -72,7 +70,7 @@ public class PlayerActivity extends AppCompatActivity {
         rvMatches = findViewById(R.id.rvMatches);
         ratingBar = findViewById(R.id.ratingBar);
         btnFollow = findViewById(R.id.btnFollow);
-        btnComment = findViewById(R.id.btnComment);
+        btnComment = findViewById(R.id.btnPostComment);
 
         opponents = new ArrayList<>();
         adapter = new MatchesAdapter(opponents, this);
