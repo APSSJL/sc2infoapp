@@ -1,5 +1,6 @@
 package models;
 
+import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -37,5 +38,10 @@ public class UserTournament extends Tournament {
         }
         return  res;
     }
+
+    public void setOrganizer(ParseUser user){ put(KEY_AUTHOR,user); }
+    public void setTournDescription(String description){put(KEY_DESCRIPTION, description);}
+    public void setTournName(String name){put(KEY_NAME,name);}
+    public void setIsTeam(Boolean isTeam){put(KEY_ISTEAM,isTeam);}
 
 }
