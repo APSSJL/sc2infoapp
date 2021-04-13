@@ -85,12 +85,14 @@ public class CreateTeamActivity extends AppCompatActivity {
                     }
                 });
                 UserInfo info = (UserInfo) ParseUser.getCurrentUser().get("Additional");
+
                 if(info != null)
                 {
                     info.put("team", team);
                     team.saveInBackground();
                 }
             }
+
         });
 
         edTeamName.addTextChangedListener(new TextWatcher() {
