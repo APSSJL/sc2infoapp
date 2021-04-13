@@ -36,14 +36,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 
 import adapters.TournamentMatchAdapter;
 import interfaces.IFollowable;
 import interfaces.IMatch;
 import interfaces.IRateable;
 import models.Match;
-import models.Player;
 import models.TaskRunner;
 import models.TeamMatch;
 import models.Tournament;
@@ -254,26 +252,27 @@ public class TournamentInfoActivity extends AppCompatActivity {
 
         TaskRunner taskRunner = new TaskRunner();
         LiquipediaParser parser = new LiquipediaParser();
-        taskRunner.executeAsync(new LongRunningTask(title), (data) -> {
-            try {
-                tournament = new Tournament();
-                tournament.setTitle(title);
 
-                String photoLink = parser.getPhotoLink(data);
-                Glide.with(TournamentInfoActivity.this).load(photoLink).into(ivTornPicture);
+        taskRunner.executeAsync(new getMatches(title), (data) -> {
 
-                playoffs.addAll(parser.getTournamentMatches(data.getString("text")));
-                for (IMatch iMatch : playoffs){
-                    Log.i(TAG, iMatch.getOpponent());
+            tournament = new Tournament();
+            tournament.setTitle(title);
+            tvTornRules.setText(String.format(parser.getTournamentRules(data).replaceAll("abbr\\\\/", "").replaceAll("\\\\n ", "%n").replaceAll("\\\\n", "%n")));
+
+            playoffs.addAll(parser.getTournamentMatches(data));
+            ArrayList<IMatch> toRemove = new ArrayList<>();
+            for (IMatch iMatch : playoffs){
+                try {
+                    String test = iMatch.getOpponent().split(" vs ")[1];
+                } catch(ArrayIndexOutOfBoundsException e) {
+                    toRemove.add(iMatch);
                 }
-                adapter.notifyDataSetChanged();
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+            playoffs.removeAll(toRemove);
+            adapter.notifyDataSetChanged();
 
             rbTournament.setRating(tournament.getRating());
             tvTornName.setText(tournament.getTitle());
-            tvTornRules.setText(tournament.getContent());
 
             ParseQuery<Tournament> query = ParseQuery.getQuery(Tournament.class);
             query.whereEqualTo("name", title);
@@ -290,12 +289,36 @@ public class TournamentInfoActivity extends AppCompatActivity {
             });
         });
 
+        taskRunner.executeAsync(new getImage(title), (data) -> {
+            try {
+                Thread.sleep(2000);
+                String photoLink = parser.getPhotoLink(data);
+                Glide.with(TournamentInfoActivity.this).load(photoLink).into(ivTornPicture);
+            } catch (InterruptedException | JSONException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
-    class LongRunningTask implements Callable<JSONObject> {
+    class getMatches implements Callable<String> {
         private final String input;
 
-        public LongRunningTask(String input) {
+        public getMatches(String input) {
+            this.input = input;
+        }
+
+        @Override
+        public String call() throws IOException, JSONException {
+            // Some long running task
+            return MainActivity.client.getUnparsed(input);
+        }
+    }
+
+    class getImage implements Callable<JSONObject> {
+        private final String input;
+
+        public getImage(String input) {
             this.input = input;
         }
 

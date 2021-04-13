@@ -77,6 +77,7 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        View dvH2HEventName2;
         TextView tvTournTime;
         TextView tvTournScoreLeft;
         TextView tvTournScoreRight;
@@ -85,6 +86,7 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            dvH2HEventName2 = itemView.findViewById(R.id.dvH2HEventName2);
             tvTournTime = itemView.findViewById(R.id.tvTournTime);
             tvTournScoreLeft = itemView.findViewById(R.id.tvTournScoreLeft);
             tvTournScoreRight = itemView.findViewById(R.id.tvTournScoreRight);
@@ -93,11 +95,32 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
         }
 
         public void bind(IMatch match) {
-            tvTournTime.setText(match.getTime());
-            tvTournLeft.setText(match.getOpponent().split(" vs ")[0]);
-            tvTournRight.setText(match.getOpponent().split(" vs ")[1]);
-            tvTournScoreLeft.setText(String.valueOf(match.getResult1()));
-            tvTournScoreRight.setText(String.valueOf(match.getResult2()));
+            if (match.getTime().isEmpty()) {
+                tvTournTime.setVisibility(View.GONE);
+                dvH2HEventName2.setVisibility(View.GONE);
+            } else {
+                tvTournTime.setText(match.getTime());
+            }
+
+            try {
+                tvTournScoreLeft.setText(String.valueOf(match.getResult1()));
+                tvTournScoreRight.setText(String.valueOf(match.getResult2()));
+                try {
+                    tvTournLeft.setText(match.getOpponent().split(" vs ")[0].split(" | player")[0]);
+                    tvTournRight.setText(match.getOpponent().split(" vs ")[1].split(" | player")[0]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    tvTournLeft.setText(match.getOpponent().split(" vs ")[0]);
+                    tvTournRight.setText(match.getOpponent().split(" vs ")[1]);
+                }
+
+            } catch(ArrayIndexOutOfBoundsException e) {
+                tvTournTime.setText(match.getTime());
+                tvTournScoreLeft.setText("0");
+                tvTournScoreRight.setText("0");
+                tvTournLeft.setText("TBD");
+                tvTournRight.setText("TBD");
+            }
+
         }
     }
 
