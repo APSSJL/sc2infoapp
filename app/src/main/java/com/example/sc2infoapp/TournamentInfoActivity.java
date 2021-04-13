@@ -121,16 +121,18 @@ public class TournamentInfoActivity extends AppCompatActivity {
                     rbTournament.setRating(tournament.getRating());
                     tvTornName.setText(tournament.getTitle());
                     tvTornRules.setText(userTournament.getDescription());
-                    Log.i(TAG,ParseUser.getCurrentUser().getUsername());
-                    Log.i(TAG,userTournament.getDescription());
+                    Log.i(TAG,ParseUser.getCurrentUser().getObjectId());
+                    Log.i(TAG,userTournament.getOrganizer().getObjectId());
 
-                    if (ParseUser.getCurrentUser() == userTournament.getOrganizer()) {
+                    if (ParseUser.getCurrentUser().getObjectId().equals(userTournament.getOrganizer().getObjectId())) {
                         Log.i(TAG,"in");
                         btnTornEdit.setVisibility(View.VISIBLE);
                         btnTornEdit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //Todo: Edit Tournament Screen
+                                Intent i = new Intent(TournamentInfoActivity.this,EditTournamentActivity.class);
+                                startActivity(i);
                             }
                         });
                     }
