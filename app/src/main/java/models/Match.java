@@ -24,6 +24,9 @@ import static com.parse.ParseUser.getCurrentUser;
 @ParseClassName("PlayerMatch")
 public class Match extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable, IPublished {
     protected static final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
+    psfs
+
+
     public String getTime(){return dt.format(getDate("time"));}
     public String getOpponent()
     {
@@ -155,4 +158,6 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
     {
         return getParseUser("winner");
     }
+
+    public void setDetails(){}
 }

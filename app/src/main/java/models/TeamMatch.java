@@ -152,4 +152,7 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
     public ParseUser getWinner() {
         return getParseUser("winner");
     }
+
+    //Set methods
+
 }

@@ -1,36 +1,44 @@
 package com.example.sc2infoapp;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import models.Match;
+import models.Player;
+import models.Team;
+import models.TeamMatch;
 import models.Tournament;
 import models.UserTournament;
 
@@ -42,13 +50,28 @@ public class CreateTournamentActivity extends AppCompatActivity {
     EditText etTournName;
     EditText etTournDescription;
     Button btnPostTournLogo;
-    Button btnCreateTourn;
+    Button btnSaveTourn;
     CheckBox cbIsTeam;
     ImageView ivTournLogo;
+
+    //Match stuff
+    Spinner etObj1;
+    Spinner etObj2;
+    EditText etMatchDescription;
+    Button btnCreateMatch;
+
+    private String Object1;
+    private String Object2;
+
+    private List<Player> players;
+    private Player player;
+    private List<Team> teams;
 
     private static int RESULT_LOAD_IMG = 1;
     private Bitmap photoFile;
     private File result;
+
+
 
 
     ParseUser user;
@@ -61,11 +84,37 @@ public class CreateTournamentActivity extends AppCompatActivity {
 
         //find view by id
         btnPostTournLogo = findViewById(R.id.btnPostTournLogo);
-        btnCreateTourn = findViewById(R.id.btnCreateTourn);
+        btnSaveTourn = findViewById(R.id.btnSaveTourn);
         etTournName = findViewById(R.id.etTournName);
         etTournDescription = findViewById(R.id.etTournDescription);
         cbIsTeam = findViewById(R.id.cbIsTeam);
         ivTournLogo = findViewById(R.id.ivTournLogo);
+        etObj1 = findViewById(R.id.spObj1);
+        etObj2 = findViewById(R.id.spObj2);
+        etMatchDescription = findViewById(R.id.etMatchDescription);
+        btnCreateMatch = findViewById(R.id.btnCreateMatch);
+
+        //Get all players from back4app
+        players = new ArrayList<Player>();
+        ParseQuery<Player> query = ParseQuery.getQuery("Player");
+        query.findInBackground(new FindCallback<Player>() {
+            @Override
+            public void done(List<Player> objects, ParseException e) {
+                //Spinner stuff
+                List<String> list = new ArrayList<String>();
+
+                for (int i = 0; i < objects.size(); i++) {
+                    list.add(objects.get(i).getName());
+                    Log.i(TAG,objects.get(i).getName());
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateTournamentActivity.this, android.R.layout.simple_spinner_item,list);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                etObj1.setAdapter(adapter);
+                etObj1.setOnItemSelectedListener(new MyOnItemSelectedListener());
+                etObj2.setAdapter(adapter);
+                etObj2.setOnItemSelectedListener(new MyOnItemSelectedListener());
+            }
+        });
 
         btnPostTournLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,8 +126,26 @@ public class CreateTournamentActivity extends AppCompatActivity {
             }
         });
 
+        //Create Match button listener
+        btnCreateMatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Boolean isTeam = cbIsTeam.isChecked();
+                //Create Team Match
+                if (isTeam){
+
+
+                }
+                //Create Player Match
+                else{
+                    Match match = new Match();
+
+                }
+            }
+        });
+
         //set OnClickListener
-        btnCreateTourn.setOnClickListener(new View.OnClickListener() {
+        btnSaveTourn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String tournName = etTournName.getText().toString();
@@ -188,9 +255,39 @@ public class CreateTournamentActivity extends AppCompatActivity {
         tournament.setTournName(tournName);
     }
 
-    public void createMatch(){
+    public class MyOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
+            String selectedItem = parent.getItemAtPosition(pos).toString();
+
+            //check which spinner triggered the listener
+            switch (parent.getId()) {
+                //Player1 spinner
+                case R.id.spObj1:
+                    //make sure the country was already selected during the onCreate
+                    if(Object1 != null){
+                        Toast.makeText(parent.getContext(), "Player 1 you selected is " + selectedItem,
+                                Toast.LENGTH_LONG).show();
+                    }
+                    Object1 = selectedItem;
+                    break;
+                //Player2 spinner
+                case R.id.spObj2:
+                    //make sure the animal was already selected during the onCreate
+                    if(Object2 != null){
+                        Toast.makeText(parent.getContext(), "Player 2 selected is " + selectedItem,
+                                Toast.LENGTH_LONG).show();
+                    }
+                    Object2 = selectedItem;
+                    break;
+            }
+
+
+        }
+
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
+        }
     }
-
 
 }

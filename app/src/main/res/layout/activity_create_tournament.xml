@@ -46,14 +46,14 @@
         android:text="Post Image" />
 
     <Button
-        android:id="@+id/btnCreateTourn"
+        android:id="@+id/btnSaveTourn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="17dp"
-        android:text="Create" />
+        android:text="Save" />
 
     <CheckBox
         android:id="@+id/cbIsTeam"
@@ -64,4 +64,43 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:text="Team Matches" />
+
+    <Button
+        android:id="@+id/btnCreateMatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="14dp"
+        android:layout_marginBottom="107dp"
+        android:text="Create Match" />
+
+    <Spinner
+        android:id="@+id/spObj1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="322dp" />
+
+    <Spinner
+        android:id="@+id/spObj2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="280dp" />
+
+    <EditText
+        android:id="@+id/etMatchDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="239dp"
+        android:hint="Match Description" />
+
 </RelativeLayout>

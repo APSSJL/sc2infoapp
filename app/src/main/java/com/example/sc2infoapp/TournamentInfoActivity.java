@@ -132,6 +132,8 @@ public class TournamentInfoActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 //Todo: Edit Tournament Screen
                                 Intent i = new Intent(TournamentInfoActivity.this,EditTournamentActivity.class);
+                                i.putExtra("userTournament", Parcels.wrap(userTournament));
+                                i.putExtra("tournament",Parcels.wrap(tournament));
                                 startActivity(i);
                             }
                         });
