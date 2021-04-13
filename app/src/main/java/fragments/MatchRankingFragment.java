@@ -128,6 +128,7 @@ public class MatchRankingFragment extends Fragment {
                 i.putExtra("opponent", match.getOpponent());
                 i.putExtra("time", match.getTime());
                 i.putExtra("type", match.getMatchType());
+
                 getActivity().startActivity(i);
             }
         });
