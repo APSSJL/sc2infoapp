@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -31,8 +32,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import models.Match;
+import models.Player;
+import models.Team;
+import models.TeamMatch;
 import models.Tournament;
 import models.UserTournament;
 
@@ -48,8 +54,17 @@ public class EditTournamentActivity extends AppCompatActivity {
     CheckBox cbIsTeam;
     ImageView ivTournLogo;
 
+    //Match stuff
+    EditText spObj1;
+    EditText spObj2;
+    EditText etMatchDescription;
+    Button btnCreateMatch;
+
     UserTournament userTournament;
     Tournament tournament;
+
+    Match match;
+    TeamMatch teamMatch;
 
     ParseUser user;
     private Bitmap photoFile;
@@ -73,6 +88,13 @@ public class EditTournamentActivity extends AppCompatActivity {
         cbIsTeam = findViewById(R.id.cbIsTeam);
         ivTournLogo = findViewById(R.id.ivTournLogo);
 
+        spObj1 = findViewById(R.id.spObj1);
+        spObj2 = findViewById(R.id.spObj2);
+        etMatchDescription = findViewById(R.id.etMatchDescription);
+        btnCreateMatch = findViewById(R.id.btnCreateMatch);
+
+
+
         user = ParseUser.getCurrentUser();
 
         btnPostTournLogo.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +104,124 @@ public class EditTournamentActivity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, CHOOSE_IMAGE_FROM_GALLERY_REQUEST_CODE);
+            }
+        });
+
+        btnCreateMatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Boolean isTeam = cbIsTeam.isChecked();
+
+                //if Team Match
+                if (isTeam){
+                    //Query through teams
+                    ParseQuery<Team> Obj1query = ParseQuery.getQuery("Team");
+                    Obj1query.whereEqualTo("teamName",spObj1.getText().toString());
+
+                    ParseQuery<Team> Obj2query = ParseQuery.getQuery("Team");
+                    Obj2query.whereEqualTo("teamName",spObj2.getText().toString());
+
+                    List<ParseQuery<Team>> queries = new ArrayList<ParseQuery<Team>>();
+                    queries.add(Obj1query);
+                    queries.add(Obj2query);
+
+                    ParseQuery<Team> mainQuery = ParseQuery.or(queries);
+                    mainQuery.findInBackground(new FindCallback<Team>() {
+                        @Override
+                        public void done(List<Team> objects, ParseException e) {
+                            if (objects.size()<2){
+                                Toast.makeText(EditTournamentActivity.this,"Team 1 or Team 2 is non-existant",Toast.LENGTH_SHORT).show();
+                                Log.e(TAG,"Team 1 or Team 2 is non-existant",e);
+                                return;
+                            }
+                            Team team1 = objects.get(0);
+                            Team team2 = objects.get(1);
+                            Log.i(TAG,"Team1: "+team1.getTeamName());
+                            Log.i(TAG,"Team2: "+team2.getTeamName());
+
+                            teamMatch = new TeamMatch();
+                            teamMatch.setDetails(etMatchDescription.getText().toString());
+                            teamMatch.setTeam1(team1);
+                            teamMatch.setTeam2(team2);
+
+                            teamMatch.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e != null) {
+                                        Log.e(TAG, "Error while creating", e);
+                                        Toast.makeText(EditTournamentActivity.this, "Error while creating", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    Log.i(TAG, "Created successfully");
+                                    Log.i(TAG,"teamMatch ID:"+teamMatch.getObjectId());
+
+                                    //add match to userTournament matches
+                                    ArrayList<String> currentMatches = userTournament.getMatches();
+                                    currentMatches.add(teamMatch.getObjectId());
+                                    Log.i(TAG,"All matches:"+currentMatches.toString());
+                                    userTournament.setMatches(currentMatches);
+                                    finish();
+                                }
+                            });
+                        }
+                    });
+                }
+                //if player Match
+                else{
+                    //Query through player
+                    ParseQuery<ParseUser> Obj1query = ParseUser.getQuery();
+                    Obj1query.whereEqualTo("username",spObj1.getText().toString());
+
+                    ParseQuery<ParseUser> Obj2query = ParseUser.getQuery();
+                    Obj2query.whereEqualTo("username",spObj2.getText().toString());
+
+                    List<ParseQuery<ParseUser>> queries = new ArrayList<ParseQuery<ParseUser>>();
+                    queries.add(Obj1query);
+                    queries.add(Obj2query);
+
+                    ParseQuery<ParseUser> mainQuery = ParseQuery.or(queries);
+                    mainQuery.findInBackground(new FindCallback<ParseUser>() {
+                        @Override
+                        public void done(List<ParseUser> objects, ParseException e) {
+                            if (objects.size()<2){
+                                Toast.makeText(EditTournamentActivity.this,"Player 1 or Player 2 is non-existant",Toast.LENGTH_SHORT).show();
+                                Log.e(TAG,"Player 1 or Player 2 is non-existant",e);
+                                return;
+                            }
+                            ParseUser player1 = objects.get(0);
+                            ParseUser player2 = objects.get(1);
+                            Log.i(TAG,"Team1: "+player1);
+                            Log.i(TAG,"Team2: "+player2);
+
+                            match = new Match();
+                            match.setDetails(etMatchDescription.getText().toString());
+                            match.setPlayer1(player1);
+                            match.setPlayer2(player2);
+
+                            match.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e != null) {
+                                        Log.e(TAG, "Error while creating", e);
+                                        Toast.makeText(EditTournamentActivity.this, "Error while creating", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    Log.i(TAG, "Created successfully");
+                                    Log.i(TAG,"teamMatch ID:"+match.getObjectId());
+
+                                    //add match to userTournament matches
+                                    userTournament.add("matches",match.getObjectId());
+//                                    ArrayList<String> currentMatches = userTournament.getMatches();
+//                                    currentMatches.add(match.getObjectId());
+//                                    Log.i(TAG,"All matches:"+currentMatches.toString());
+//                                    userTournament.setMatches(currentMatches);
+                                    finish();
+                                }
+                            });
+                        }
+                    });
+                }
+
             }
         });
 
@@ -137,7 +277,6 @@ public class EditTournamentActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     @Override

@@ -1,5 +1,7 @@
 package models;
 
+import android.util.Log;
+
 import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -47,5 +49,10 @@ public class UserTournament extends Tournament {
     public void setTournName(String name){put(KEY_NAME,name);}
     public void setIsTeam(Boolean isTeam){put(KEY_ISTEAM,isTeam);}
     public void setLogo(ParseFile logo){put(KEY_LOGO, logo);}
+    public void setMatches(List<String> matches){
+        JSONArray jsonArray = new JSONArray(matches);
+        Log.i("test2",jsonArray.toString());
+        put(KEY_MATCHES,jsonArray);
+    }
 
 }

@@ -52,8 +52,8 @@ public class CreateTournamentActivity extends AppCompatActivity {
     ImageView ivTournLogo;
 
     //Match stuff
-    Spinner etObj1;
-    Spinner etObj2;
+    EditText etObj1;
+    EditText etObj2;
     EditText etMatchDescription;
     Button btnCreateMatch;
 
@@ -89,31 +89,10 @@ public class CreateTournamentActivity extends AppCompatActivity {
         etMatchDescription = findViewById(R.id.etMatchDescription);
         btnCreateMatch = findViewById(R.id.btnCreateMatch);
 
-        //Get all users from back4app
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e!=null){
-                    Toast.makeText(CreateTournamentActivity.this,"error while saving",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                Toast.makeText(CreateTournamentActivity.this,"loaded",Toast.LENGTH_LONG).show();
-                //Spinner stuff
-                List<String> list = new ArrayList<String>();
-
-                for (int i = 0; i < objects.size(); i++) {
-                    list.add(objects.get(i).getUsername());
-                    Log.i(TAG,objects.get(i).getUsername());
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateTournamentActivity.this, android.R.layout.simple_spinner_item,list);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                etObj1.setAdapter(adapter);
-                etObj1.setOnItemSelectedListener(new MyOnItemSelectedListener());
-                etObj2.setAdapter(adapter);
-                etObj2.setOnItemSelectedListener(new MyOnItemSelectedListener());
-            }
-        });
+        etObj1.setVisibility(View.GONE);
+        etObj2.setVisibility(View.GONE);
+        etMatchDescription.setVisibility(View.GONE);
+        btnCreateMatch.setVisibility(View.GONE);
 
         btnPostTournLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,27 +104,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
             }
         });
 
-        //Create Match button listener
-        btnCreateMatch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Boolean isTeam = cbIsTeam.isChecked();
-                //Create Team Match
-                if (isTeam){
-
-
-                }
-                //Create Player Match
-                else{
-//                    Match match = new Match();
-//                    ParseQuery
-//
-//                    //Set Match Description
-//                    match.setDetails(etMatchDescription.getText().toString());
-                }
-            }
-        });
-
         //set OnClickListener
         btnSaveTourn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +111,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
                 String tournName = etTournName.getText().toString();
                 String tournDescription = etTournDescription.getText().toString();
                 Boolean isTeam = cbIsTeam.isChecked();
-
 
                 if (tournName.isEmpty()){
                     Toast.makeText(CreateTournamentActivity.this, "Tournament Name cannot be empty!", Toast.LENGTH_SHORT).show();
@@ -173,8 +130,10 @@ public class CreateTournamentActivity extends AppCompatActivity {
                     Log.i(TAG,"False");
                 }
 
-                Log.i(TAG,photoFile.toString());
-                userTournament.setLogo(new ParseFile(result));
+                if (result!=null){
+                    userTournament.setLogo(new ParseFile(result));
+                }
+
 
 //                userTournament.setLogo(new ParseFile(photoFile));
 

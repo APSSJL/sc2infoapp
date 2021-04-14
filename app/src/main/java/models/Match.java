@@ -163,5 +163,6 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
 
     public void setDetails(String string){put(KEY_DETAILS,string);}
 
-    public void setPlayer1(Player player1){put(KEY_PLAYER1,player1);}
+    public void setPlayer1(ParseUser player1){put(KEY_PLAYER1,player1);}
+    public void setPlayer2(ParseUser player2){put(KEY_PLAYER2,player2);}
 }

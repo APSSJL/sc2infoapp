@@ -154,5 +154,8 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
     }
 
     //Set methods
+    public void setDetails(String string){put("details",string);}
 
+    public void setTeam1(Team team1){put("Team1",team1);}
+    public void setTeam2(Team team2){put("Team2",team2);}
 }
