@@ -75,6 +75,7 @@ public class LiquipediaParser {
 
     private void getGroup(ArrayList<ExternalMatch> matches, Matcher matcher, SimpleDateFormat dateParser) {
         Pattern map = Pattern.compile("map", Pattern.MULTILINE);
+        String date = "";
         while (matcher.find()) {
             String t = matcher.group(0);
             Matcher mapMatcher = map.matcher(t);
@@ -88,7 +89,6 @@ public class LiquipediaParser {
                 }
                 Pattern dateP = Pattern.compile("date=(.*?) \\{\\{");
                 m = dateP.matcher(t);
-                String date = "";
                 if(m.find() && m.group(1) != null && dateParser.parse(m.group(1)) != null)
                     date = ExternalMatch.DATE_FORMATTER.format(dateParser.parse(m.group(1)));
                 matches.add(new ExternalMatch(matcher.group(5) + " vs " + matcher.group(6), date, bo));

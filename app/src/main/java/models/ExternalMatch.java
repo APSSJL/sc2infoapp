@@ -30,7 +30,7 @@ public class ExternalMatch implements IMatch, IFollowable {
     private String time;
     private String tournament;
     public static final SimpleDateFormat DATE_PARRSER = new SimpleDateFormat("MMMM dd, yyyy - HH:mm z");
-    public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
+    public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd hh:mm z");
 
     public ExternalMatch()
     {}

@@ -32,7 +32,7 @@ public class PlayerCommentActivity extends BaseCommentActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setContentView(R.layout.activity_player_comment);
+        setContentView(R.layout.activity_player_comment);
         layoutId =R.layout.activity_player_comment;
         sourceId = getIntent().getStringExtra("id");
         super.onCreate(savedInstanceState);

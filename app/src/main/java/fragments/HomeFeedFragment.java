@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import adapters.HomeFeedAdapter;
 import interfaces.IPublished;
 import models.ExternalMatch;
 import models.ExternalMatchNotification;
@@ -70,7 +69,7 @@ public class HomeFeedFragment extends Fragment {
     private static final String TAG = "HOME_FEED";
     Button btnCreatePost;
     RecyclerView rvFeed;
-    HomeFeedAdapter adapter;
+    UserFeedAdapter adapter;
     List<IPublished> published;
     Date lastUpdated;
     Button btnSearch;
@@ -122,7 +121,7 @@ public class HomeFeedFragment extends Fragment {
         });
 
 
-        adapter = new HomeFeedAdapter(getContext(), published);
+        adapter = new UserFeedAdapter(getContext(), published);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvFeed.setLayoutManager(manager);
         rvFeed.setAdapter(adapter);
