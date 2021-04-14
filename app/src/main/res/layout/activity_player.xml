@@ -63,7 +63,6 @@
         android:id="@+id/rvMatches"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tvMatches"
         android:layout_below="@+id/dvPlayerRecentMatchesLabel"
         android:layout_marginTop="5dp" />
 
