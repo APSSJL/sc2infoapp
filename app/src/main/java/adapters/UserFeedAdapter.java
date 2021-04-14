@@ -23,6 +23,7 @@ import models.Post;
 import com.example.sc2infoapp.MatchDetailActivity;
 import models.Notification;
 import com.example.sc2infoapp.PlayerActivity;
+import com.example.sc2infoapp.PostDetailActivity;
 import com.example.sc2infoapp.R;
 
 import models.Tournament;
@@ -105,11 +106,19 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
         @SuppressLint("NewApi")
         public void bind(final IPublished published) {
             Post post = (Post) published;
-            tvTitle.setOnClickListener(new View.OnClickListener() {
+            tvAuthor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(activity, ViewProfileActivity.class);
                     i.putExtra("user", post.getUser());
+                    activity.startActivity(i);
+                }
+            });
+            tvTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(activity, PostDetailActivity.class);
+                    i.putExtra("post", Parcels.wrap(post));
                     activity.startActivity(i);
                 }
             });

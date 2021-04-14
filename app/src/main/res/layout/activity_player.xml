@@ -63,7 +63,6 @@
         android:id="@+id/rvMatches"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tvMatches"
         android:layout_below="@+id/dvPlayerRecentMatchesLabel"
         android:layout_marginTop="5dp" />
 
@@ -94,11 +93,9 @@
         android:textColor="@color/white" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnComment"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:id="@+id/btnPostComment"
+        android:id="@+id/btnComment"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
