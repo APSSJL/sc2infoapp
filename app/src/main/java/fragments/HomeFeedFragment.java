@@ -27,6 +27,7 @@ import models.Match;
 import models.Player;
 import models.Post;
 
+import com.example.sc2infoapp.CreateTournamentActivity;
 import com.example.sc2infoapp.HomeFilterActivity;
 import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
@@ -75,6 +76,7 @@ public class HomeFeedFragment extends Fragment {
     Date lastUpdated;
     Button btnSearch;
     Button btnHomeFilter;
+    Button btnCreateTournament;
     SharedPreferences pref;
 
 
@@ -90,9 +92,18 @@ public class HomeFeedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         btnCreatePost = view.findViewById(R.id.btnCreatePost);
         btnHomeFilter = view.findViewById(R.id.btnHomeFilter);
+        btnCreateTournament = view.findViewById(R.id.btnCreateTournament);
         rvFeed = view.findViewById(R.id.rvFeed);
         published = new ArrayList<>();
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        btnCreateTournament.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), CreateTournamentActivity.class);
+                startActivity(i);
+            }
+        });
 
         btnCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
