@@ -76,7 +76,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] Tournaments
     - [x] Teams 
     - [x] Match
-- [ ] User can view tournament detailed screen
+- [x] User can view tournament detailed screen
     - [x] User can create new tournaments
     - [ ] User can edit user tournaments
 - [x] User can search and filter posts, players, teams and tournaments
