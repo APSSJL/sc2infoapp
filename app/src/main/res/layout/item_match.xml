@@ -3,29 +3,44 @@
     android:id="@+id/rvMatchItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 
     <TextView
         android:id="@+id/tvVersus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:text="vs Skillous" />
+        android:layout_below="@+id/divider2"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:text="vs Skillous"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="20dp"
-        android:layout_toEndOf="@id/tvVersus"
+        android:layout_below="@+id/tvVersus"
+        android:layout_marginStart="10dp"
         android:text="4/1/2021 08.08" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPredict"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/divider2"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/themeColor"
         android:text="Predict!"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider" />
 </RelativeLayout>

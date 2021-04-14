@@ -4,138 +4,154 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity"
-    android:padding="10dp">
+    android:padding="15dp"
+    tools:context=".SearchActivity">
+
     <ImageView
+        android:id="@+id/ivProfileImage"
         android:layout_width="200px"
         android:layout_height="200px"
-        android:id="@+id/ivProfileImage"
-        android:scaleType="fitXY"
-        tools:srcCompat="@tools:sample/avatars"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        />
+        android:scaleType="fitXY"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <EditText
+        android:id="@+id/edSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/edSearch"
-        android:hint="Search..."
         android:layout_below="@+id/ivProfileImage"
+        android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:padding="5dp"
-        android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/btnSearch"
         android:background="@drawable/layout_bg"
+        android:hint="Search..."
+        android:padding="5dp"
 
         />
+
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/edRating"
-        android:layout_toStartOf="@+id/spCategories"
-        android:layout_below="@+id/cgCategories"
-        android:hint="Rating"
-        android:inputType="number"
-        android:layout_toEndOf="@+id/checkboxIsHiring"
-        />
-    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Search"
+        android:layout_below="@+id/cgCategories"
+        android:layout_toStartOf="@+id/spCategories"
+        android:layout_toEndOf="@+id/checkboxIsHiring"
+        android:hint="Rating"
+        android:inputType="number" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSearch"
-        android:background="@color/transparent"
-        android:textColor="@color/accent_color"
-        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfileImage"
-        />
+        android:layout_alignParentEnd="true"
+        android:background="@color/transparent"
+        android:text="Search"
+        android:textAllCaps="false"
+        android:textColor="@color/themeColor" />
 
     <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgCategories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/cgCategories"
-    android:layout_below="@+id/edSearch">
+        android:layout_below="@+id/edSearch">
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipAll"
-            android:text="All"
-            android:checkable="true"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="All" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPlayers"
-            android:checkable="true"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:text="Players"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Players" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipTeams"
-            android:text="Teams"
-            android:checkable="true"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Teams" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipUsers"
-            android:text="Users"
-            android:checkable="true"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Users" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPosts"
-            android:text="Posts"
-            android:checkable="true"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Posts" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipTournaments"
-            android:text="Tournaments"
-            android:checkable="true"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Tournaments" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipMatches"
-            android:text="Matches"
-            android:checkable="true"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Matches" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipTags"
-            android:text="Tags"
-            android:checkable="true"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:backgroundTint="@color/accent_color"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Tags" />
     </com.google.android.material.chip.ChipGroup>
+
     <CheckBox
+        android:id="@+id/checkboxIsHiring"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checkboxIsHiring"
-        android:text="Is hiring?"
         android:layout_below="@+id/cgCategories"
-        android:textColor="@color/secondary_text"
-        />
+        android:buttonTint="@color/themeColor"
+        android:text="Is hiring?"
+        android:textColor="@color/secondary_text" />
+
     <Spinner
         android:id="@+id/spCategories"
         android:layout_width="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_height="45dp"
         android:layout_below="@id/cgCategories"
+        android:layout_alignParentEnd="true"
         android:entries="@array/allCategory" />
 
     <View
-        android:layout_below="@id/checkboxIsHiring"
+        android:id="@+id/dvSearchResultRV"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:id="@+id/divider"
-        android:background="@android:color/darker_gray"/>
+        android:layout_below="@id/checkboxIsHiring"
+        android:background="@android:color/darker_gray" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvResults"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/dvSearchResultRV"
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

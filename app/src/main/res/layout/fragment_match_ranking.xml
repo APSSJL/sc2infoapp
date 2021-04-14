@@ -48,7 +48,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:clickable="false"
-            android:isIndicator="true" />
+            android:isIndicator="true"
+            android:progressTint="@color/themeColor" />
     </RelativeLayout>
 
     <TextView
@@ -92,9 +93,8 @@
         android:layout_below="@+id/dvPredict"
         android:layout_marginTop="5dp"
         android:progress="50"
-        android:progressBackgroundTint="#855E24"
         android:progressBackgroundTintMode="add"
-        android:progressTint="#0080B4"
+        android:progressTint="@color/themeColor"
         android:progressTintMode="src_in" />
 
     <TextView
