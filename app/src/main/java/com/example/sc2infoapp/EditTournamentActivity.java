@@ -156,10 +156,8 @@ public class EditTournamentActivity extends AppCompatActivity {
                                     Log.i(TAG,"teamMatch ID:"+teamMatch.getObjectId());
 
                                     //add match to userTournament matches
-                                    ArrayList<String> currentMatches = userTournament.getMatches();
-                                    currentMatches.add(teamMatch.getObjectId());
-                                    Log.i(TAG,"All matches:"+currentMatches.toString());
-                                    userTournament.setMatches(currentMatches);
+                                    userTournament.add("matches",teamMatch.getObjectId());
+                                    userTournament.saveInBackground();
                                     finish();
                                 }
                             });
@@ -211,10 +209,7 @@ public class EditTournamentActivity extends AppCompatActivity {
 
                                     //add match to userTournament matches
                                     userTournament.add("matches",match.getObjectId());
-//                                    ArrayList<String> currentMatches = userTournament.getMatches();
-//                                    currentMatches.add(match.getObjectId());
-//                                    Log.i(TAG,"All matches:"+currentMatches.toString());
-//                                    userTournament.setMatches(currentMatches);
+                                    userTournament.saveInBackground();
                                     finish();
                                 }
                             });
