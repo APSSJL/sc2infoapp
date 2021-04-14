@@ -31,6 +31,7 @@ import models.UserInfo;
 import models.UserTournament;
 
 import com.example.sc2infoapp.TeamActivity;
+import com.example.sc2infoapp.TournamentInfoActivity;
 import com.example.sc2infoapp.ViewProfileActivity;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -231,7 +232,15 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+            tvTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(((Activity)context), TournamentInfoActivity.class);
+                    i.putExtra("userCreated", Parcels.wrap(true));
+                    i.putExtra("tournament", Parcels.wrap(tournament.getUserCreated()));
+                    ((Activity)context).startActivity(i);
+                }
+            });
         }
     }
 
