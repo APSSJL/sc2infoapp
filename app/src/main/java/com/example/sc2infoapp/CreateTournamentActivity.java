@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -50,12 +51,14 @@ public class CreateTournamentActivity extends AppCompatActivity {
     Button btnSaveTourn;
     CheckBox cbIsTeam;
     ImageView ivTournLogo;
+    TextView tvIsTeam;
 
     //Match stuff
-    EditText etObj1;
-    EditText etObj2;
+    EditText spObj1;
+    EditText spObj2;
     EditText etMatchDescription;
     Button btnCreateMatch;
+    EditText etMatchDate;
 
     private String Object1;
     private String Object2;
@@ -84,15 +87,19 @@ public class CreateTournamentActivity extends AppCompatActivity {
         etTournDescription = findViewById(R.id.etTournDescription);
         cbIsTeam = findViewById(R.id.cbIsTeam);
         ivTournLogo = findViewById(R.id.ivTournLogo);
-        etObj1 = findViewById(R.id.spObj1);
-        etObj2 = findViewById(R.id.spObj2);
+        spObj1 = findViewById(R.id.spObj1);
+        spObj2 = findViewById(R.id.spObj2);
         etMatchDescription = findViewById(R.id.etMatchDescription);
         btnCreateMatch = findViewById(R.id.btnCreateMatch);
+        tvIsTeam = findViewById(R.id.tvIsTeam);
+        etMatchDate = findViewById(R.id.etMatchDate);
 
-        etObj1.setVisibility(View.GONE);
-        etObj2.setVisibility(View.GONE);
+        tvIsTeam.setVisibility(View.GONE);
+        spObj1.setVisibility(View.GONE);
+        spObj2.setVisibility(View.GONE);
         etMatchDescription.setVisibility(View.GONE);
         btnCreateMatch.setVisibility(View.GONE);
+        etMatchDate.setVisibility(View.GONE);
 
         btnPostTournLogo.setOnClickListener(new View.OnClickListener() {
             @Override

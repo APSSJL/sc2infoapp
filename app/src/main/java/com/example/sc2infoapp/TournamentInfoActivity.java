@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -70,10 +71,14 @@ public class TournamentInfoActivity extends AppCompatActivity {
     TextView tvTornName;
     TextView tvTornRules;
 
+    SwipeRefreshLayout swipeContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tournament_info);
+
+//        swipeContainer = findViewById(R.id.swipeContainer);
 
         btnTornComment = findViewById(R.id.btnTornComment);
         btnTornEdit = findViewById(R.id.btnTornEdit);
@@ -85,6 +90,8 @@ public class TournamentInfoActivity extends AppCompatActivity {
         rvTornMatches = findViewById(R.id.rvTornMatches);
         tvTornName = findViewById(R.id.tvTornName);
         tvTornRules = findViewById(R.id.tvTornRules);
+
+
 
         try {
             ParseFile p = (ParseUser.getCurrentUser().getParseFile("pic"));
@@ -173,8 +180,8 @@ public class TournamentInfoActivity extends AppCompatActivity {
 
         } else {
             getExternalTournament();
-
         }
+
 
         btnTornComment.setOnClickListener(new View.OnClickListener() {
             @Override

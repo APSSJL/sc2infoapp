@@ -76,6 +76,18 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
         return matches;
     }
 
+    // Clean all elements of the recycler
+    public void clear() {
+        matches.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(List<IMatch> list) {
+        matches.addAll(list);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTournTime;
         TextView tvTournScoreLeft;

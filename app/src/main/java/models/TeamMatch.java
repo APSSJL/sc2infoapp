@@ -10,6 +10,7 @@ import com.parse.ParseUser;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import interfaces.IFollowable;
 import interfaces.IMatch;
@@ -38,6 +39,8 @@ public class TeamMatch extends ParseObject implements IMatch, IPredictable, IRat
     }
 
     public String getTime(){return DATE_FORMATTER.format(getDate("time"));}
+
+    public void setTime(Date date){put("time", date);}
 
     @Override
     public int getMatchType() {

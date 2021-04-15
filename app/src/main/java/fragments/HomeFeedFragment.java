@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import adapters.HomeFeedAdapter;
+import adapters.UserFeedAdapter;
 import interfaces.IPublished;
 import models.ExternalMatch;
 import models.ExternalMatchNotification;
@@ -42,7 +45,6 @@ import com.example.sc2infoapp.R;
 import models.TaskRunner;
 import models.Team;
 import models.TeamMatch;
-import adapters.UserFeedAdapter;
 import models.UserTournament;
 
 import com.example.sc2infoapp.SearchActivity;
@@ -69,15 +71,15 @@ import java.util.concurrent.Callable;
 
 public class HomeFeedFragment extends Fragment {
     private static final String TAG = "HOME_FEED";
-    Button btnCreatePost;
     RecyclerView rvFeed;
-    HomeFeedAdapter adapter;
+    UserFeedAdapter adapter;
     List<IPublished> published;
     Date lastUpdated;
     Button btnSearch;
     Button btnHomeFilter;
-    Button btnCreateTournament;
     SharedPreferences pref;
+
+    Spinner spMenu;
 
 
     @Override
@@ -90,27 +92,41 @@ public class HomeFeedFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btnCreatePost = view.findViewById(R.id.btnCreatePost);
+
         btnHomeFilter = view.findViewById(R.id.btnHomeFilter);
-        btnCreateTournament = view.findViewById(R.id.btnCreateTournament);
+        spMenu = view.findViewById(R.id.spMenu);
+
         rvFeed = view.findViewById(R.id.rvFeed);
         published = new ArrayList<>();
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        btnCreateTournament.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(), CreateTournamentActivity.class);
-                startActivity(i);
-            }
-        });
+        List<String> menuList= new ArrayList<>();
+        menuList.add("Menu");
+        String createPost = "Create Post";
+        menuList.add(createPost);
+        String createTourn = "Create Tournament";
+        menuList.add(createTourn);
 
-        btnCreatePost.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,menuList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spMenu.setAdapter(dataAdapter);
+
+        spMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Log.i(TAG, getContext().toString());
-                Intent i = new Intent(getContext(), PostComposeActivity.class);
-                startActivity(i);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG,adapterView.getItemAtPosition(i).toString());
+                if (adapterView.getItemAtPosition(i).equals(createPost)){
+                    Intent intentPost = new Intent(getContext(), PostComposeActivity.class);
+                    startActivity(intentPost);
+                }
+                if (adapterView.getItemAtPosition(i).equals(createTourn)){
+                    Intent intentTourn = new Intent(getContext(), CreateTournamentActivity.class);
+                    startActivity(intentTourn);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
@@ -133,7 +149,7 @@ public class HomeFeedFragment extends Fragment {
         });
 
 
-        adapter = new HomeFeedAdapter(getContext(), published);
+        adapter = new UserFeedAdapter(getContext(), published);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rvFeed.setLayoutManager(manager);
         rvFeed.setAdapter(adapter);
