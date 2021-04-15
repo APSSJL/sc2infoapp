@@ -149,10 +149,16 @@ public class PlayerActivity extends AppCompatActivity {
 
         try {
             List<Player> players = query.find();
-
+            Player p;
             if(players.size() == 0)
-                return;
-            Player p = players.get(0);
+            {
+                p = new Player();
+                p.save();
+            }
+            else
+            {
+                p = players.get(0);
+            }
             player = p;
             
             btnFollow.setOnClickListener(new View.OnClickListener() {
