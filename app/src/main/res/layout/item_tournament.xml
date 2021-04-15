@@ -19,15 +19,19 @@
         android:id="@+id/ivLogo"
         android:src="@drawable/ic_launcher_background"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/ivLogo"
-        android:id="@+id/tvTitle"
-        android:textColor="@color/primary_text"
-        android:layout_margin="15dp"
-        android:text="Title"
-        />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toEndOf="@+id/ivLogo"
+            android:text="Title"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,15 +53,15 @@
         android:background="@color/light_primary_color"
         android:text="description"
         />
+
     <TextView
-        android:layout_marginTop="5dp"
+        android:id="@+id/tvRating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvRating"
-        android:background="@color/accent_color"
+        android:layout_below="@+id/tvDescription"
+        android:layout_marginTop="5dp"
+        android:background="@color/themeColor"
         android:paddingStart="15dp"
         android:text="Rating: 5/10"
-        android:textColor="@color/primary_text"
-        android:layout_below="@+id/tvDescription"
-        />
+        android:textColor="@color/primary_text" />
 </RelativeLayout>

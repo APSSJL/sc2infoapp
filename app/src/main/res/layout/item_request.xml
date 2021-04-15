@@ -1,33 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/layout_comment"
+    android:padding="5dp">
+
     <TextView
+        android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvName"
-        android:text="Username"
         android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
         android:padding="10dp"
-        />
+        android:text="Username"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnApprove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/btnDecline"
+        android:backgroundTint="@color/themeColor"
         android:text="Approve"
         android:textAllCaps="false"
-        android:id="@+id/btnApprove"
-        android:layout_toLeftOf="@+id/btnDecline"
-        />
+        android:textColor="@color/white" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnDecline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Decline"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/themeColor"
+        android:text="Decline"
         android:textAllCaps="false"
-        android:id="@+id/btnDecline"
-        />
+        android:textColor="@color/white" />
 
 </RelativeLayout>

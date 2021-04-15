@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/divider_color"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:padding="5dp">
+    android:background="@color/divider_color"
+    android:padding="5dp"
+    android:paddingTop="5dp">
 
     <RelativeLayout
+        android:id="@+id/rvTitleContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rvTitleContainer"
-        android:background="@color/light_primary_color"
-        >
+        android:background="@color/light_primary_color">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/tvTitle"
-            android:textColor="@color/primary_text"
-            android:layout_margin="15dp"
-            android:text="title"
-            />
-        <TextView
-            android:layout_toEndOf="@+id/tvTitle"
-            android:id="@+id/tvAuthor"
-            android:layout_margin="15dp"
-            android:textColor="@color/secondary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="title"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_toEndOf="@+id/tvTitle"
             android:text="by author"
-            />
+            android:textColor="@color/secondary_text" />
     </RelativeLayout>
 
     <TextView
@@ -39,29 +43,30 @@
         android:layout_below="@+id/rvTitleContainer"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="@color/accent_color"
+        android:background="@color/themeColor"
         android:paddingStart="15dp"
-        android:text="category" />
+        android:text="category"
+        android:textColor="@color/white" />
+
     <TextView
-        android:paddingStart="15dp"
-        android:background="@color/light_primary_color"
+        android:id="@+id/tvContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvCategory"
-        android:id="@+id/tvContent"
-        android:text="content\ncontent\ncontent"
-        />
-    <TextView
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:layout_marginTop="5dp"
         android:background="@color/light_primary_color"
-        android:textColor="@color/secondary_text"
+        android:paddingStart="15dp"
+        android:text="content\ncontent\ncontent" />
+
+    <TextView
+        android:id="@+id/tvTags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvContent"
-        android:id="@+id/tvTags"
+        android:layout_marginTop="5dp"
+        android:background="@color/light_primary_color"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:text="testing, destroing, aaa"
-        />
+        android:textColor="@color/secondary_text" />
 
 </RelativeLayout>
