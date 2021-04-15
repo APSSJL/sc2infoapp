@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import interfaces.IFollowable;
 import interfaces.IMatch;
@@ -24,7 +25,12 @@ import static com.parse.ParseUser.getCurrentUser;
 @ParseClassName("PlayerMatch")
 public class Match extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable, IPublished {
     protected static final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
-    public String getTime(){return dt.format(getDate("time"));}
+    public String getTime(){
+        Date d = getDate("time");
+        if(d == null)
+            return "";
+        return dt.format(d);
+    }
     public String getOpponent()
     {
         ParseUser p1 = ((ParseUser) getParseObject("Player1"));
