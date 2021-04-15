@@ -70,7 +70,7 @@ public class PlayerActivity extends AppCompatActivity {
         rvMatches = findViewById(R.id.rvMatches);
         ratingBar = findViewById(R.id.ratingBar);
         btnFollow = findViewById(R.id.btnFollow);
-        btnComment = findViewById(R.id.btnComment);
+        btnComment = findViewById(R.id.btnPostComment);
 
         opponents = new ArrayList<>();
         adapter = new MatchesAdapter(opponents, this);

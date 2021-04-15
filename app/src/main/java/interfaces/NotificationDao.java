@@ -15,8 +15,8 @@ import models.Notification;
 
 @Dao
 public interface NotificationDao {
-    @Query("SELECT DISTINCT title,date,image,opponents,bo FROM ExternalMatchNotification where date <= :time ORDER BY date DESC LIMIT 5 ")
-    public List<ExternalMatchNotification> selectUpcoming(String time);
+    @Query("SELECT DISTINCT title,date,image,opponents,bo,username FROM ExternalMatchNotification where date <= :time AND username = :username  ORDER BY date DESC LIMIT 5 ")
+    public List<ExternalMatchNotification> selectUpcoming(String time, String username);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public Long insertNotification(ExternalMatchNotification not);

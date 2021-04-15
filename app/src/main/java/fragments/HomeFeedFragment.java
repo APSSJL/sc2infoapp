@@ -276,7 +276,7 @@ public class HomeFeedFragment extends Fragment {
     private void getExternalMatchesNotification() {
         Thread t = new Thread(() ->
         {
-            List<ExternalMatchNotification> x = MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
+            List<ExternalMatchNotification> x = MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())),ParseUser.getCurrentUser().getUsername());
             Log.i("xx", "xx");
         });
         t.start();
@@ -303,7 +303,7 @@ public class HomeFeedFragment extends Fragment {
         @Override
         public List<ExternalMatchNotification> call() throws IOException, JSONException {
             // Some long running task
-            return MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
+            return MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())),ParseUser.getCurrentUser().getUsername());
         }
     }
 
