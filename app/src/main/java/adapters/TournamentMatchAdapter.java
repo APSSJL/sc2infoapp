@@ -104,6 +104,14 @@ public class TournamentMatchAdapter extends RecyclerView.Adapter<TournamentMatch
                 tvTournRight.setText("TBD");
             }
 
+            if(tvTournLeft.getText().toString().isEmpty()) {
+                tvTournLeft.setText("TBD");
+            }
+            if(tvTournRight.getText().toString().isEmpty()) {
+                tvTournRight.setText("TBD");
+            }
+
+
         }
     }
 

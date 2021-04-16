@@ -91,7 +91,7 @@ public class TournamentInfoActivity extends AppCompatActivity {
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivProfileImage);
             } else {
                 Log.i(TAG, "null");
-                Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivProfileImage);
+                Glide.with(this).load(R.drawable.no_image).transform(new CircleCrop()).into(ivProfileImage);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -181,10 +181,10 @@ public class TournamentInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (((IFollowable) tournament).setFollow()) {
                     Log.i(TAG, "Follow successfully: " + tournament.getName());
-                    Toast.makeText(TournamentInfoActivity.this, String.format("Successfully followed: " + tournament.getName()), Toast.LENGTH_SHORT);
+                    Toast.makeText(TournamentInfoActivity.this, String.format("Successfully followed: " + tournament.getName()), Toast.LENGTH_SHORT).show();
                 } else {
                     Log.i(TAG, "Already followed: " + tournament.getName());
-                    Toast.makeText(TournamentInfoActivity.this, String.format("Already followed: " + tournament.getName()), Toast.LENGTH_SHORT);
+                    Toast.makeText(TournamentInfoActivity.this, String.format("Already followed: " + tournament.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -296,6 +296,7 @@ public class TournamentInfoActivity extends AppCompatActivity {
                 Glide.with(TournamentInfoActivity.this).load(photoLink).into(ivTornPicture);
             } catch (InterruptedException | JSONException e) {
                 e.printStackTrace();
+                Glide.with(TournamentInfoActivity.this).load(R.drawable.no_image).into(ivTornPicture);
             }
         });
 

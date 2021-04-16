@@ -111,7 +111,7 @@ public class SearchActivity extends AppCompatActivity {
             if (p != null) {
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivProfilePicture);
             } else {
-                Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivProfilePicture);
+                Glide.with(this).load(R.drawable.no_image).transform(new CircleCrop()).into(ivProfilePicture);
             }
         } catch (ParseException e) {
             e.printStackTrace();

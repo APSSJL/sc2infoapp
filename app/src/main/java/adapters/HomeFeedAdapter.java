@@ -150,7 +150,7 @@ public class HomeFeedAdapter extends RecyclerView.Adapter<HomeFeedAdapter.ItemVi
             } else {
                 if(published.getPublishedType() == IPublished.NOTIFICATION)
                     ivLogo.setBackgroundResource(((Notification)published).getResource());
-                else Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
+                else Glide.with(context).load(R.drawable.no_image).transform(new CircleCrop()).into(ivLogo);
             }
 
             tvTitle.setOnClickListener(new View.OnClickListener() {
@@ -218,7 +218,7 @@ public class HomeFeedAdapter extends RecyclerView.Adapter<HomeFeedAdapter.ItemVi
                 if (p != null) {
                     Glide.with(context).load(p.getFile()).transform(new CircleCrop()).into(ivLogo);
                 } else {
-                    Glide.with(context).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivLogo);
+                    Glide.with(context).load(R.drawable.no_image).transform(new CircleCrop()).into(ivLogo);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
