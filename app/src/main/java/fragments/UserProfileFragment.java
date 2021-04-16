@@ -142,7 +142,7 @@ public class UserProfileFragment extends Fragment {
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivPicture);
             } else {
                 Log.i(TAG, "null");
-                Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivPicture);
+                Glide.with(this).load(R.drawable.no_image).transform(new CircleCrop()).into(ivPicture);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -220,7 +220,6 @@ public class UserProfileFragment extends Fragment {
                 }
             });
             btnTeam.setText("Leave team");
-
             btnTeam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

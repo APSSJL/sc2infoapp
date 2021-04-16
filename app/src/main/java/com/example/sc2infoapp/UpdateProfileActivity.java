@@ -86,7 +86,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivProfileImage);
             } else {
                 Log.i(TAG, "null");
-                Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivProfileImage);
+                Glide.with(this).load(R.drawable.no_image).transform(new CircleCrop()).into(ivProfileImage);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -241,7 +241,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                         }
                     });
                 }catch(Exception e) {
-                    Toast.makeText(this, "Error while retrieving picture, try again", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "Error while retrieving picture, try again", Toast.LENGTH_SHORT).show();
                 }
             }
             else if(resultCode == RESULT_CANCELED) {

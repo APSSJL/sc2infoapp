@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +99,7 @@ public class TournamentInfoActivity extends AppCompatActivity {
                 Glide.with(this).load(p.getFile()).transform(new CircleCrop()).into(ivProfileImage);
             } else {
                 Log.i(TAG, "null");
-                Glide.with(this).load(R.drawable.ic_launcher_background).transform(new CircleCrop()).into(ivProfileImage);
+                Glide.with(this).load(R.drawable.no_image).transform(new CircleCrop()).into(ivProfileImage);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -126,8 +127,13 @@ public class TournamentInfoActivity extends AppCompatActivity {
                     rbTournament.setRating(tournament.getRating());
                     tvTornName.setText(tournament.getTitle());
                     tvTornRules.setText(userTournament.getDescription());
-                    Log.i(TAG,ParseUser.getCurrentUser().getObjectId());
-                    Log.i(TAG,userTournament.getOrganizer().getObjectId());
+                    File p = userTournament.getImage();
+                    if (p != null) {
+                        Glide.with(TournamentInfoActivity.this).load(userTournament.getImage()).into(ivTornPicture);
+                    } else {
+                        Glide.with(TournamentInfoActivity.this).load(R.drawable.no_image).into(ivTornPicture);
+                    }
+
 
                     if (ParseUser.getCurrentUser().getObjectId().equals(userTournament.getOrganizer().getObjectId())) {
                         Log.i(TAG,"in");
@@ -195,10 +201,10 @@ public class TournamentInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (((IFollowable) tournament).setFollow()) {
                     Log.i(TAG, "Follow successfully: " + tournament.getName());
-                    Toast.makeText(TournamentInfoActivity.this, String.format("Successfully followed: " + tournament.getName()), Toast.LENGTH_SHORT);
+                    Toast.makeText(TournamentInfoActivity.this, String.format("Successfully followed: " + tournament.getName()), Toast.LENGTH_SHORT).show();
                 } else {
                     Log.i(TAG, "Already followed: " + tournament.getName());
-                    Toast.makeText(TournamentInfoActivity.this, String.format("Already followed: " + tournament.getName()), Toast.LENGTH_SHORT);
+                    Toast.makeText(TournamentInfoActivity.this, String.format("Already followed: " + tournament.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -309,6 +315,7 @@ public class TournamentInfoActivity extends AppCompatActivity {
                 String photoLink = parser.getPhotoLink(data);
                 Glide.with(TournamentInfoActivity.this).load(photoLink).into(ivTornPicture);
             } catch (InterruptedException | JSONException e) {
+                Glide.with(TournamentInfoActivity.this).load(R.drawable.no_image).into(ivTornPicture);
                 e.printStackTrace();
             }
         });
