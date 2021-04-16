@@ -241,7 +241,6 @@ public class UserProfileFragment extends Fragment {
         ParseQuery<Tournament> query1 =  ParseQuery.getQuery(Tournament.class);
         query1.include("userCreated");
         query1.include("userCreated.organizer");
-        query1.setLimit(5);
 
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
