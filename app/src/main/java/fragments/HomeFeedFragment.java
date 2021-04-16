@@ -162,17 +162,19 @@ public class HomeFeedFragment extends Fragment {
         getLastUpdate();
 
         HashMap<String, ArrayList<String>> hm = new HashMap<>();
-        for (int i = 0; i < follows.length(); i++) {
-            try {
-                String[] follow = follows.getString(i).split(":");
-                if (!hm.containsKey(follow[0])) {
-                    hm.put(follow[0], new ArrayList<>());
+        if (follows != null) {
+            for (int i = 0; i < follows.length(); i++) {
+                try {
+                    String[] follow = follows.getString(i).split(":");
+                    if (!hm.containsKey(follow[0])) {
+                        hm.put(follow[0], new ArrayList<>());
+                    }
+                    hm.get(follow[0]).add(follow[1]);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                hm.get(follow[0]).add(follow[1]);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
+            }
         }
         getUserUpdate(hm.get("User"));
         getMatchUpdate(hm.get("Match"));
@@ -276,7 +278,7 @@ public class HomeFeedFragment extends Fragment {
     private void getExternalMatchesNotification() {
         Thread t = new Thread(() ->
         {
-            List<ExternalMatchNotification> x = MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
+            List<ExternalMatchNotification> x = MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())),ParseUser.getCurrentUser().getUsername());
             Log.i("xx", "xx");
         });
         t.start();
@@ -303,7 +305,7 @@ public class HomeFeedFragment extends Fragment {
         @Override
         public List<ExternalMatchNotification> call() throws IOException, JSONException {
             // Some long running task
-            return MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())));
+            return MainActivity.notDao.selectUpcoming(ExternalMatch.DATE_FORMATTER.format(new Date(System.currentTimeMillis())),ParseUser.getCurrentUser().getUsername());
         }
     }
 

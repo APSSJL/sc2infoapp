@@ -70,7 +70,7 @@ public class PlayerActivity extends AppCompatActivity {
         rvMatches = findViewById(R.id.rvMatches);
         ratingBar = findViewById(R.id.ratingBar);
         btnFollow = findViewById(R.id.btnFollow);
-        btnComment = findViewById(R.id.btnComment);
+        btnComment = findViewById(R.id.btnPostComment);
 
         opponents = new ArrayList<>();
         adapter = new MatchesAdapter(opponents, this);
@@ -149,10 +149,16 @@ public class PlayerActivity extends AppCompatActivity {
 
         try {
             List<Player> players = query.find();
-
+            Player p;
             if(players.size() == 0)
-                return;
-            Player p = players.get(0);
+            {
+                p = new Player();
+                p.save();
+            }
+            else
+            {
+                p = players.get(0);
+            }
             player = p;
             
             btnFollow.setOnClickListener(new View.OnClickListener() {

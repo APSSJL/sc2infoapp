@@ -7,7 +7,9 @@ import androidx.room.Entity;
 
 import com.example.sc2infoapp.MainActivity;
 import com.example.sc2infoapp.R;
+import com.parse.ParseUser;
 
+import java.security.PublicKey;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -18,9 +20,11 @@ public class ExternalMatchNotification extends Notification{
     public ExternalMatchNotification(){}
     public String opponents;
     public int bo;
+    public String username;
 
     public ExternalMatchNotification(ExternalMatch match)
     {
+        this.username = ParseUser.getCurrentUser().getUsername();
         this.opponents = match.getOpponent();
         this.bo = match.getBo();
         this.title = String.format("Match update: %s", match.getOpponent());
