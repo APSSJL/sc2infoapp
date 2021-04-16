@@ -56,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/dvPlayerInfoLabel"
         android:layout_marginTop="5dp"
+        android:inputType="textMultiLine"
         android:text="text\n\n\n\nMore text"
         android:textColor="@color/black" />
 
@@ -63,9 +64,8 @@
         android:id="@+id/rvMatches"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tvMatches"
-        android:layout_below="@+id/dvPlayerRecentMatchesLabel"
-        android:layout_marginTop="5dp" />
+        android:layout_above="@id/ratingBar"/>
+
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -74,7 +74,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnFollow"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:isIndicator="false"
         android:numStars="10" />
@@ -94,9 +93,10 @@
         android:textColor="@color/white" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnComment"
+        android:id="@+id/btnPostComment"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
+        android:textAllCaps="false"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
@@ -105,7 +105,6 @@
         android:layout_marginBottom="10dp"
         android:background="@color/themeColor"
         android:text="Comment"
-        android:textAllCaps="false"
         android:textColor="@color/white" />
 
     <View

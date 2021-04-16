@@ -269,7 +269,9 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/themeColor"
         android:text="Unban"
+        android:textColor="@color/white"
         android:id="@+id/btnUnbanTourn"
         android:layout_toLeftOf="@id/btnBanTourn"
         android:layout_below="@id/tvBannedTourns"/>
@@ -277,6 +279,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ban"
+        android:backgroundTint="@color/themeColor"
+        android:textColor="@color/white"
         android:id="@+id/btnBanTourn"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/tvBannedTourns"/>

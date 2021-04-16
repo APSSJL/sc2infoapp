@@ -49,8 +49,8 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] User can see recent posts and tournaments
     - [x] User can logout
 - [x] User can create post
-    - [ ] By tapping on the post, user can go to the detailed post view
-    - [ ] User can rate post in detailed view
+    - [x] By tapping on the post, user can go to the detailed post view
+    - [x] User can rate post in detailed view
     - [x] User can view comments in the detailed view
     - [x] User can leave comments 
  - [x] Users can view match detailed page
@@ -64,20 +64,21 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
         - [x] Can set ishiring chackbox to find new players
         - [x] Can view user profile by tapping on the username in requests recycler view
 - [x] User can view player's detailed page
-- [ ] User can rate and leave comments:
+- [x] User can rate and leave comments:
     - [x] Players
     - [x] Matches
-    - [ ] Tournaments
+    - [x] Tournaments
     - [x] Teams
-    - [ ] Posts
-- [ ] User can follow:
+    - [x] Posts
+- [x] User can follow:
     - [x] Players
     - [x] Other users
-    - [ ] Tournaments
+    - [x] Tournaments
     - [x] Teams 
     - [x] Match
-- [ ] User can view tournament detailed screen
-    - [ ] User can create and edit new tournaments
+- [x] User can view tournament detailed screen
+    - [x] User can create new tournaments
+    - [x] User can edit user tournaments
 - [x] User can search and filter posts, players, teams and tournaments
     - [x] by keywords
     - [x] by categories
@@ -861,3 +862,11 @@ User can view matches
 Players info uploaded from external api
 <img src='https://github.com/APSSJL/sc2infoapp/blob/main/gifsweek2/team_ext.gif' width='200'  />
 Team also could be uploaded from external api
+<img src='https://github.com/APSSJL/sc2infoapp/blob/main/feedsgif.gif' width='200'  /><img src='https://github.com/APSSJL/sc2infoapp/blob/main/searchgif.gif' width='200'  /><img src='https://github.com/APSSJL/sc2infoapp/blob/main/tournamentinfogif.gif' width='200'  />
+
+* User can view homefeed, which display tournaments, matches posts etc based on user follows. By tapping on item, user can go into detailed view.
+* User can view matchfeed, with both external and internal matches organized into tournaments. User can go into tournament info screen, where tournament rules and matches are sown.
+* User can leave comments.
+* User can filter feeds.
+* User can search entities and specify categories.
+* UI improved

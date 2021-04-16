@@ -44,7 +44,9 @@ public class LiquipediaParser {
 
     public ArrayList<ExternalMatch> getTournamentMatches(String tournamentText)
     {
-        Pattern groupMatches = Pattern.compile("\\{\\{Match maps.*?date=(.*?) \\{\\{.*?(finished=(true|))\\n?.*?player1=(.*?|)\\\\n.*?player2=(.*?|)\\\\n.*?(winner=(1|2|)).*?\\}\\}", Pattern.MULTILINE);
+        // This method accept unparsed tournament text. Make sure to call getUnparsed().
+        // Returns list of tournament matches
+        Pattern groupMatches = Pattern.compile("\\{\\{Match maps.*?(date=(.*?) \\{\\{.*?(finished=(true|))\\n){0,1}?.*?player1=(.*?|)\\\\n.*?player2=(.*?|)\\\\n.*?(winner=(1|2|)).*?\\}\\}", Pattern.MULTILINE);
         Pattern ro1 = Pattern.compile("R\\d\\d?D\\d\\d?=(.*?) .*?R\\d\\d?D\\d\\d?=(.*?) (.*?)date=(.*?) \\{.*?\\}\\}.*?\\}\\}",Pattern.MULTILINE);
         Pattern ro = Pattern.compile("R\\d\\d?W\\d\\d?=(.*?) .*?R\\d\\d?W\\d\\d?=(.*?) (.*?)date=(.*?) \\{.*?\\}\\}.*?\\}\\}", Pattern.MULTILINE);
         ArrayList<ExternalMatch> res = new ArrayList<>();
@@ -59,8 +61,21 @@ public class LiquipediaParser {
         return matches;
     }
 
+    protected String getTournamentRules(String tournamentText)
+    {
+        // This method accept unparsed tournament text. Make sure to call getUnparsed().
+        // Returns tournaments rules
+        Pattern rules = Pattern.compile("==Format==.*?\\\\n\\\\n", Pattern.MULTILINE);
+        Matcher m = rules.matcher(tournamentText);
+        if(m.find())
+            return m.group(0).replaceAll("'|\\*|\\{\\{|\\}\\}|==", "").replace("|", " ");
+        else
+            return "";
+    }
+
     private void getGroup(ArrayList<ExternalMatch> matches, Matcher matcher, SimpleDateFormat dateParser) {
         Pattern map = Pattern.compile("map", Pattern.MULTILINE);
+        String date = "";
         while (matcher.find()) {
             String t = matcher.group(0);
             Matcher mapMatcher = map.matcher(t);
@@ -68,14 +83,15 @@ public class LiquipediaParser {
                 String bo = "-1";
                 Pattern p = Pattern.compile(".*map(\\d)");
                 Matcher m = p.matcher(t);
+
                 if(m.find()) {
                     bo = (m.group(1));
                 }
-                String date = "";
-                String givenDate = matcher.group(1);
-                if(givenDate != null && dateParser.parse(givenDate) != null)
-                    date = ExternalMatch.DATE_FORMATTER.format(dateParser.parse(givenDate));
-                matches.add(new ExternalMatch(matcher.group(4) + " vs " + matcher.group(5), date, bo));
+                Pattern dateP = Pattern.compile("date=(.*?) \\{\\{");
+                m = dateP.matcher(t);
+                if(m.find() && m.group(1) != null && dateParser.parse(m.group(1)) != null)
+                    date = ExternalMatch.DATE_FORMATTER.format(dateParser.parse(m.group(1)));
+                matches.add(new ExternalMatch(matcher.group(5) + " vs " + matcher.group(6), date, bo));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

@@ -1,105 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15dp"
     tools:context=".TeamActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:id="@+id/tvTeamName"
-        android:text="TeamName"/>
-
-    <TextView
-        android:layout_marginTop="50dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvTeamInfo"
-        android:layout_below="@+id/btnManage"
-        android:text="team\n\n\n\ninfo"
-        />
+        android:layout_height="wrap_content">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rvRoster"
-        android:layout_below="@id/tvTeamInfo"
-        />
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnAskJoin"
-        android:id="@+id/rvTeamMatches"
-        android:layout_below="@+id/rvRoster"
-        />
+        <LinearLayout
+            android:id="@+id/llTeamButtons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tvTeamInfo"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:background="@color/transparent"
-        android:textColor="@color/accent_color"
-        android:text="Manage"
-        android:textAllCaps="false"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/btnManage"
-        />
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:id="@+id/btnTeamFollow"
-        android:textAllCaps="false"
-        android:text="Follow"
-        android:layout_marginEnd="20dp"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/ratingBar"
-        android:layout_centerHorizontal="true"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnTeamComment"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:height="50dp"
+                android:backgroundTint="@color/themeColor"
+                android:text="Comment"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
 
-        />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAskJoin"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/themeColor"
+                android:text="Join"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="120dp"
-        android:text="Join"
-        android:textAllCaps="false"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/btnAskJoin"
-        android:layout_above="@+id/ratingBar"
-        />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnTeamFollow"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
 
-    <TextView
-        android:id="@+id/tvHiring"
-        android:layout_toEndOf="@+id/tvTeamName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="ishiring" />
+                android:backgroundTint="@color/themeColor"
+                android:text="Follow"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:text="Comment"
-        android:textAllCaps="false"
-        android:layout_marginEnd="5dp"
-        android:id="@+id/btnTeamComment"
-        android:height="50dp"
-        android:layout_toLeftOf="@+id/btnTeamFollow"
-        android:layout_above="@+id/ratingBar"
-        />
+        <TextView
+            android:id="@+id/tvTeamName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:text="TeamName"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        style="@style/Widget.AppCompat.RatingBar.Indicator"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:numStars="10"
-        android:isIndicator="false"
-        />
+        <TextView
+            android:id="@+id/tvTeamInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dvTeamActivityTeamNameLabel"
+            android:layout_marginTop="5dp"
+            android:text="team\n\n\n\ninfo"
+            android:textColor="@color/black" />
 
-</RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRoster"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_below="@+id/dvTeamRoasterLabel"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTeamMatches"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_below="@+id/tvTeamMatchLabel"
+            android:layout_marginTop="5dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnManage"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:background="@color/transparent"
+            android:text="Manage"
+            android:textAllCaps="false"
+            android:textColor="@color/themeColor" />
+
+        <TextView
+            android:id="@+id/tvHiring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="23dp"
+            android:layout_toEndOf="@+id/tvTeamName"
+            android:text="is hiring"
+            android:textColor="@color/themeColor" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llTeamButtons"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:isIndicator="false"
+            android:numStars="10" />
+
+        <View
+            android:id="@+id/dvTeamActivityTeamNameLabel"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/tvHiring"
+            android:background="?android:attr/listDivider" />
+
+        <View
+            android:id="@+id/dvTeamRoasterLabel"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tvRoasterLabel"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/tvRoasterLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ratingBar"
+            android:layout_marginTop="15dp"
+            android:text="Roaster"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/tvTeamMatchLabel"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tvTeamMatchTeamInfoLabel"
+            android:layout_alignParentStart="true"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/tvTeamMatchTeamInfoLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rvRoster"
+            android:layout_marginTop="15dp"
+            android:text="Team Match"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+
+</ScrollView>
+

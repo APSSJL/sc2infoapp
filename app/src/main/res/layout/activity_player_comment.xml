@@ -4,44 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15dp"
     tools:context=".PlayerCommentActivity">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvPlayerName"
-        android:text="BlyOnFire"
-        android:layout_margin="10dp"
-        android:layout_alignParentStart="true"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvPlayerRace"
-        android:layout_margin="10dp"
-        android:layout_toEndOf="@+id/tvPlayerName"
-        android:text="Zerg"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:id="@+id/tvPlayerRating"
-        android:text="#1"
-        android:layout_below="@+id/tvPlayerName"
-        android:layout_alignParentStart="true"
-        />
 
     <TextView
-        android:layout_below="@+id/tvPlayerRating"
+        android:id="@+id/tvPlayerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:text="BlyOnFire"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvPlayerRace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/dvPlayerNameAndRaceLabel"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/tvPlayerName"
+        android:text="Zerg"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvPlayerRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/dvPlayerNameAndRaceLabel"
+        android:layout_alignParentEnd="true"
+        android:text="#1" />
+
+    <TextView
         android:id="@+id/tvInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/dvPlayerNameAndRaceLabel"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
         tools:text="Category" />
 
     <RelativeLayout
         android:id="@+id/rlCommentsSection"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="400dp"
         android:layout_below="@+id/tvInfo"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
@@ -71,4 +79,11 @@
         android:layout_marginTop="7dp"
         android:layout_marginEnd="13dp"
         android:text="Comment" />
+
+    <View
+        android:id="@+id/dvPlayerNameAndRaceLabel"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvPlayerName"
+        android:background="?android:attr/listDivider" />
 </RelativeLayout>

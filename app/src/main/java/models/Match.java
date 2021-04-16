@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import interfaces.IFollowable;
 import interfaces.IMatch;
@@ -29,7 +30,12 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
     public static final String KEY_PLAYER2 = "Player2";
 
 
-    public String getTime(){return dt.format(getDate("time"));}
+    public String getTime(){
+        Date d = getDate("time");
+        if(d == null)
+            return "";
+        return dt.format(d);
+    }
     public String getOpponent()
     {
         ParseUser p1 = ((ParseUser) getParseObject("Player1"));

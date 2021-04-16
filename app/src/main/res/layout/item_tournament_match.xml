@@ -2,10 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rlTournMatch"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 
     <View
-        android:id="@+id/dvH2HEventName2"
+        android:id="@+id/dvTournamentMatchNameLabel"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/tvTournTime"
@@ -17,11 +21,11 @@
         android:id="@+id/tvTournScoreLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dvH2HEventName2"
+        android:layout_below="@+id/dvTournamentMatchNameLabel"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/dvTournScore"
-        android:text="1"
+        android:text="0"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -29,11 +33,11 @@
         android:id="@+id/tvTournScoreRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dvH2HEventName2"
+        android:layout_below="@+id/dvTournamentMatchNameLabel"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/dvTournScore"
-        android:text="2"
+        android:text="0"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -41,32 +45,32 @@
         android:id="@+id/dvTournScore"
         android:layout_width="2dp"
         android:layout_height="20dp"
-        android:layout_below="@+id/dvH2HEventName2"
+        android:layout_below="@+id/dvTournamentMatchNameLabel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="?android:attr/listDivider" />
 
     <TextView
         android:id="@+id/tvTournLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dvH2HEventName2"
+        android:layout_below="@+id/dvTournamentMatchNameLabel"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:layout_toStartOf="@+id/dvTournScore"
-        android:text="Maru"
+        android:text="EmptyLeft"
         android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/tvTournRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dvH2HEventName2"
+        android:layout_below="@+id/dvTournamentMatchNameLabel"
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/tvTournScoreRight"
-        android:text="PartinG"
+        android:text="Empty Right"
         android:textColor="@color/black" />
 
     <TextView
@@ -74,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"
         android:text="2021-4-1 00:00"
@@ -82,4 +86,10 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold" />
+
+    <View
+        android:id="@+id/dvTournamentMatchItem"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider" />
 </RelativeLayout>

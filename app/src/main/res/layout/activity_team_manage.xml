@@ -4,66 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15dp"
     tools:context=".TeamManageActivity">
+
     <EditText
+        android:id="@+id/edTeamName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Team name"
-        android:id="@+id/edTeamName"
-        android:inputType="text"
         android:layout_toLeftOf="@+id/tvCharCount"
-        />
+        android:hint="Team name"
+        android:inputType="text" />
+
     <EditText
+        android:id="@+id/edTeamInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edTeamName"
-        android:id="@+id/edTeamInfo"
-        android:inputType="textMultiLine"
         android:hint="Team info"
-        />
+        android:inputType="textMultiLine"
+        android:lines="4" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Is hiring "
+        android:layout_below="@+id/edTeamInfo"
         android:layout_marginTop="15dp"
         android:layout_toLeftOf="@+id/checkboxIsHiring"
-        android:layout_below="@+id/edTeamInfo"
-        />
+        android:text="Is hiring "
+        android:textColor="@color/black" />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0/50"
         android:id="@+id/tvCharCount"
-        android:layout_alignParentEnd="true"
-        android:textSize="15sp"
-        android:layout_margin="10dp"
-        />
-    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        android:text="0/50"
+        android:textSize="15sp" />
+
+    <CheckBox
         android:id="@+id/checkboxIsHiring"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/edTeamInfo"
-        android:checked="true"
-        />
+        android:layout_alignParentEnd="true"
+        android:buttonTint="@color/themeColor"
+        android:checked="true" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRequests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rvRequests"
-        android:layout_below="@+id/checkboxIsHiring"
-        android:padding="5dp"
         android:layout_above="@+id/btnSave"
-        />
+        android:layout_below="@+id/checkboxIsHiring"
+        android:padding="5dp" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/primary_color"
-        android:id="@+id/btnSave"
+        android:background="@color/themeColor"
         android:text="Save"
         android:textAllCaps="false"
-        />
+        android:textColor="@color/white" />
 
 </RelativeLayout>
