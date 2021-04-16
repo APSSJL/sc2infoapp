@@ -93,7 +93,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         }
         selectedRace = user.getString("inGameRace");
 
-        if (selectedRace.isEmpty()) {
+        if (selectedRace == null || selectedRace.isEmpty()) {
             spRaces.setSelection(3);
         } else {
             if (selectedRace.equals("Terran")) {spRaces.setSelection(0);}

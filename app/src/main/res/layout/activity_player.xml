@@ -45,8 +45,8 @@
 
     <ImageView
         android:id="@+id/ivPlayerPhoto"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/tvPlayerRating"
         android:layout_centerHorizontal="true" />
 
@@ -58,10 +58,12 @@
         android:layout_marginTop="5dp"
         android:inputType="textMultiLine"
         android:text="text\n\n\n\nMore text"
+        android:textSize="12sp"
         android:textColor="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMatches"
+        android:layout_below="@+id/tvPlayerRecentMatchesLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/ratingBar"/>
