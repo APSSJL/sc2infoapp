@@ -101,14 +101,14 @@ public class HomeFeedFragment extends Fragment {
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         List<String> menuList= new ArrayList<>();
-        menuList.add("Menu");
-        String createPost = "Create Post";
+        menuList.add("Create");
+        String createPost = "Post";
         menuList.add(createPost);
-        String createTourn = "Create Tournament";
+        String createTourn = "Tournament";
         menuList.add(createTourn);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,menuList);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),R.layout.item_spinner,menuList);
+        dataAdapter.setDropDownViewResource(R.layout.item_spinner);
         spMenu.setAdapter(dataAdapter);
 
         spMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

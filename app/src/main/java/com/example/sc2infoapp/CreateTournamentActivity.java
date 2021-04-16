@@ -52,6 +52,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
     CheckBox cbIsTeam;
     ImageView ivTournLogo;
     TextView tvIsTeam;
+    TextView tvReminder;
 
     //Match stuff
     EditText spObj1;
@@ -93,6 +94,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
         btnCreateMatch = findViewById(R.id.btnCreateMatch);
         tvIsTeam = findViewById(R.id.tvIsTeam);
         etMatchDate = findViewById(R.id.etMatchDate);
+        tvReminder = findViewById(R.id.tvReminder);
 
         tvIsTeam.setVisibility(View.GONE);
         spObj1.setVisibility(View.GONE);
@@ -100,6 +102,8 @@ public class CreateTournamentActivity extends AppCompatActivity {
         etMatchDescription.setVisibility(View.GONE);
         btnCreateMatch.setVisibility(View.GONE);
         etMatchDate.setVisibility(View.GONE);
+
+        tvReminder.setText("* Don't forget, you can also access tournaments from your user profile!");
 
         btnPostTournLogo.setOnClickListener(new View.OnClickListener() {
             @Override

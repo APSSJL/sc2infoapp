@@ -58,6 +58,7 @@ public class EditTournamentActivity extends AppCompatActivity {
     CheckBox cbIsTeam;
     ImageView ivTournLogo;
     TextView tvIsTeam;
+    TextView tvReminder;
 
     //Match stuff
     EditText spObj1;
@@ -94,6 +95,7 @@ public class EditTournamentActivity extends AppCompatActivity {
         cbIsTeam = findViewById(R.id.cbIsTeam);
         ivTournLogo = findViewById(R.id.ivTournLogo);
         tvIsTeam = findViewById(R.id.tvIsTeam);
+        tvReminder = findViewById(R.id.tvReminder);
 
         spObj1 = findViewById(R.id.spObj1);
         spObj2 = findViewById(R.id.spObj2);
@@ -104,6 +106,8 @@ public class EditTournamentActivity extends AppCompatActivity {
         cbIsTeam.setVisibility(View.GONE);
 
         user = ParseUser.getCurrentUser();
+
+        tvReminder.setText("* Don't forget, you can also access tournaments from your user profile!");
 
         ParseQuery<UserTournament> finaluserTournamentQuery = ParseQuery.getQuery("userTournament");
         finaluserTournamentQuery.whereEqualTo("objectId",userTournament.getObjectId());
