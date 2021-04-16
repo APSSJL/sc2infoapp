@@ -220,7 +220,6 @@ public class UserProfileFragment extends Fragment {
                 }
             });
             btnTeam.setText("Leave team");
-
             btnTeam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

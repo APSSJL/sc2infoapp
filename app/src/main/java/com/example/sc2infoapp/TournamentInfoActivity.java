@@ -127,17 +127,13 @@ public class TournamentInfoActivity extends AppCompatActivity {
                     rbTournament.setRating(tournament.getRating());
                     tvTornName.setText(tournament.getTitle());
                     tvTornRules.setText(userTournament.getDescription());
-<<<<<<< HEAD
-                    Log.i(TAG,ParseUser.getCurrentUser().getObjectId());
-                    Log.i(TAG,userTournament.getOrganizer().getObjectId());
-=======
                     File p = userTournament.getImage();
                     if (p != null) {
                         Glide.with(TournamentInfoActivity.this).load(userTournament.getImage()).into(ivTornPicture);
                     } else {
                         Glide.with(TournamentInfoActivity.this).load(R.drawable.no_image).into(ivTornPicture);
                     }
->>>>>>> 078a125890de52a9f146e8038153e7762f75fb17
+
 
                     if (ParseUser.getCurrentUser().getObjectId().equals(userTournament.getOrganizer().getObjectId())) {
                         Log.i(TAG,"in");

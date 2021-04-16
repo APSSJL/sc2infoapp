@@ -241,7 +241,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                         }
                     });
                 }catch(Exception e) {
-                    Toast.makeText(this, "Error while retrieving picture, try again", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "Error while retrieving picture, try again", Toast.LENGTH_SHORT).show();
                 }
             }
             else if(resultCode == RESULT_CANCELED) {

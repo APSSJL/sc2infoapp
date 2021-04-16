@@ -34,7 +34,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
         - [x] Homefeed showing recent activity based on user follows
     - [x] Profile fragment
     - [x] Match feed fragment
-        - [x] Shows all recent tournaments and matches  
+        - [x] Shows all recent tournaments and matches
 - [x] User can change account preferences
     - [x] User can add user info
     - [x] User can edit username
@@ -52,7 +52,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] By tapping on the post, user can go to the detailed post view
     - [x] User can rate post in detailed view
     - [x] User can view comments in the detailed view
-    - [x] User can leave comments 
+    - [x] User can leave comments
  - [x] Users can view match detailed page
     - [x] Users can leave predictions
     - [x] Users can get predictions from aligulac
@@ -74,7 +74,7 @@ An app that allows Starcraft 2 players to follow the e-sports players and events
     - [x] Players
     - [x] Other users
     - [x] Tournaments
-    - [x] Teams 
+    - [x] Teams
     - [x] Match
 - [x] User can view tournament detailed screen
     - [x] User can create new tournaments
@@ -263,7 +263,7 @@ Model: PlayerMatch [this entity for internal/user tournaments only, for other to
 | p1PredictionVotes | Number | predictions for the player 1 |
 | p2PredictionVotes | Number | predictions for the player 2 |
 | predicted     | Array    | Shows if user added prediciton for this match|
-| bo            | Number    | Shows number of maps in match | 
+| bo            | Number    | Shows number of maps in match |
 | rated     | Array    | Shows if user have rated this match|
 
 Model: TeamMatch [this entity for internal/user tournaments only, for other tournaments data should be fetched from the API] 
