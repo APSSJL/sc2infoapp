@@ -73,7 +73,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRoster"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="200dp"
             android:layout_below="@+id/dvTeamRoasterLabel"
             android:layout_alignParentStart="true"
             android:layout_marginTop="5dp" />
@@ -120,8 +120,13 @@
             android:id="@+id/dvTeamActivityTeamNameLabel"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+<<<<<<< HEAD
             android:layout_marginTop="2dp"
             android:layout_below="@+id/tvHiring"
+=======
+            android:layout_below="@+id/tvTeamName"
+            android:layout_marginTop="8dp"
+>>>>>>> 078a125890de52a9f146e8038153e7762f75fb17
             android:background="?android:attr/listDivider" />
 
         <View

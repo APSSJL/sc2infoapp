@@ -31,7 +31,6 @@ import models.UserInfo;
 import models.UserTournament;
 
 import com.example.sc2infoapp.TeamActivity;
-import com.example.sc2infoapp.TournamentInfoActivity;
 import com.example.sc2infoapp.ViewProfileActivity;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -41,13 +40,13 @@ import org.parceler.Parcels;
 import java.io.File;
 import java.util.List;
 
-public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemViewHolder> {
+public class HomeFeedAdapter extends RecyclerView.Adapter<HomeFeedAdapter.ItemViewHolder> {
 
     List<IPublished> published;
     Context context;
     Activity activity;
 
-    public UserFeedAdapter(Context context, List<IPublished> published) {
+    public HomeFeedAdapter(Context context, List<IPublished> published) {
         this.context = context;
         this.published = published;
         activity = (Activity)context;
@@ -107,22 +106,6 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
         @SuppressLint("NewApi")
         public void bind(final IPublished published) {
             Post post = (Post) published;
-            tvAuthor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(activity, PostDetailActivity.class);
-                    i.putExtra("post", Parcels.wrap(post));
-                    activity.startActivity(i);
-                }
-            });
-            tvAuthor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(activity, ViewProfileActivity.class);
-                    i.putExtra("user", post.getUser());
-                    activity.startActivity(i);
-                }
-            });
             tvTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -240,15 +223,7 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            tvTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(((Activity)context), TournamentInfoActivity.class);
-                    i.putExtra("userCreated", Parcels.wrap(true));
-                    i.putExtra("tournament", Parcels.wrap(tournament.getUserCreated()));
-                    ((Activity)context).startActivity(i);
-                }
-            });
+
         }
     }
 
