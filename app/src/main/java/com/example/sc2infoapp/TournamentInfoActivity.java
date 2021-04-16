@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -68,10 +69,14 @@ public class TournamentInfoActivity extends AppCompatActivity {
     TextView tvTornName;
     TextView tvTornRules;
 
+    SwipeRefreshLayout swipeContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tournament_info);
+
+//        swipeContainer = findViewById(R.id.swipeContainer);
 
         btnTornComment = findViewById(R.id.btnTornComment);
         btnTornEdit = findViewById(R.id.btnTornEdit);
@@ -83,6 +88,8 @@ public class TournamentInfoActivity extends AppCompatActivity {
         rvTornMatches = findViewById(R.id.rvTornMatches);
         tvTornName = findViewById(R.id.tvTornName);
         tvTornRules = findViewById(R.id.tvTornRules);
+
+
 
         try {
             ParseFile p = (ParseUser.getCurrentUser().getParseFile("pic"));
@@ -119,13 +126,20 @@ public class TournamentInfoActivity extends AppCompatActivity {
                     rbTournament.setRating(tournament.getRating());
                     tvTornName.setText(tournament.getTitle());
                     tvTornRules.setText(userTournament.getDescription());
+                    Log.i(TAG,ParseUser.getCurrentUser().getObjectId());
+                    Log.i(TAG,userTournament.getOrganizer().getObjectId());
 
-                    if (ParseUser.getCurrentUser() == userTournament.getOrganizer()) {
+                    if (ParseUser.getCurrentUser().getObjectId().equals(userTournament.getOrganizer().getObjectId())) {
+                        Log.i(TAG,"in");
                         btnTornEdit.setVisibility(View.VISIBLE);
                         btnTornEdit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //Todo: Edit Tournament Screen
+                                Intent i = new Intent(TournamentInfoActivity.this,EditTournamentActivity.class);
+                                i.putExtra("userTournament", Parcels.wrap(userTournament));
+                                i.putExtra("tournament",Parcels.wrap(tournament));
+                                startActivity(i);
                             }
                         });
                     }
@@ -164,8 +178,8 @@ public class TournamentInfoActivity extends AppCompatActivity {
 
         } else {
             getExternalTournament();
-
         }
+
 
         btnTornComment.setOnClickListener(new View.OnClickListener() {
             @Override

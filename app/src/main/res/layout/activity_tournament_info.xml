@@ -182,4 +182,5 @@
             android:isIndicator="true"
             android:numStars="5" />
     </RelativeLayout>
+
 </ScrollView>

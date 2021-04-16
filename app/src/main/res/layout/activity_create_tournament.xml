@@ -27,35 +27,6 @@
         android:layout_marginTop="10dp"
         android:hint="Tournament Description" />
 
-    <ImageView
-        android:id="@+id/ivTournLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cbIsTeam"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/btnPostTournLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivTournLogo"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp"
-        android:text="Post Image" />
-
-    <Button
-        android:id="@+id/btnCreateTourn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="13dp"
-        android:layout_marginBottom="17dp"
-        android:text="Create" />
-
     <CheckBox
         android:id="@+id/cbIsTeam"
         android:layout_width="wrap_content"
@@ -65,6 +36,109 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:text="Team Matches" />
+
+    <RelativeLayout
+        android:id="@+id/rlTournImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/cbIsTeam"
+        tools:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/ivTournLogo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <Button
+            android:id="@+id/btnPostTournLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivTournLogo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="Upload Image" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlCreateMatch"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_below="@id/rlTournImage">
+
+        <EditText
+            android:id="@+id/spObj1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Player/Team 1" />
+
+        <EditText
+            android:id="@+id/spObj2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spObj1"
+            android:hint="Player/Team 2" />
+
+        <EditText
+            android:id="@+id/etMatchDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spObj2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:hint="Enter date: yyyy/mm/dd"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/etMatchDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etMatchDate"
+            android:layout_marginTop="5dp"
+            android:hint="Match Description" />
+
+        <Button
+            android:id="@+id/btnCreateMatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etMatchDescription"
+            android:layout_centerHorizontal="true"
+            android:text="Create Match" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnSaveTourn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="17dp"
+        android:text="Save" />
+
+    <TextView
+        android:id="@+id/tvReminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="625dp"
+        android:layout_marginBottom="99dp"
+        tools:text="Reminder" />
+
+    <TextView
+        android:id="@+id/tvIsTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="114dp"
+        tools:text="Team or Not Team" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

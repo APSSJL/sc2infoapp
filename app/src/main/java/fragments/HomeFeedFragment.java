@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +22,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import adapters.UserFeedAdapter;
+
 import interfaces.IPublished;
 import models.ExternalMatch;
 import models.ExternalMatchNotification;
@@ -26,6 +31,7 @@ import models.Match;
 import models.Player;
 import models.Post;
 
+import com.example.sc2infoapp.CreateTournamentActivity;
 import com.example.sc2infoapp.HomeFilterActivity;
 import com.example.sc2infoapp.LiquipediaParser;
 import com.example.sc2infoapp.MainActivity;
@@ -40,7 +46,6 @@ import com.example.sc2infoapp.R;
 import models.TaskRunner;
 import models.Team;
 import models.TeamMatch;
-import adapters.UserFeedAdapter;
 import models.UserTournament;
 
 import com.example.sc2infoapp.SearchActivity;
@@ -67,7 +72,6 @@ import java.util.concurrent.Callable;
 
 public class HomeFeedFragment extends Fragment {
     private static final String TAG = "HOME_FEED";
-    Button btnCreatePost;
     RecyclerView rvFeed;
     UserFeedAdapter adapter;
     List<IPublished> published;
@@ -75,6 +79,8 @@ public class HomeFeedFragment extends Fragment {
     Button btnSearch;
     Button btnHomeFilter;
     SharedPreferences pref;
+
+    Spinner spMenu;
 
 
     @Override
@@ -87,18 +93,41 @@ public class HomeFeedFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btnCreatePost = view.findViewById(R.id.btnCreatePost);
+
         btnHomeFilter = view.findViewById(R.id.btnHomeFilter);
+        spMenu = view.findViewById(R.id.spMenu);
+
         rvFeed = view.findViewById(R.id.rvFeed);
         published = new ArrayList<>();
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        btnCreatePost.setOnClickListener(new View.OnClickListener() {
+        List<String> menuList= new ArrayList<>();
+        menuList.add("Create");
+        String createPost = "Post";
+        menuList.add(createPost);
+        String createTourn = "Tournament";
+        menuList.add(createTourn);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),R.layout.item_spinner,menuList);
+        dataAdapter.setDropDownViewResource(R.layout.item_spinner);
+        spMenu.setAdapter(dataAdapter);
+
+        spMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Log.i(TAG, getContext().toString());
-                Intent i = new Intent(getContext(), PostComposeActivity.class);
-                startActivity(i);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG,adapterView.getItemAtPosition(i).toString());
+                if (adapterView.getItemAtPosition(i).equals(createPost)){
+                    Intent intentPost = new Intent(getContext(), PostComposeActivity.class);
+                    startActivity(intentPost);
+                }
+                if (adapterView.getItemAtPosition(i).equals(createTourn)){
+                    Intent intentTourn = new Intent(getContext(), CreateTournamentActivity.class);
+                    startActivity(intentTourn);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 

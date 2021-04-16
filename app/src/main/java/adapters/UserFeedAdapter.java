@@ -110,6 +110,14 @@ public class UserFeedAdapter extends RecyclerView.Adapter<UserFeedAdapter.ItemVi
             tvAuthor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent i = new Intent(activity, PostDetailActivity.class);
+                    i.putExtra("post", Parcels.wrap(post));
+                    activity.startActivity(i);
+                }
+            });
+            tvAuthor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     Intent i = new Intent(activity, ViewProfileActivity.class);
                     i.putExtra("user", post.getUser());
                     activity.startActivity(i);

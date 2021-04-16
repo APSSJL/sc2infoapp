@@ -25,6 +25,11 @@ import static com.parse.ParseUser.getCurrentUser;
 @ParseClassName("PlayerMatch")
 public class Match extends ParseObject implements IMatch, IPredictable, IRateable, IFollowable, IPublished {
     protected static final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm z");
+    public static final String KEY_DETAILS = "details";
+    public static final String KEY_PLAYER1 = "Player1";
+    public static final String KEY_PLAYER2 = "Player2";
+
+
     public String getTime(){
         Date d = getDate("time");
         if(d == null)
@@ -161,4 +166,9 @@ public class Match extends ParseObject implements IMatch, IPredictable, IRateabl
     {
         return getParseUser("winner");
     }
+
+    public void setDetails(String string){put(KEY_DETAILS,string);}
+
+    public void setPlayer1(ParseUser player1){put(KEY_PLAYER1,player1);}
+    public void setPlayer2(ParseUser player2){put(KEY_PLAYER2,player2);}
 }

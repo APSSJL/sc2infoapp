@@ -21,12 +21,12 @@
             android:orientation="vertical">
 
 
-            <Button
-                android:layout_marginStart="5dp"
-                android:id="@+id/btnCreatePost"
+            <Spinner
+                android:id="@+id/spMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Post" />
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp" />
 
             <Button
                 android:id="@+id/btnHomeFilter"
@@ -44,12 +44,12 @@
                 android:layout_height="100dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="50dp"
-                android:layout_toStartOf="@+id/btnHomeFilter"
-                android:layout_toEndOf="@+id/btnCreatePost"
                 app:srcCompat="@drawable/appiconmin" />
+
         </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatButton
