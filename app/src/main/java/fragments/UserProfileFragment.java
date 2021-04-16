@@ -255,7 +255,7 @@ public class UserProfileFragment extends Fragment {
         }
         try {
             List<Tournament> x = query1.find();
-            x.removeIf(t -> !(t.getUserCreated().getOrganizer().getObjectId().equals(currentUser.getObjectId())));
+            x.removeIf(t -> !(t.getUserCreated() != null && t.getUserCreated().getOrganizer().getObjectId().equals(currentUser.getObjectId())));
             Log.i(TAG, String.valueOf(x.size()));
             published.addAll(x);
         } catch (ParseException e) {
