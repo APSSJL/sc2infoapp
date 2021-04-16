@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +120,12 @@ public class TournamentInfoActivity extends AppCompatActivity {
                     rbTournament.setRating(tournament.getRating());
                     tvTornName.setText(tournament.getTitle());
                     tvTornRules.setText(userTournament.getDescription());
+                    File p = userTournament.getImage();
+                    if (p != null) {
+                        Glide.with(TournamentInfoActivity.this).load(userTournament.getImage()).into(ivTornPicture);
+                    } else {
+                        Glide.with(TournamentInfoActivity.this).load(R.drawable.no_image).into(ivTornPicture);
+                    }
 
                     if (ParseUser.getCurrentUser() == userTournament.getOrganizer()) {
                         btnTornEdit.setVisibility(View.VISIBLE);
@@ -295,8 +302,8 @@ public class TournamentInfoActivity extends AppCompatActivity {
                 String photoLink = parser.getPhotoLink(data);
                 Glide.with(TournamentInfoActivity.this).load(photoLink).into(ivTornPicture);
             } catch (InterruptedException | JSONException e) {
-                e.printStackTrace();
                 Glide.with(TournamentInfoActivity.this).load(R.drawable.no_image).into(ivTornPicture);
+                e.printStackTrace();
             }
         });
 
