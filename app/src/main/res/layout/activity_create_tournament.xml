@@ -139,10 +139,5 @@
         android:layout_marginTop="114dp"
         tools:text="Team or Not Team" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnPostTournLogo"
-        android:text="Remember: you can always access your tournaments from your profile."
-        />
+
 </RelativeLayout>
