@@ -40,6 +40,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,12 +137,18 @@ public class MatchFeedFragment extends Fragment {
     }
 
     private void getTournamentUpdate() {
+        String bantor = pref.getString("bantor", "");
+        ArrayList<Object> bannedTourns = new ArrayList<>();
+        if(!bantor.equals(""))
+            Collections.addAll(bannedTourns, bantor.split(","));
         ParseQuery<UserTournament> query = ParseQuery.getQuery(UserTournament.class);
         query.addDescendingOrder(Match.KEY_UPDATED_AT);
+        query.whereNotContainedIn("name", bannedTourns);
 
         query.findInBackground(new FindCallback<UserTournament>() {
             @Override
             public void done(List<UserTournament> objects, ParseException e) {
+
                 for (UserTournament t : objects) {
                     ParseQuery<Match> qmatches = ParseQuery.getQuery(Match.class);
                     qmatches.whereContainedIn("objectId",t.getMatches());
@@ -149,6 +156,7 @@ public class MatchFeedFragment extends Fragment {
                     qtmatches.whereContainedIn("objectId",t.getMatches());
                     qmatches.whereGreaterThanOrEqualTo("rating", pref.getInt("rating", 0));
                     qtmatches.whereGreaterThanOrEqualTo("rating", pref.getInt("rating", 0));
+
 
                     qmatches.findInBackground(new FindCallback<Match>() {
                         @Override

@@ -201,10 +201,10 @@ public class SearchActivity extends AppCompatActivity {
 
     public void SearchTeams() {
         ParseQuery<Team> query = ParseQuery.getQuery(Team.class);
-        query.setLimit(5);
         if(isHiring.isChecked())
             query.whereEqualTo("isHiring", true);
-        query.whereContains("teamName", edSearch.getText().toString());
+        else
+            query.whereContains("teamName", edSearch.getText().toString());
         query.whereGreaterThanOrEqualTo("rating", rating);
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Team>() {

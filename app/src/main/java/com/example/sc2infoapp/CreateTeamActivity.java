@@ -69,6 +69,9 @@ public class CreateTeamActivity extends AppCompatActivity {
                 Team team = new Team();
                 team.setOwner(ParseUser.getCurrentUser());
                 team.setName(name);
+                team.put("rating",0);
+                team.put("ratingSum",0);
+                team.put("ratingVotes",0);
                 team.setInfo(edTeamInfo.getText().toString());
                 team.setHiring(checkboxIsHiring.isChecked());
                 team.getRelation("lineup").add(ParseUser.getCurrentUser());
